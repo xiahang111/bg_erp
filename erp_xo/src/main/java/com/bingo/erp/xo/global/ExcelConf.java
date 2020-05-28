@@ -9,7 +9,6 @@ public class ExcelConf {
     public static final int GLASS_START_NUM = 13;
     public static final int PRODUCT_MATERIAL_START_NUM = 10;
 
-
     public static final int IRONWARE_START_NUM = 14 - 1;
     public static final int PRODUCT_IRONWARE_START_NUM = 14 - 1;
 
