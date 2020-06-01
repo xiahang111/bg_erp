@@ -92,6 +92,12 @@
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${swagger.ui.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>1.5</version>
+        </dependency>
     </dependencies>
 
     <!--spring boot打包的话需要指定一个唯一的入门-->
@@ -116,8 +122,6 @@
 
         </plugins>
     </build>
-
-
 
 
 </project>

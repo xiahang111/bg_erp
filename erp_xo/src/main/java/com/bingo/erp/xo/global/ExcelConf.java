@@ -9,6 +9,7 @@ public class ExcelConf {
     public static final int GLASS_START_NUM = 13;
     public static final int PRODUCT_MATERIAL_START_NUM = 10;
 
+
     public static final int IRONWARE_START_NUM = 14 - 1;
     public static final int PRODUCT_IRONWARE_START_NUM = 14 - 1;
 
@@ -20,6 +21,7 @@ public class ExcelConf {
 
     public static final String PRODUCT_ORDER_FILENAME = "production-order.xls";
 
+    // /home/data/template/   /Users/drew/IdeaProject/bg-erp/excel/
     public static final String NEW_FILE_DICT = "/home/data/template/";
 
 

@@ -12,7 +12,7 @@ import com.bingo.erp.xo.vo.MaterialInfoVO;
 import java.math.BigDecimal;
 
 /**
- * 联动2号计算类
+ * 兵哥4号计算类
  */
 public class BG4HCalculateFactory implements MaterialCalculateFactory<MaterialInfoVO> {
 
@@ -30,24 +30,25 @@ public class BG4HCalculateFactory implements MaterialCalculateFactory<MaterialIn
 
         resultVO.setGlassWidth(vo.getWidth().subtract(productCalculateEnums.getWidth()));
 
-        //计算料的长度
-
-        if(vo.getHandleType() == 0 || StringUtils.isEmpty(vo.getHandlePlace().trim())){
-            throw new MessageException("20窄边没有不带拉手的产品哦~");
-        }
-
         resultVO.setMaterialHeight(vo.getHeight());
         resultVO.setMaterialWidth(vo.getWidth().subtract(new BigDecimal(0)));
+        //计算料的长度
 
+        String materialDetail = "";
+        if (vo.getHandleType() == 0 || StringUtils.isEmpty(vo.getHandlePlace().trim())) {
+            materialDetail = MaterialEnums.heightMaterial.name + resultVO.getMaterialHeight() + "(mm) " + 2 * vo.getMaterialNum() + "支;" +
+                    MaterialEnums.widthMaterial.name + resultVO.getMaterialWidth() + "(mm) " + 2 * vo.getMaterialNum() + "支;";
+        } else {
 
-        String materialDetail = MaterialEnums.heightMaterial.name + resultVO.getMaterialHeight() + "(mm) 1支;" +
-                MaterialEnums.heightLightMaterial.name + resultVO.getMaterialHeight()+"(mm) 1支;"+
-                MaterialEnums.widthMaterial.name + resultVO.getMaterialWidth() + "(mm) 2支;";
+            materialDetail = MaterialEnums.heightMaterial.name + resultVO.getMaterialHeight() + "(mm) " + 1 * vo.getMaterialNum() + "支;" +
+                    MaterialEnums.heightHandleMaterial.name + resultVO.getMaterialHeight() + "(mm) " + 1 * vo.getMaterialNum() + "支;" +
+                    MaterialEnums.widthMaterial.name + resultVO.getMaterialWidth() + "(mm) " + 2 * vo.getMaterialNum() + "支;";
+
+        }
 
         resultVO.setMaterialDetail(materialDetail);
 
         resultVO.setCorner(CornerEnums.BevelAngle);
-
 
 
         return resultVO;

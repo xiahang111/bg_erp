@@ -6,11 +6,12 @@ import org.codehaus.jackson.annotate.JsonValue;
 import java.io.Serializable;
 
 public enum GlassColor implements IEnum {
+    NOGLASS(0,"无"),
     OZH(1,"欧洲灰"),
     LXH(2,"蓝星灰"),
     JC(3,"金茶"),
     QC(4,"浅茶"),
-    HH(5,"花虹"),
+    HH(5,"长虹"),
     BB(6,"白玻"),
     HB(7,"黑玻"),
     CYLS(8,"超白春意阑珊"),

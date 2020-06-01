@@ -9,4 +9,6 @@ public class SysConf extends BaseSysConf {
     public final static String AVATAR = "avatar";
 
     public final static String ROLES = "roles";
+
+    public final static String NAME = "name";
 }

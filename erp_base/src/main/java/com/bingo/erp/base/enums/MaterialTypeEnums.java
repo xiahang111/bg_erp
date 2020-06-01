@@ -14,7 +14,7 @@ public enum MaterialTypeEnums implements IEnum {
     SP1H(4001, "上品1号"),
     ZB20(5001, "20窄边"),
     ZB22(5002, "22窄边"),
-    JH22(5006, "22加厚"),
+    JH22(5003, "22加厚"),
     TD1H(1001, "天地1号"),
     BG1H(7001, "兵哥1号"),
     BG2H(7002, "兵哥2号"),

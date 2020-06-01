@@ -21,6 +21,7 @@
 /Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/global/RedisConf.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/factory/SP1HCalculateFactory.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/factory/LD2HCalculateFactory.java
+/Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/vo/IndexOrderVO.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/vo/GlassCalculateRecordVO.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/factory/XB50CalculateFactory.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/factory/JH22CalculateFactory.java

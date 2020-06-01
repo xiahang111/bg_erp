@@ -39,6 +39,12 @@ public class MaterialVO {
      */
     public String customerPhoneNum;
 
+
+    /**
+     * 快递信息
+     */
+    public String express;
+
     /**
      * 材料信息
      */

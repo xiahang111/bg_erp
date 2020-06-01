@@ -5,6 +5,7 @@ com/bingo/erp/xo/vo/MaterialCalculateResultVO.class
 com/bingo/erp/xo/service/impl/ProductCalculateRecordServiceImpl.class
 com/bingo/erp/xo/mapper/AdminMapper.class
 com/bingo/erp/xo/vo/IronwareInfoVO.class
+com/bingo/erp/xo/vo/IndexOrderVO.class
 com/bingo/erp/xo/factory/SP1HCalculateFactory.class
 com/bingo/erp/xo/mapper/ProductCalculateRecordMapper.class
 com/bingo/erp/xo/vo/GlassCalculateResultVO.class

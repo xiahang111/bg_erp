@@ -160,10 +160,10 @@ public class LoginRestApi {
         Map<String, Object> map = new HashMap<>();
 
         //todo 暂时还不需要跨平台登录
-        if (false && request.getAttribute(SysConf.ADMIN_UID) == null ) {
+        if (request.getAttribute(SysConf.ADMIN_UID) == null ) {
             return ResultUtil.result(SysConf.ERROR, "token用户过期");
         }
-        //Admin admin = adminService.getById(request.getAttribute(SysConf.ADMIN_UID).toString());
+        Admin admin = adminService.getById(request.getAttribute(SysConf.ADMIN_UID).toString());
         map.put(SysConf.TOKEN, token);
         //获取图片
         /*if (StringUtils.isNotEmpty(admin.getAvatar())) {
@@ -174,9 +174,10 @@ public class LoginRestApi {
         //加载这些角色所能访问的菜单页面列表
         //1)获取该管理员所有角色
         List<String> roleUid = new ArrayList<>();
-        //roleUid.add(admin.getRoleUid());
-        //Collection<Role> roleList = roleService.listByIds(roleUid);
-        //map.put(SysConf.ROLES, roleList);
+        roleUid.add(admin.getRoleUid());
+        Collection<Role> roleList = roleService.listByIds(roleUid);
+        map.put(SysConf.ROLES, roleList);
+        map.put(SysConf.NAME,admin.getUserName());
         return ResultUtil.result(SysConf.SUCCESS, map);
     }
 

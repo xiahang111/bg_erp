@@ -38,8 +38,8 @@ public class LD2HCalculateFactory implements MaterialCalculateFactory<MaterialIn
         resultVO.setMaterialHeight(vo.getHeight());
         resultVO.setMaterialWidth(vo.getWidth().subtract(new BigDecimal(0)));
 
-        String materialDetail = MaterialEnums.heightMaterial.name + resultVO.getMaterialHeight() + "(mm) 2支;" +
-                MaterialEnums.widthMaterial.name + resultVO.getMaterialWidth() + "(mm) 2支;";
+        String materialDetail = MaterialEnums.heightMaterial.name + resultVO.getMaterialHeight() + "(mm) "+ 2 * vo.getMaterialNum() +"支;" +
+                MaterialEnums.widthMaterial.name + resultVO.getMaterialWidth() + "(mm) "+ 2 * vo.getMaterialNum() +"支;";
 
         resultVO.setMaterialDetail(materialDetail);
 

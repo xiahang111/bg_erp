@@ -76,6 +76,12 @@ public class OrderInfo extends SuperEntity<OrderInfo> {
      */
     private BigDecimal totalPrice;
 
+
+    /**
+     * 快递信息
+     */
+    private String express;
+
     public OrderInfo() {
     }
 
@@ -92,7 +98,8 @@ public class OrderInfo extends SuperEntity<OrderInfo> {
                      String orderId,
                      String salesman,
                      String orderMaker,
-                     BigDecimal totalPrice) {
+                     BigDecimal totalPrice,
+                     String express) {
         this.isClear = isClear;
         this.productType = productType;
         this.customerNick = customerNick;
@@ -107,5 +114,6 @@ public class OrderInfo extends SuperEntity<OrderInfo> {
         this.salesman = salesman;
         this.orderMaker = orderMaker;
         this.totalPrice = totalPrice;
+        this.express = express;
     }
 }

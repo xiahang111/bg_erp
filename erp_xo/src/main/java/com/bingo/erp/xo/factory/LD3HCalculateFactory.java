@@ -32,20 +32,19 @@ public class LD3HCalculateFactory implements MaterialCalculateFactory<MaterialIn
 
         //计算料的长度
 
-        if(vo.getHandleType() != 0 || StringUtils.isNotEmpty(vo.getHandlePlace().trim())){
+        if (vo.getHandleType() != 0 || StringUtils.isNotEmpty(vo.getHandlePlace().trim())) {
             throw new MessageException("联动3号没有带拉手的产品哦~");
         }
 
         resultVO.setMaterialHeight(vo.getHeight());
         resultVO.setMaterialWidth(vo.getWidth().subtract(new BigDecimal(0)));
 
-        String materialDetail = MaterialEnums.heightMaterial.name + resultVO.getMaterialHeight() + "(mm) 2支;" +
-                MaterialEnums.widthMaterial.name + resultVO.getMaterialWidth() + "(mm) 2支;";
+        String materialDetail = MaterialEnums.heightMaterial.name + resultVO.getMaterialHeight() + "(mm) " + 2 * vo.getMaterialNum() + "支;" +
+                MaterialEnums.widthMaterial.name + resultVO.getMaterialWidth() + "(mm) " + 2 * vo.getMaterialNum() + "支;";
 
         resultVO.setMaterialDetail(materialDetail);
 
         resultVO.setCorner(CornerEnums.BevelAngle);
-
 
 
         return resultVO;

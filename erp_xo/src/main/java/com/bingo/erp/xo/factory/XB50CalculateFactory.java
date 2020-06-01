@@ -31,21 +31,25 @@ public class XB50CalculateFactory implements MaterialCalculateFactory<MaterialIn
 
         //计算料的长度
 
-        if(vo.getHandleType() != 0 || StringUtils.isNotEmpty(vo.getHandlePlace().trim())){
-            throw new MessageException("50斜边没有带拉手的产品哦~");
-        }
 
         resultVO.setMaterialHeight(vo.getHeight());
         resultVO.setMaterialWidth(vo.getWidth().subtract(new BigDecimal(4)));
 
-        String materialDetail = MaterialEnums.heightMaterial.name + resultVO.getMaterialHeight() + "(mm) 2支;" +
-                MaterialEnums.widthMaterial.name + resultVO.getMaterialWidth() + "(mm) 2支;";
+        String materialDetail = "";
+        if (vo.getHandleType() == 0 || StringUtils.isEmpty(vo.getHandlePlace().trim())) {
+            materialDetail = MaterialEnums.heightMaterial.name + resultVO.getMaterialHeight() + "(mm) " + 2 * vo.getMaterialNum() + "支;" +
+                    MaterialEnums.widthMaterial.name + resultVO.getMaterialWidth() + "(mm) " + 2 * vo.getMaterialNum() + "支;";
+        } else {
+
+            materialDetail = MaterialEnums.heightMaterial.name + resultVO.getMaterialHeight() + "(mm) " + 1 * vo.getMaterialNum() + "支;" +
+                    MaterialEnums.heightHandleMaterial.name + resultVO.getMaterialHeight() + "(mm) " + 1 * vo.getMaterialNum() + "支;" +
+                    MaterialEnums.widthMaterial.name + resultVO.getMaterialWidth() + "(mm) " + 2 * vo.getMaterialNum() + "支;";
+
+        }
 
         resultVO.setMaterialDetail(materialDetail);
 
         resultVO.setCorner(CornerEnums.RightAngle);
-
-
 
         return resultVO;
     }

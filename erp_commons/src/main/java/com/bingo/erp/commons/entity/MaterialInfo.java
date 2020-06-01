@@ -44,7 +44,7 @@ public class MaterialInfo extends SuperEntity<MaterialInfo> {
 
     private String handlePlace;
 
-    private DirectionsEnums direction;
+    private String  direction;
 
     private String materialDetail;
 
@@ -73,7 +73,7 @@ public class MaterialInfo extends SuperEntity<MaterialInfo> {
                         BigDecimal materialWidth,
                         Integer materialNum,
                         String handlePlace,
-                        DirectionsEnums direction,
+                        String  direction,
                         String materialDetail,
                         String remark,
                         BigDecimal price,

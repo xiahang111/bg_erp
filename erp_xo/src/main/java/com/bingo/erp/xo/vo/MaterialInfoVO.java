@@ -64,7 +64,7 @@ public class MaterialInfoVO {
     /**
      * 开启方向
      */
-    public int direction;
+    public String direction;
 
     /**
      * 产品下料详情
@@ -92,7 +92,7 @@ public class MaterialInfoVO {
     public MaterialInfoVO(int materialColor,
                           int materialType,
                           int handleType,
-                          int glassColor, BigDecimal height, BigDecimal width, BigDecimal glassHeight, BigDecimal glassWidth, BigDecimal materialHeight, BigDecimal materialWidth, int materialNum, String handlePlace, String hingeLocation, int direction, String materialDetail, String remark, BigDecimal price, BigDecimal area, BigDecimal totalPrice) {
+                          int glassColor, BigDecimal height, BigDecimal width, BigDecimal glassHeight, BigDecimal glassWidth, BigDecimal materialHeight, BigDecimal materialWidth, int materialNum, String handlePlace, String hingeLocation, String  direction, String materialDetail, String remark, BigDecimal price, BigDecimal area, BigDecimal totalPrice) {
         this.materialColor = materialColor;
         this.materialType = materialType;
         this.handleType = handleType;

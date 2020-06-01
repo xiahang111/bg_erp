@@ -12,9 +12,7 @@ public enum HandleEnums implements IEnum {
     Handle1100(2, "1100拉手"),
     HandleTT(3, "通体拉手"),
     HandleXZ(4, "50斜边镶钻拉手"),
-
-
-    ;
+    HandleHZLS(5, "联动1号后装拉手");
 
     HandleEnums(int code, String name) {
         this.code = code;

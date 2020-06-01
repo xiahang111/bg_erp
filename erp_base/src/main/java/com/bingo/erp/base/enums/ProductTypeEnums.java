@@ -34,6 +34,18 @@ public enum ProductTypeEnums implements IEnum {
 
     }
 
+    public static String getEnumByCode(int code) {
+        for (ProductTypeEnums enums : ProductTypeEnums.values()) {
+
+            if (enums.code == code) {
+                return enums.name;
+            }
+
+        }
+
+        return null;
+    }
+
     @Override
     public Serializable getValue() {
         return this.code;
