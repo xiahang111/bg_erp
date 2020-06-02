@@ -5,6 +5,7 @@
 /Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/mapper/ProductMapper.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/service/AdminService.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/vo/MaterialVO.java
+/Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/tools/OrderTools.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/service/impl/MaterialCalculateRecordServiceImpl.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/vo/MaterialCalculateResultVO.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/factory/SP2HCalculateFactory.java
@@ -49,6 +50,7 @@
 /Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/factory/ZB22CalculateFactory.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/vo/GlassCalculateResultVO.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/service/RoleService.java
+/Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/service/SaleService.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/enums/MaterialFactoryEnum.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/global/SQLConf.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/vo/ProductRecordPageVO.java

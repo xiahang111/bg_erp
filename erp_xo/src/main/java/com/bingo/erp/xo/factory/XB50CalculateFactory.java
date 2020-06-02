@@ -19,6 +19,13 @@ public class XB50CalculateFactory implements MaterialCalculateFactory<MaterialIn
     @Override
     public MaterialCalculateResultVO calculate(MaterialInfoVO vo) throws Exception {
 
+        //校验角码
+        if(!(vo.getCornerMaterial() == CornerMaterialEnums.None.code )){
+
+            throw new MessageException("50斜边产品没有角码哦，请确认~");
+
+        }
+
         MaterialCalculateResultVO resultVO = new MaterialCalculateResultVO();
         //计算玻璃长度
         int materialType = vo.getMaterialType();

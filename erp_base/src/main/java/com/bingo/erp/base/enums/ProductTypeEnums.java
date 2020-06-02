@@ -12,8 +12,8 @@ public enum ProductTypeEnums implements IEnum {
     NotComplete(2,"半成品");
 
 
-    private final int code;
-    private final String name;
+    public final int code;
+    public final String name;
 
     ProductTypeEnums(int code, String name) {
         this.code = code;
@@ -48,6 +48,10 @@ public enum ProductTypeEnums implements IEnum {
 
     @Override
     public Serializable getValue() {
+        return this.code;
+    }
+
+    public int getCode() {
         return this.code;
     }
 

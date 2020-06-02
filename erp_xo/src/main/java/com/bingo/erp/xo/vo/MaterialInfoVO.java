@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 public class MaterialInfoVO {
 
     /**
-    材料颜色
+     * 材料颜色
      */
     public int materialColor;
 
@@ -67,9 +67,18 @@ public class MaterialInfoVO {
     public String direction;
 
     /**
+     * 角码种类
+     */
+    public int cornerMaterial;
+
+    /**
      * 产品下料详情
      */
     private String materialDetail;
+
+    private int cornerNum;
+
+    private int screwNum;
 
     /**
      * 备注
@@ -92,7 +101,7 @@ public class MaterialInfoVO {
     public MaterialInfoVO(int materialColor,
                           int materialType,
                           int handleType,
-                          int glassColor, BigDecimal height, BigDecimal width, BigDecimal glassHeight, BigDecimal glassWidth, BigDecimal materialHeight, BigDecimal materialWidth, int materialNum, String handlePlace, String hingeLocation, String  direction, String materialDetail, String remark, BigDecimal price, BigDecimal area, BigDecimal totalPrice) {
+                          int glassColor, BigDecimal height, BigDecimal width, BigDecimal glassHeight, BigDecimal glassWidth, BigDecimal materialHeight, BigDecimal materialWidth, int materialNum, String handlePlace, String hingeLocation, String direction, String materialDetail, String remark, BigDecimal price, BigDecimal area, BigDecimal totalPrice) {
         this.materialColor = materialColor;
         this.materialType = materialType;
         this.handleType = handleType;

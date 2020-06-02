@@ -9,7 +9,9 @@ com/bingo/erp/xo/vo/IndexOrderVO.class
 com/bingo/erp/xo/factory/SP1HCalculateFactory.class
 com/bingo/erp/xo/mapper/ProductCalculateRecordMapper.class
 com/bingo/erp/xo/vo/GlassCalculateResultVO.class
+com/bingo/erp/xo/service/SaleService.class
 com/bingo/erp/xo/global/RedisConf.class
+com/bingo/erp/xo/tools/OrderTools.class
 com/bingo/erp/xo/enums/MaterialFactoryEnum.class
 com/bingo/erp/xo/service/impl/DataGatherServiceImpl.class
 com/bingo/erp/xo/factory/LD2HCalculateFactory.class

@@ -12,6 +12,7 @@ com/bingo/erp/base/enums/IronwareColorEnums.class
 com/bingo/erp/base/enums/EStatus.class
 com/bingo/erp/base/serviceImpl/SuperServiceImpl.class
 com/bingo/erp/base/validator/annotion/NotBlank.class
+com/bingo/erp/base/enums/CornerMaterialEnums.class
 com/bingo/erp/base/enums/ProductCalculateEnums.class
 com/bingo/erp/base/service/SuperService.class
 com/bingo/erp/base/validator/constraint/IntegerValidator.class

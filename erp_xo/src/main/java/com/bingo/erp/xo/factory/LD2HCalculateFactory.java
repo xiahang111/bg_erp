@@ -19,6 +19,14 @@ public class LD2HCalculateFactory implements MaterialCalculateFactory<MaterialIn
     @Override
     public MaterialCalculateResultVO calculate(MaterialInfoVO vo) throws Exception {
 
+
+        //校验角码
+        if(!(vo.getCornerMaterial() == CornerMaterialEnums.LD2HTPJM.code)){
+
+            throw new MessageException("角码种类与产品种类不匹配哦~请确认");
+
+        }
+
         MaterialCalculateResultVO resultVO = new MaterialCalculateResultVO();
         //计算玻璃长度
         int materialType = vo.getMaterialType();

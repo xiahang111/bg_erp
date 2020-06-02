@@ -28,6 +28,8 @@ public class MaterialInfo extends SuperEntity<MaterialInfo> {
 
     private GlassColor glassColor;
 
+    private CornerMaterialEnums cornerMaterial;
+
     private BigDecimal glassHeight;
 
     private BigDecimal glassWidth;
@@ -66,6 +68,7 @@ public class MaterialInfo extends SuperEntity<MaterialInfo> {
                         String hingeLocation,
                         GlassColor glassColor,
                         BigDecimal glassHeight,
+                        CornerMaterialEnums cornerMaterial,
                         BigDecimal glassWidth,
                         BigDecimal height,
                         BigDecimal width,
@@ -86,6 +89,7 @@ public class MaterialInfo extends SuperEntity<MaterialInfo> {
         this.hingeLocation = hingeLocation;
         this.glassColor = glassColor;
         this.glassHeight = glassHeight;
+        this.cornerMaterial = cornerMaterial;
         this.glassWidth = glassWidth;
         this.height = height;
         this.width = width;

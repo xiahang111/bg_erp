@@ -63,7 +63,7 @@ public class ExcelTest {
         BigDecimal area = materialInfoVO.getHeight().
                 multiply(materialInfoVO.getWidth()).
                 divide(new BigDecimal("1000000")).setScale(2, RoundingMode.CEILING);
-        BigDecimal totalPrice = materialInfoVO.getPrice().multiply(area).setScale(2);
+        BigDecimal totalPrice = materialInfoVO.getPrice().multiply(area).setScale(0,RoundingMode.HALF_UP);
 
         materialInfoVO.setArea(area);
         materialInfoVO.setTotalPrice(totalPrice);
@@ -80,7 +80,7 @@ public class ExcelTest {
         ironwareInfoVO.setPrice(new BigDecimal("32"));
         ironwareInfoVO.setRemark("无");
         ironwareInfoVO.setIronwareNum(52);
-        BigDecimal ironTotalPrice = ironwareInfoVO.getPrice().multiply(new BigDecimal(ironwareInfoVO.getIronwareNum()));
+        BigDecimal ironTotalPrice = ironwareInfoVO.getPrice().multiply(new BigDecimal(ironwareInfoVO.getIronwareNum())).setScale(0,RoundingMode.HALF_UP);
 
         ironwareInfoVO.setTotalPrice(ironTotalPrice);
 
