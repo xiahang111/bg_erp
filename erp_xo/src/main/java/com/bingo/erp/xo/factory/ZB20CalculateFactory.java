@@ -22,7 +22,7 @@ public class ZB20CalculateFactory implements MaterialCalculateFactory<MaterialIn
     public MaterialCalculateResultVO calculate(MaterialInfoVO vo) throws Exception {
 
         //校验角码
-        if(!(vo.getCornerMaterial() == CornerMaterialEnums.XHJ20.code || vo.getCornerMaterial() == CornerMaterialEnums.LX20.code)){
+        if(!(vo.getCornerMaterial() == CornerMaterialEnums.XHJ20.code || vo.getCornerMaterial() == CornerMaterialEnums.LX20.code|| vo.getCornerMaterial() == CornerMaterialEnums.None.code)){
 
             throw new MessageException("角码种类与产品种类不匹配哦~请确认");
 

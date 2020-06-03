@@ -20,7 +20,7 @@ public class XB50CalculateFactory implements MaterialCalculateFactory<MaterialIn
     public MaterialCalculateResultVO calculate(MaterialInfoVO vo) throws Exception {
 
         //校验角码
-        if(!(vo.getCornerMaterial() == CornerMaterialEnums.None.code )){
+        if(!(vo.getCornerMaterial() == CornerMaterialEnums.None.code || vo.getCornerMaterial() == CornerMaterialEnums.None.code)){
 
             throw new MessageException("50斜边产品没有角码哦，请确认~");
 

@@ -23,7 +23,7 @@ public class BG4HCalculateFactory implements MaterialCalculateFactory<MaterialIn
 
 
         //校验角码
-        if(!(vo.getCornerMaterial() == CornerMaterialEnums.XHJ22.code || vo.getCornerMaterial() == CornerMaterialEnums.LX22.code)){
+        if (!(vo.getCornerMaterial() == CornerMaterialEnums.XHJ22.code || vo.getCornerMaterial() == CornerMaterialEnums.LX22.code || vo.getCornerMaterial() == CornerMaterialEnums.None.code)) {
 
             throw new MessageException("角码种类与产品种类不匹配哦~请确认");
 

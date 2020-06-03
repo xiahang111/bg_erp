@@ -29,8 +29,10 @@ com/bingo/erp/xo/vo/material/LD1H/CalculateVO.class
 com/bingo/erp/xo/service/impl/OrderServiceImpl.class
 com/bingo/erp/xo/service/impl/ProductServiceImpl$2.class
 com/bingo/erp/xo/factory/SP2HCalculateFactory.class
+com/bingo/erp/xo/mapper/TransomMapper.class
 com/bingo/erp/xo/factory/LD1HCalculateFactory.class
 com/bingo/erp/xo/service/impl/AdminServiceImpl.class
+com/bingo/erp/xo/vo/TransomVO.class
 com/bingo/erp/xo/vo/MaterialCalculateVO.class
 com/bingo/erp/xo/global/SQLConf.class
 com/bingo/erp/xo/vo/AdminVO.class

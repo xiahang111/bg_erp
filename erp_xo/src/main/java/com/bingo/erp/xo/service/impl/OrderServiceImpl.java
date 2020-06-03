@@ -14,10 +14,7 @@ import com.bingo.erp.utils.DateUtils;
 import com.bingo.erp.xo.enums.MaterialFactoryEnum;
 import com.bingo.erp.xo.global.ExcelConf;
 import com.bingo.erp.xo.global.NormalConf;
-import com.bingo.erp.xo.mapper.IronwareInfoMapper;
-import com.bingo.erp.xo.mapper.MaterialInfoMapper;
-import com.bingo.erp.xo.mapper.OrderInfoMapper;
-import com.bingo.erp.xo.mapper.ProductMapper;
+import com.bingo.erp.xo.mapper.*;
 import com.bingo.erp.xo.service.OrderService;
 import com.bingo.erp.xo.tools.OrderTools;
 import com.bingo.erp.xo.vo.*;
@@ -43,6 +40,9 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
     @Resource
     private OrderInfoMapper orderInfoMapper;
+
+    @Resource
+    private TransomMapper transomMapper;
 
     @Resource
     private MaterialInfoMapper materialInfoMapper;
@@ -99,17 +99,35 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
         int ironwareNum = materialVO.getIronwares().size() - 1;
 
+        int transomNum = 0;
+
         //根据数量扩充表格
 
         //计算数据
 
         tools.ironwareCalculate(materialVO.getIronwares());
         tools.materialCalculate(materialVO.getMaterials());
+        if (materialVO.isHaveTransom && null != materialVO.getTransoms()) {
+            transomNum = materialVO.getTransoms().size() - 1;
+            tools.transomCalculate(materialVO.getTransoms());
+        }
+
         tools.orderCalculate(materialVO);
 
         try {
+            String orderFileName = "";
+            String productSrcFileName = "";
 
-            POIFSFileSystem fs = new POIFSFileSystem(new File(ExcelConf.SRC_FILE_URL + ExcelConf.ORDER_FILENAME));
+            if (materialVO.isHaveTransom && null != materialVO.getTransoms() && materialVO.getTransoms().size() > 0) {
+                orderFileName = ExcelConf.SRC_FILE_URL + ExcelConf.TDHL_ORDER_FILENAME;
+                productSrcFileName = ExcelConf.SRC_FILE_URL + ExcelConf.TDHL_PRODUCT_ORDER_FILENAME;
+            } else {
+                orderFileName = ExcelConf.SRC_FILE_URL + ExcelConf.ORDER_FILENAME;
+                productSrcFileName = ExcelConf.SRC_FILE_URL + ExcelConf.PRODUCT_ORDER_FILENAME;
+
+            }
+
+            POIFSFileSystem fs = new POIFSFileSystem(new File(orderFileName));
 
             HSSFWorkbook wb = new HSSFWorkbook(fs);
 
@@ -117,10 +135,10 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
             Map<String, List<MaterialInfoVO>> map = tools.materialsToMap(materialVO.getMaterials());
 
-            int addnum = tools.extensionExcel(sheet, map, ironwareNum);
+            int addnum = tools.extensionExcel(sheet, map, ironwareNum, transomNum);
 
             //填充料玻、五金数据
-            tools.fillData(sheet, map, materialVO.getIronwares(), addnum);
+            tools.fillData(sheet, map, materialVO, materialVO.getIronwares(), addnum);
 
             File newFile = new File(ExcelConf.NEW_FILE_DICT + fileName);
 
@@ -139,13 +157,13 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
             File productFile = new File(ExcelConf.NEW_FILE_DICT + productFileName);
 
-            POIFSFileSystem productFs = new POIFSFileSystem(new File(ExcelConf.SRC_FILE_URL + ExcelConf.PRODUCT_ORDER_FILENAME));
+            POIFSFileSystem productFs = new POIFSFileSystem(new File(productSrcFileName));
 
             HSSFWorkbook productWb = new HSSFWorkbook(productFs);
 
             HSSFSheet productSheet = productWb.getSheetAt(0);
 
-            int addnum1 = tools.productExtensionExcel(productSheet, map, materialNum, ironwareNum);
+            int addnum1 = tools.productExtensionExcel(productSheet, map, materialVO, materialNum);
 
             tools.productFillData(productSheet, addnum1, map, materialVO, materialVO.getIronwares());
 
@@ -169,6 +187,11 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
             tools.saveIronwareInfoList(ironwareInfoMapper, materialVO.getIronwares(), orderInfo.getUid());
 
+            if (materialVO.isHaveTransom && null != materialVO.getTransoms() && materialVO.getTransoms().size() > 0) {
+
+                tools.saveTransomInfoList(transomMapper, materialVO.transoms, orderInfo.getUid());
+            }
+
             log.info("主键id" + orderInfo.getUid());
 
             return result;
@@ -181,7 +204,6 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
 
     }
-
 
 
 }

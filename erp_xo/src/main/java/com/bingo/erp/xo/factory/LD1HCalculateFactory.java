@@ -22,7 +22,7 @@ public class LD1HCalculateFactory implements MaterialCalculateFactory<MaterialIn
     public MaterialCalculateResultVO calculate(MaterialInfoVO vo) throws Exception {
 
         //校验角码
-        if(!(vo.getCornerMaterial() == CornerMaterialEnums.LD1HXHJM.code )){
+        if(!(vo.getCornerMaterial() == CornerMaterialEnums.LD1HXHJM.code || vo.getCornerMaterial() == CornerMaterialEnums.None.code)){
 
             throw new MessageException("角码种类与产品种类不匹配哦~请确认");
 

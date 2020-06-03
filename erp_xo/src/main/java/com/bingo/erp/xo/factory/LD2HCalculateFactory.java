@@ -21,7 +21,7 @@ public class LD2HCalculateFactory implements MaterialCalculateFactory<MaterialIn
 
 
         //校验角码
-        if(!(vo.getCornerMaterial() == CornerMaterialEnums.LD2HTPJM.code)){
+        if(!(vo.getCornerMaterial() == CornerMaterialEnums.LD2HTPJM.code|| vo.getCornerMaterial() == CornerMaterialEnums.None.code)){
 
             throw new MessageException("角码种类与产品种类不匹配哦~请确认");
 

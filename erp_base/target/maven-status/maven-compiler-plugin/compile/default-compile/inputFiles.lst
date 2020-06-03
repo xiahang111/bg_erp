@@ -46,6 +46,7 @@
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/validator/constraint/IdValidator.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/MaterialColorEnums.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/EStatus.java
+/Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/TransomTypeEnums.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/global/BaseMessageConf.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/global/BaseSQLConf.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/GlassColor.java

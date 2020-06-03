@@ -5,15 +5,14 @@ import com.bingo.erp.base.fatocry.material.MaterialCalculateFactory;
 import com.bingo.erp.commons.entity.IronwareInfo;
 import com.bingo.erp.commons.entity.MaterialInfo;
 import com.bingo.erp.commons.entity.OrderInfo;
+import com.bingo.erp.commons.entity.TransomInfo;
 import com.bingo.erp.xo.enums.MaterialFactoryEnum;
 import com.bingo.erp.xo.global.ExcelConf;
 import com.bingo.erp.xo.global.NormalConf;
 import com.bingo.erp.xo.mapper.IronwareInfoMapper;
 import com.bingo.erp.xo.mapper.MaterialInfoMapper;
-import com.bingo.erp.xo.vo.IronwareInfoVO;
-import com.bingo.erp.xo.vo.MaterialCalculateResultVO;
-import com.bingo.erp.xo.vo.MaterialInfoVO;
-import com.bingo.erp.xo.vo.MaterialVO;
+import com.bingo.erp.xo.mapper.TransomMapper;
+import com.bingo.erp.xo.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jxls.util.Util;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -72,7 +71,7 @@ public class OrderTools {
         return map;
     }
 
-    public int extensionExcel(HSSFSheet sheet, Map<String, List<MaterialInfoVO>> map, int ironwareNum) {
+    public int extensionExcel(HSSFSheet sheet, Map<String, List<MaterialInfoVO>> map, int ironwareNum, int transomNum) {
 
 
         int addNum = (map.keySet().size() - 1) * 2;
@@ -131,13 +130,27 @@ public class OrderTools {
 
         }
 
-        int ironwareStartNum = ExcelConf.IRONWARE_START_NUM + addNum;
+        if (transomNum > 0) {
+            int TRANSOM_START_NUM = 13 + addNum;
+            sheet.shiftRows(TRANSOM_START_NUM, sheet.getLastRowNum(), transomNum, true, false);
+            for (int i = 0; i < transomNum; i++) {
+                Util.copyRow(sheet, sheet.getRow(TRANSOM_START_NUM - 1), sheet.getRow(TRANSOM_START_NUM + i));
+            }
+        }
+
 
         if (ironwareNum > 0) {
-            sheet.shiftRows(ironwareStartNum, sheet.getLastRowNum(), ironwareNum, true, false);
+            int IRONWARE_START_NUM;
+            if (transomNum > 0) {
+                IRONWARE_START_NUM = 16 + addNum + (transomNum);
+            } else {
+                IRONWARE_START_NUM = ExcelConf.IRONWARE_START_NUM + addNum;
+            }
+
+            sheet.shiftRows(IRONWARE_START_NUM, sheet.getLastRowNum(), ironwareNum, true, false);
 
             for (int i = 0; i < ironwareNum; i++) {
-                Util.copyRow(sheet, sheet.getRow(ironwareStartNum - 1), sheet.getRow(ironwareStartNum + i));
+                Util.copyRow(sheet, sheet.getRow(IRONWARE_START_NUM - 1), sheet.getRow(IRONWARE_START_NUM + i));
             }
         }
 
@@ -146,8 +159,70 @@ public class OrderTools {
 
     }
 
-    public int productExtensionExcel(HSSFSheet sheet, Map<String, List<MaterialInfoVO>> map, int materialNum, int ironwareNum) {
+    private int getIronNum(MaterialVO materialVO) {
 
+        List<IronwareInfoVO> ironwareInfoVOS = materialVO.getIronwares();
+        //计算角码和螺丝
+
+        Map<String, Integer> cornerMap = new HashMap<>();
+        for (MaterialInfoVO materialInfoVO : materialVO.getMaterials()) {
+
+            if (CornerMaterialEnums.None.code != materialInfoVO.getCornerMaterial()) {
+                String cornerName = CornerMaterialEnums.getEnumByCode(materialInfoVO.getCornerMaterial());
+
+                Integer cornerNumNow = cornerMap.get(cornerName);
+
+                Integer cornerNum = materialInfoVO.getCornerNum();
+
+                //五金数量
+                if (null == cornerNumNow) {
+
+                    cornerMap.put(cornerName, cornerNum);
+
+                } else {
+                    cornerMap.put(cornerName, cornerMap.get(cornerName) + cornerNum);
+                }
+
+                //螺丝数量
+
+                if (null == cornerMap.get(NormalConf.SCREW_NAME)) {
+                    cornerMap.put(NormalConf.SCREW_NAME, materialInfoVO.getScrewNum());
+                } else {
+                    cornerMap.put(NormalConf.SCREW_NAME, cornerMap.get(NormalConf.SCREW_NAME) + materialInfoVO.getScrewNum());
+                }
+            }
+
+        }
+
+        for (String key : cornerMap.keySet()) {
+
+            IronwareInfoVO ironwareInfoVO = new IronwareInfoVO();
+
+            ironwareInfoVO.setIronwareName(key);
+            ironwareInfoVO.setIronwareNum(cornerMap.get(key));
+            ironwareInfoVO.setUnit("个");
+            ironwareInfoVO.setIronwareColor(0);
+            ironwareInfoVO.setSpecification("");
+            ironwareInfoVO.setRemark("");
+
+            ironwareInfoVOS.add(ironwareInfoVO);
+        }
+
+        return ironwareInfoVOS.size() - 1;
+
+
+    }
+
+    public int productExtensionExcel(HSSFSheet sheet, Map<String, List<MaterialInfoVO>> map, MaterialVO materialVO, int materialNum) {
+
+        int transomNum = 0;
+
+        if (materialVO.isHaveTransom && null != materialVO.getTransoms() && materialVO.getTransoms().size() > 0) {
+            transomNum = materialVO.getTransoms().size() - 1;
+        }
+
+
+        int ironwareNum = getIronNum(materialVO);
 
         int addNum = (map.keySet().size() - 1) * 2;
 
@@ -261,8 +336,26 @@ public class OrderTools {
 
         }
 
+        if (transomNum > 0) {
+            int TRANSOM_START_NUM = 16 + addNum * 2;
+            sheet.shiftRows(TRANSOM_START_NUM, sheet.getLastRowNum(), transomNum, true, false);
+            for (int i = 0; i < transomNum; i++) {
+                Util.copyRow(sheet, sheet.getRow(TRANSOM_START_NUM - 1), sheet.getRow(TRANSOM_START_NUM + i));
+            }
+        }
+
+
         if (ironwareNum > 0) {
-            int IRONWARE_START_NUM = 16 + addNum * 2;
+
+            //存放螺丝和角码
+
+            int IRONWARE_START_NUM;
+            if (transomNum > 0) {
+                IRONWARE_START_NUM = 19 + addNum * 2 + (transomNum);
+            } else {
+                IRONWARE_START_NUM = 16 + addNum * 2;
+            }
+
 
             sheet.shiftRows(IRONWARE_START_NUM, sheet.getLastRowNum(), ironwareNum, true, false);
 
@@ -356,6 +449,17 @@ public class OrderTools {
 
     }
 
+    public void transomCalculate(List<TransomVO> transomVOS) {
+
+        if (transomVOS.size() > 0) {
+            transomVOS.stream().forEach(transomVO -> {
+                transomVO.setTotalPrice(transomVO.getPrice().
+                        multiply(new BigDecimal(transomVO.getTransomNum()).setScale(0, BigDecimal.ROUND_HALF_UP)));
+            });
+        }
+
+    }
+
     /**
      * 计算订单表内五金信息需要计算的内容
      *
@@ -382,12 +486,17 @@ public class OrderTools {
 
         BigDecimal materialTotalPrice = new BigDecimal("0");
 
-
         for (MaterialInfoVO materialInfoVO : materialVO.getMaterials()) {
-
             materialTotalPrice = materialTotalPrice.add(materialInfoVO.getTotalPrice());
-
         }
+
+        //累加天地横梁的价格
+        if (materialVO.isHaveTransom && null != materialVO.getTransoms() && materialVO.getTransoms().size() > 0) {
+            for (TransomVO transomVO : materialVO.getTransoms()) {
+                materialTotalPrice = materialTotalPrice.add(transomVO.getTotalPrice());
+            }
+        }
+
 
         BigDecimal ironwareTotalPrice = new BigDecimal("0");
 
@@ -457,7 +566,9 @@ public class OrderTools {
     }
 
 
-    public void fillData(HSSFSheet sheet, Map<String, List<MaterialInfoVO>> map, List<IronwareInfoVO> ironwareInfoVOS, int addnum) {
+    public void fillData(HSSFSheet sheet, Map<String, List<MaterialInfoVO>> map, MaterialVO materialVO, List<IronwareInfoVO> ironwareInfoVOS, int addnum) {
+
+        int IRONWARE_START_NUM = ExcelConf.IRONWARE_START_NUM + addnum;
 
         Map<Integer, String> letMap = new HashMap<>();
         letMap.put(0, "1");
@@ -543,11 +654,60 @@ public class OrderTools {
 
         }
 
+        if (materialVO.isHaveTransom && null != materialVO.getTransoms() && materialVO.getTransoms().size() > 0) {
+            IRONWARE_START_NUM = 16 + addnum + materialVO.getTransoms().size() - 1;
+
+            int TRANSOM_START_NUM = 13 + addnum;
+
+            HSSFRow title = sheet.getRow(TRANSOM_START_NUM - 3);
+            //放置横梁信息
+            title.getCell(0).setCellValue(TransomTypeEnums.getEnumByCode(materialVO.getTransoms().get(0).getTransomType()));
+
+            for (int i = 0; i < materialVO.getTransoms().size(); i++) {
+
+                TransomVO infoVO = materialVO.getTransoms().get(i);
+
+                HSSFRow row = sheet.getRow(TRANSOM_START_NUM - 1 + i);
+
+                for (int j = 0; j < row.getLastCellNum(); j++) {
+
+                    HSSFCell cell = row.getCell(j);
+
+                    if (j == 0) {
+                        cell.setCellValue(letMap.get(j));
+                    }
+
+                    if (j == 1) {
+                        cell.setCellValue(MaterialColorEnums.getEnumByCode(infoVO.getTransomColor()));
+                    }
+                    if (j == 5) {
+                        cell.setCellValue(infoVO.getHeight() + "");
+                    }
+                    if (j == 7) {
+                        cell.setCellValue(infoVO.getTransomNum());
+                    }
+                    if (j == 8) {
+                        cell.setCellValue(infoVO.getPrice() + "");
+                    }
+                    if (j == 9) {
+                        cell.setCellValue(infoVO.getTotalPrice() + "");
+                    }
+                    if (j == 10) {
+                        cell.setCellValue(infoVO.getRemark());
+                    }
+
+                }
+
+            }
+
+        }
+
+
         for (int l = 0; l < ironwareInfoVOS.size(); l++) {
 
             IronwareInfoVO ironwareInfoVO0 = ironwareInfoVOS.get(l);
 
-            HSSFRow row = sheet.getRow(ExcelConf.IRONWARE_START_NUM - 1 + addnum + l);
+            HSSFRow row = sheet.getRow(IRONWARE_START_NUM - 1 + l);
 
             for (int m = 0; m < row.getLastCellNum(); m++) {
                 HSSFCell cell = row.getCell(m);
@@ -647,9 +807,11 @@ public class OrderTools {
                     if (c == 3) {
                         cell.setCellValue(GlassColor.getNameByCode(materialInfoVO0.getGlassColor()));
                     }
-                    if (c == 4) {
+                    if (ProductTypeEnums.Complete.code == materialVO.getProductType() && c == 4) {
                         cell.setCellValue(materialInfoVO0.getMaterialNum());
                     }
+                    //下料详情先不写，螺丝数量和角码往下移
+                    /*
                     if (c == 5) {
                         cell.setCellValue(materialInfoVO0.getMaterialDetail());
                     }
@@ -659,8 +821,8 @@ public class OrderTools {
                     }
 
                     if (c == 7) {
-                        cell.setCellValue(CornerMaterialEnums.getEnumByCode(materialInfoVO0.getCornerMaterial())+materialInfoVO0.getCornerNum() + "个");
-                    }
+                        cell.setCellValue(CornerMaterialEnums.getEnumByCode(materialInfoVO0.getCornerMaterial()) + materialInfoVO0.getCornerNum() + "个");
+                    }*/
 
                 }
 
@@ -719,6 +881,50 @@ public class OrderTools {
 
             point1 += 2;
             point2 += 2;
+
+        }
+
+        //填充天地横梁信息
+        if (materialVO.isHaveTransom && null != materialVO.getTransoms() && materialVO.getTransoms().size() > 0) {
+            //含有天地横梁信息
+            //修改五金起始信息
+            IRONWARE_START_NUM = 19 + addNum + materialVO.getTransoms().size() - 1;
+
+            int TRANSOM_START_NUM = 16 + addNum;
+
+            HSSFRow title = sheet.getRow(TRANSOM_START_NUM - 3);
+            //放置横梁信息
+            title.getCell(0).setCellValue(TransomTypeEnums.getEnumByCode(materialVO.getTransoms().get(0).getTransomType()));
+
+            for (int i = 0; i < materialVO.getTransoms().size(); i++) {
+                TransomVO infoVO = materialVO.getTransoms().get(i);
+
+                HSSFRow row = sheet.getRow(TRANSOM_START_NUM - 1 + i);
+
+                for (int j = 0; j < row.getLastCellNum(); j++) {
+                    HSSFCell cell = row.getCell(j);
+
+                    if (j == 0) {
+                        cell.setCellValue(letMap.get(i));
+                    }
+
+                    if (j == 1) {
+                        cell.setCellValue(MaterialColorEnums.getEnumByCode(infoVO.getTransomColor()));
+                    }
+                    if (j == 3) {
+                        cell.setCellValue(infoVO.getHeight() + "");
+                    }
+                    if (j == 5) {
+                        cell.setCellValue(infoVO.getTransomNum());
+                    }
+                    if (j == 7) {
+                        cell.setCellValue(infoVO.getRemark());
+                    }
+
+                }
+
+            }
+
 
         }
 
@@ -788,7 +994,7 @@ public class OrderTools {
                     MaterialTypeEnums.getByCode(materialInfoVO.getMaterialType()),
                     HandleEnums.getByCode(materialInfoVO.getHandleType()),
                     materialInfoVO.getHingeLocation(), GlassColor.getByCode(materialInfoVO.getGlassColor()),
-                    materialInfoVO.getGlassHeight(), CornerMaterialEnums.getByCode(materialInfoVO.getCornerMaterial()),materialInfoVO.getGlassWidth(),
+                    materialInfoVO.getGlassHeight(), CornerMaterialEnums.getByCode(materialInfoVO.getCornerMaterial()), materialInfoVO.getGlassWidth(),
                     materialInfoVO.getHeight(), materialInfoVO.getWidth(),
                     materialInfoVO.getMaterialHeight(), materialInfoVO.getMaterialWidth(),
                     materialInfoVO.getMaterialNum(), materialInfoVO.getHandlePlace(),
@@ -809,6 +1015,19 @@ public class OrderTools {
             IronwareInfo info = new IronwareInfo(uid, ironwareInfoVO.getIronwareName(), ironwareInfoVO.getUnit(), IronwareColorEnums.getEnumByCode(ironwareInfoVO.getIronwareColor()),
                     ironwareInfoVO.getSpecification(), ironwareInfoVO.getIronwareNum(), ironwareInfoVO.getPrice(),
                     ironwareInfoVO.getRemark(), ironwareInfoVO.getTotalPrice());
+
+            mapper.insert(info);
+        }
+
+    }
+
+    public void saveTransomInfoList(TransomMapper mapper, List<TransomVO> transomVOS, String uid) {
+
+        for (TransomVO transomVO : transomVOS) {
+
+            TransomInfo info = new TransomInfo(uid, TransomTypeEnums.getByCode(transomVO.getTransomType()),
+                    MaterialColorEnums.getByCode(transomVO.getTransomColor()), transomVO.getHeight(),
+                    transomVO.getTransomNum(), transomVO.getPrice(), transomVO.getTotalPrice(), transomVO.getRemark());
 
             mapper.insert(info);
         }

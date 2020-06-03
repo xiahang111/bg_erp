@@ -829,9 +829,7 @@ public class ExcelTest {
             }
 
 
-
-
-           /* Map<Integer, String> letMap = new HashMap<>();
+            Map<Integer, String> letMap = new HashMap<>();
             letMap.put(0, "A");
             letMap.put(1, "B");
             letMap.put(2, "C");
@@ -941,7 +939,7 @@ public class ExcelTest {
                 point1 += 2;
                 point2 += 2;
 
-            } */
+            }
 
             File newFile1 = new File("/Users/drew/IdeaProject/bg-erp/excel/production-order-n-n-n.xls");
 

@@ -96,4 +96,14 @@ public class MaterialVO {
      * 总订单备注
      */
     public String remark;
+
+    /**
+     * 是否含有天地横梁
+     */
+    public Boolean isHaveTransom;
+
+    /**
+     * 天地横梁信息
+     */
+    public List<TransomVO> transoms;
 }
