@@ -1,12 +1,16 @@
 package com.bingo.erp.web.restapi;
 
 import cn.hutool.core.util.RandomUtil;
+import com.bingo.erp.commons.entity.Admin;
 import com.bingo.erp.utils.ExportExecUtil;
 import com.bingo.erp.utils.ResultUtil;
 import com.bingo.erp.web.global.SysConf;
 import com.bingo.erp.xo.global.ExcelConf;
+import com.bingo.erp.xo.service.AdminService;
 import com.bingo.erp.xo.service.OrderService;
 import com.bingo.erp.xo.vo.MaterialVO;
+import com.bingo.erp.xo.vo.OrderRecordPageVO;
+import com.bingo.erp.xo.vo.ProductRecordPageVO;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.ArchiveEntry;
@@ -33,6 +37,9 @@ public class OrderRestApi {
     @Resource
     private OrderService orderService;
 
+    @Autowired
+    private AdminService adminService;
+
     @PostMapping("commitOrder")
     @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
     public String commitOrder(@RequestBody(required = true) MaterialVO materialVO) {
@@ -50,10 +57,30 @@ public class OrderRestApi {
 
     @PostMapping("getByUser")
     @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
-    public String getByUser(@RequestBody(required = true) MaterialVO materialVO) {
+    public String getByUser(HttpServletRequest request, @RequestBody OrderRecordPageVO orderRecordPageVO) {
 
-        return ResultUtil.result(SysConf.SUCCESS, "");
+        if (request.getAttribute(SysConf.ADMIN_UID) == null) {
+            return ResultUtil.result(SysConf.ERROR, "token用户过期");
+        }
+
+        Admin admin = adminService.getById(request.getAttribute(SysConf.ADMIN_UID).toString());
+
+
+        return ResultUtil.result(SysConf.SUCCESS, orderService.getMaterialVOByUser(admin, orderRecordPageVO));
     }
+
+    @GetMapping("getMaterialVOById")
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    public String getMaterialVOByUid(HttpServletRequest request, @RequestParam("orderUid") String orderUid) {
+
+        if (request.getAttribute(SysConf.ADMIN_UID) == null) {
+            return ResultUtil.result(SysConf.ERROR, "token用户过期");
+        }
+
+        log.info("orderId = " + orderUid);
+        return ResultUtil.result(SysConf.SUCCESS, orderService.getMaterialVOByUid(orderUid));
+    }
+
 
     @GetMapping("excelDownload")
     @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
@@ -96,7 +123,7 @@ public class OrderRestApi {
 
             }
 
-            if(zous!=null) {
+            if (zous != null) {
                 zous.close();
             }
 
@@ -108,7 +135,6 @@ public class OrderRestApi {
         }
 
     }
-
 
 
 }

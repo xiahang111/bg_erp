@@ -32,6 +32,18 @@ public enum  IronwareColorEnums implements IEnum {
         return null;
     }
 
+    public static IronwareColorEnums getEnumByName(String name) {
+        for (IronwareColorEnums enums : IronwareColorEnums.values()) {
+
+            if (enums.name.equals(name)) {
+                return enums;
+            }
+
+        }
+
+        return null;
+    }
+
 
     @Override
     public Serializable getValue() {

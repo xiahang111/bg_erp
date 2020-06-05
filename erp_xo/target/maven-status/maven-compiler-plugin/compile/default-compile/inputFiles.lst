@@ -27,6 +27,7 @@
 /Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/vo/GlassCalculateRecordVO.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/factory/XB50CalculateFactory.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/factory/JH22CalculateFactory.java
+/Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/vo/OrderRecordPageVO.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/mapper/TransomMapper.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/global/ExcelConf.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/src/main/java/com/bingo/erp/xo/service/impl/ProductServiceImpl.java

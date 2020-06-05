@@ -18,6 +18,7 @@ import net.sf.jxls.util.Util;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -26,6 +27,7 @@ import java.util.*;
  * 订单方法集中类，先放在这里，以后再重构订单的生成方法
  */
 @Slf4j
+@Component
 public class OrderTools {
 
     public boolean materialValidate(List<MaterialInfoVO> materialInfoVOS) {
@@ -399,7 +401,7 @@ public class OrderTools {
             materialInfoVO.setScrewNum(CornerMaterialEnums.getByCode(materialInfoVO.getCornerMaterial()).screwNum * materialInfoVO.getCornerNum());
 
             BigDecimal singleArea = materialInfoVO.getHeight().
-                    multiply(materialInfoVO.getWidth()).divide(NormalConf.divideNum).setScale(2, BigDecimal.ROUND_HALF_UP);
+                    multiply(materialInfoVO.getWidth()).divide(NormalConf.divideNum).setScale(5, BigDecimal.ROUND_HALF_UP);
 
             BigDecimal minArea;
 
@@ -453,8 +455,16 @@ public class OrderTools {
 
         if (transomVOS.size() > 0) {
             transomVOS.stream().forEach(transomVO -> {
-                transomVO.setTotalPrice(transomVO.getPrice().
-                        multiply(new BigDecimal(transomVO.getTransomNum()).setScale(0, BigDecimal.ROUND_HALF_UP)));
+
+                BigDecimal height = transomVO.getHeight();
+                BigDecimal minHeight = new BigDecimal(1000);
+                if (height.compareTo(minHeight) < 0) {
+                    height = new BigDecimal(1000);
+                }
+
+
+                transomVO.setTotalPrice(transomVO.getPrice().multiply(height.divide(new BigDecimal(1000)).setScale(5)).
+                        multiply(new BigDecimal(transomVO.getTransomNum())).setScale(0, BigDecimal.ROUND_HALF_UP));
             });
         }
 
@@ -1068,5 +1078,111 @@ public class OrderTools {
             money /= 10;
         }
         return sbf.toString();
+    }
+
+
+    public MaterialVO revertToMaterialVO(OrderInfo orderInfo, List<MaterialInfo> materialInfos, List<IronwareInfo> ironwareInfos) {
+
+        MaterialVO materialVO = new MaterialVO();
+        if (null == orderInfo.getIsClear()) {
+            materialVO.setIsClear(true);
+        } else {
+            materialVO.setIsClear(orderInfo.getIsClear());
+        }
+        materialVO.setIsClear(orderInfo.getIsClear());
+        materialVO.setProductType(orderInfo.getProductType().code);
+        materialVO.setCustomerName(orderInfo.getCustomerName());
+        materialVO.setCustomerNick(orderInfo.getCustomerNick());
+        materialVO.setCustomerAddr(orderInfo.getCustomerAddr());
+        materialVO.setCustomerPhoneNum(orderInfo.getCustomerPhoneNum());
+        materialVO.setExpress(orderInfo.getExpress());
+        materialVO.setBigPackageNum(orderInfo.getBigPackageNum());
+        materialVO.setSimplePackageNum(orderInfo.getSimplePackageNum());
+        materialVO.setOrderDate(orderInfo.getOrderDate());
+        materialVO.setDeliveryDate(orderInfo.getDeliveryDate());
+        materialVO.setOrderId(orderInfo.getOrderId());
+        materialVO.setSalesman(orderInfo.getSalesman());
+        materialVO.setOrderMaker(orderInfo.getOrderMaker());
+        materialVO.setOrderTotalPrice(orderInfo.getTotalPrice());
+
+        List<MaterialInfoVO> materialInfoVOS = new ArrayList<>();
+        for (MaterialInfo materialInfo : materialInfos) {
+            MaterialInfoVO materialInfoVO = new MaterialInfoVO();
+            if (null == materialInfo.getMaterialColor()) {
+                materialInfoVO.setMaterialColor(1);
+            } else {
+                materialInfoVO.setMaterialColor(materialInfo.getMaterialColor().code);
+            }
+
+            if (null == materialInfo.getCornerMaterial()) {
+                materialInfoVO.setMaterialType(1001);
+            } else {
+                materialInfoVO.setMaterialType(materialInfo.getMaterialType().code);
+            }
+
+            if (null == materialInfo.getHandleType()) {
+                materialInfoVO.setHandleType(0);
+            } else {
+                materialInfoVO.setHandleType(materialInfo.getHandleType().code);
+            }
+
+            materialInfoVO.setHingeLocation(materialInfo.getHingeLocation());
+
+            if (null == materialInfo.getGlassColor()) {
+                materialInfoVO.setGlassColor(0);
+            } else {
+                materialInfoVO.setGlassColor(materialInfo.getGlassColor().code);
+            }
+
+
+            if (null == materialInfo.getCornerMaterial()) {
+                materialInfoVO.setCornerMaterial(0);
+            } else {
+                materialInfoVO.setCornerMaterial(materialInfo.getCornerMaterial().code);
+            }
+            materialInfoVO.setGlassHeight(materialInfo.getGlassHeight());
+            materialInfoVO.setGlassWidth(materialInfo.getGlassWidth());
+            materialInfoVO.setHeight(materialInfo.getHeight());
+            materialInfoVO.setWidth(materialInfo.getWidth());
+            materialInfoVO.setMaterialWidth(materialInfo.getMaterialWidth());
+            materialInfoVO.setMaterialHeight(materialInfo.getMaterialHeight());
+            materialInfoVO.setMaterialNum(materialInfo.getMaterialNum());
+            materialInfoVO.setHandlePlace(materialInfo.getHandlePlace());
+            materialInfoVO.setDirection(materialInfo.getDirection());
+            materialInfoVO.setMaterialDetail(materialInfo.getMaterialDetail());
+            materialInfoVO.setRemark(materialInfo.getRemark());
+            materialInfoVO.setPrice(materialInfo.getPrice());
+            materialInfoVO.setArea(materialInfo.getArea());
+            materialInfoVO.setTotalPrice(materialInfo.getTotalPrice());
+            materialInfoVOS.add(materialInfoVO);
+        }
+        materialVO.setMaterials(materialInfoVOS);
+
+        List<IronwareInfoVO> ironwareInfoVOS = new ArrayList<>();
+
+        for (IronwareInfo ironwareInfo : ironwareInfos) {
+
+            IronwareInfoVO ironwareInfoVO = new IronwareInfoVO();
+            ironwareInfoVO.setIronwareName(ironwareInfo.getIronwareName());
+            ironwareInfoVO.setUnit(ironwareInfo.getUnit());
+            if (null == ironwareInfo.getIronwareColor()) {
+                ironwareInfoVO.setIronwareColor(IronwareColorEnums.NOCOLOR.code);
+            } else {
+                ironwareInfoVO.setIronwareColor(IronwareColorEnums.getEnumByName(ironwareInfo.getIronwareColor()).code);
+            }
+            ironwareInfoVO.setSpecification(ironwareInfo.getSpecification());
+            ironwareInfoVO.setPrice(ironwareInfo.getPrice());
+            ironwareInfoVO.setRemark(ironwareInfo.getRemark());
+            ironwareInfoVO.setTotalPrice(ironwareInfo.getTotalPrice());
+
+            ironwareInfoVOS.add(ironwareInfoVO);
+
+        }
+        materialVO.setIronwares(ironwareInfoVOS);
+
+
+        return materialVO;
+
+
     }
 }

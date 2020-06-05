@@ -2,14 +2,14 @@ package com.bingo.erp.xo.service.impl;
 
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.db.sql.Order;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bingo.erp.base.enums.*;
 import com.bingo.erp.base.exception.MessageException;
 import com.bingo.erp.base.fatocry.material.MaterialCalculateFactory;
 import com.bingo.erp.base.serviceImpl.SuperServiceImpl;
-import com.bingo.erp.commons.entity.IronwareInfo;
-import com.bingo.erp.commons.entity.MaterialInfo;
-import com.bingo.erp.commons.entity.OrderInfo;
-import com.bingo.erp.commons.entity.Product;
+import com.bingo.erp.commons.entity.*;
 import com.bingo.erp.utils.DateUtils;
 import com.bingo.erp.xo.enums.MaterialFactoryEnum;
 import com.bingo.erp.xo.global.ExcelConf;
@@ -50,6 +50,12 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
     @Resource
     private IronwareInfoMapper ironwareInfoMapper;
 
+    @Resource
+    private OrderService orderService;
+
+    @Resource
+    OrderTools tools;
+
 
     @Override
     public List<IndexOrderVO> getIndexOrderInfo() {
@@ -70,8 +76,6 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
     public List<String> saveOrder(MaterialVO materialVO) throws Exception {
 
         log.info("===============方法开始，参数信息：excel文件夹：" + ExcelConf.NEW_FILE_DICT);
-
-        OrderTools tools = new OrderTools();
 
         List<String> result = new ArrayList<>();
 
@@ -205,5 +209,60 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
     }
 
+    @Override
+    public IPage<OrderInfo> getMaterialVOByUser(Admin admin, OrderRecordPageVO orderRecordPageVO) {
 
+        String adminUid = admin.getUid();
+        String username = admin.getUserName();
+
+        QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<>();
+        if (username.equals("admin")) {
+            queryWrapper.lt("create_time", new Date());
+        } else {
+            queryWrapper.eq("admin_uid", adminUid);
+        }
+        queryWrapper.orderByDesc("create_time");
+
+        //分页查询
+        Page<OrderInfo> page = new Page<>();
+        page.setCurrent(orderRecordPageVO.getCurrentPage());
+        page.setSize(orderRecordPageVO.getPageSize());
+
+        IPage<OrderInfo> orderInfoPage = orderService.page(page, queryWrapper);
+
+        return orderInfoPage;
+    }
+
+    @Override
+    public MaterialVO getMaterialVOByUid(String uid) {
+
+        QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<>();
+
+        queryWrapper.eq("uid", uid);
+
+        OrderInfo orderInfo = orderInfoMapper.selectOne(queryWrapper);
+
+        List<MaterialInfo> materialInfos = materialInfoMapper.getAllByOrderUid(uid);
+
+        List<IronwareInfo> ironwareInfos = ironwareInfoMapper.getAllByOrderUid(uid);
+
+        MaterialVO materialVO = tools.revertToMaterialVO(orderInfo, materialInfos, ironwareInfos);
+
+
+        return materialVO;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

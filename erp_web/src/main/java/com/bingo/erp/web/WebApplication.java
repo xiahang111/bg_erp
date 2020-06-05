@@ -19,7 +19,8 @@ import org.springframework.web.filter.CorsFilter;
         "com.bingo.erp.utils",
         "com.bingo.erp.web.security",
         "com.bingo.erp.web.restapi",
-        "com.bingo.erp.xo.service"})
+        "com.bingo.erp.xo.service",
+        "com.bingo.erp.xo.tools"})
 public class WebApplication {
 
     public static void main(String[] args) {

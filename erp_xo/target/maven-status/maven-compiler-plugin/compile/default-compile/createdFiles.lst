@@ -39,6 +39,7 @@ com/bingo/erp/xo/vo/AdminVO.class
 com/bingo/erp/xo/service/ProductCalculateRecordService.class
 com/bingo/erp/xo/service/RoleService.class
 com/bingo/erp/xo/mapper/DataGatherMapper.class
+com/bingo/erp/xo/vo/OrderRecordPageVO.class
 com/bingo/erp/xo/service/MaterialCalculateRecordService.class
 com/bingo/erp/xo/service/ProductService.class
 com/bingo/erp/xo/service/OrderService.class
