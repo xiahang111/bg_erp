@@ -17,7 +17,8 @@ public enum ProductCalculateEnums {
     H12(7002,new BigDecimal(7),new BigDecimal(7)),
     H13(7003,new BigDecimal(6),new BigDecimal(6)),
     H14(7004,new BigDecimal(5),new BigDecimal(5)),
-    H15(8001,new BigDecimal(8),new BigDecimal(8));
+    H15(8001,new BigDecimal(8),new BigDecimal(8)),
+    H16(8002,new BigDecimal(22),new BigDecimal(22));
 
 
 

@@ -20,7 +20,8 @@ public enum MaterialTypeEnums implements IEnum {
     BG2H(7002, "兵哥2号"),
     BG3H(7003, "兵哥3号"),
     BG4H(7004, "兵哥4号"),
-    CBD(8001, "二代层板灯");
+    CBD2(8001, "二代层板灯"),
+    CBD1(8002, "一代层板灯");
 
 
     MaterialTypeEnums(int code, String name) {

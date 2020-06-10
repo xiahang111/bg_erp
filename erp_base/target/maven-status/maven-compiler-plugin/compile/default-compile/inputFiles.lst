@@ -5,8 +5,11 @@
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/validator/group/Insert.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/MaterialCalculateEnums.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/validator/constraint/IntegerValidator.java
+/Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/OrderTypeEnums.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/validator/annotion/IntegerNotNull.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/validator/annotion/Numeric.java
+/Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/LightColor.java
+/Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/StoreMaterialResource.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/service/SuperService.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/ProductTypeEnums.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/validator/annotion/NotBlank.java
@@ -15,9 +18,12 @@
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/CornerEnums.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/vo/BaseCalculateVO.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/vo/PageInfo.java
+/Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/holder/SpringContextHolder.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/validator/constraint/RangValidator.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/validator/annotion/NotNull.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/vo/BaseCalculateResultVO.java
+/Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/StoreMaterialStatus.java
+/Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/holder/RequestHolder.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/global/Constants.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/fatocry/CalculateFactory.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/global/BaseRedisConf.java
@@ -47,6 +53,7 @@
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/MaterialColorEnums.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/EStatus.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/TransomTypeEnums.java
+/Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/LineColor.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/global/BaseMessageConf.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/global/BaseSQLConf.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/GlassColor.java

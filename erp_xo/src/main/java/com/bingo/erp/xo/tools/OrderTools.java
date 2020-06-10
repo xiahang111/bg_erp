@@ -73,7 +73,7 @@ public class OrderTools {
         return map;
     }
 
-    public int extensionExcel(HSSFSheet sheet, Map<String, List<MaterialInfoVO>> map, int ironwareNum, int transomNum) {
+    public int extensionExcel(HSSFSheet sheet, Map<String, List<MaterialInfoVO>> map, int ironwareNum, int transomNum, boolean isHaveTransom) {
 
 
         int addNum = (map.keySet().size() - 1) * 2;
@@ -143,7 +143,7 @@ public class OrderTools {
 
         if (ironwareNum > 0) {
             int IRONWARE_START_NUM;
-            if (transomNum > 0) {
+            if (isHaveTransom || transomNum > 0) {
                 IRONWARE_START_NUM = 16 + addNum + (transomNum);
             } else {
                 IRONWARE_START_NUM = ExcelConf.IRONWARE_START_NUM + addNum;
@@ -215,7 +215,7 @@ public class OrderTools {
 
     }
 
-    public int productExtensionExcel(HSSFSheet sheet, Map<String, List<MaterialInfoVO>> map, MaterialVO materialVO, int materialNum) {
+    public int productExtensionExcel(HSSFSheet sheet, Map<String, List<MaterialInfoVO>> map, MaterialVO materialVO) {
 
         int transomNum = 0;
 
@@ -352,7 +352,7 @@ public class OrderTools {
             //存放螺丝和角码
 
             int IRONWARE_START_NUM;
-            if (transomNum > 0) {
+            if (materialVO.isHaveTransom || transomNum > 0) {
                 IRONWARE_START_NUM = 19 + addNum * 2 + (transomNum);
             } else {
                 IRONWARE_START_NUM = 16 + addNum * 2;
@@ -486,6 +486,7 @@ public class OrderTools {
         }
 
     }
+
 
     /**
      * 计算整个订单表需要计算的内容
@@ -788,7 +789,7 @@ public class OrderTools {
             HSSFCell titleCell2 = titlerow2.getCell(0);
 
             titleCell.setCellValue("序号：" + serialNum + "=>" + key);
-            titleCell2.setCellValue("序号：" + serialNum + "=>下料信息（" + key + ")");
+            titleCell2.setCellValue("下料 （" + key + ")");
 
             serialNum++;
 
@@ -974,7 +975,7 @@ public class OrderTools {
 
     }
 
-    public OrderInfo getOrderInfo(MaterialVO materialVO) {
+    public OrderInfo getOrderInfo(ProductVO materialVO) {
 
         OrderInfo info = new OrderInfo(materialVO.getIsClear(),
                 ProductTypeEnums.getByCode(materialVO.getProductType()),

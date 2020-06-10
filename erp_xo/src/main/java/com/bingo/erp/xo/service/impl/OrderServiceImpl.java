@@ -16,6 +16,7 @@ import com.bingo.erp.xo.global.ExcelConf;
 import com.bingo.erp.xo.global.NormalConf;
 import com.bingo.erp.xo.mapper.*;
 import com.bingo.erp.xo.service.OrderService;
+import com.bingo.erp.xo.tools.CBDOrderTools;
 import com.bingo.erp.xo.tools.OrderTools;
 import com.bingo.erp.xo.vo.*;
 import lombok.extern.slf4j.Slf4j;
@@ -51,10 +52,16 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
     private IronwareInfoMapper ironwareInfoMapper;
 
     @Resource
+    private LaminaterInfoMapper laminaterInfoMapper;
+
+    @Resource
     private OrderService orderService;
 
     @Resource
     OrderTools tools;
+
+    @Resource
+    CBDOrderTools cbdOrderTools;
 
 
     @Override
@@ -71,6 +78,100 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
         return result;
     }
 
+
+    @Override
+    public List<String> saveCBDOrder(LaminateVO laminateVO) throws Exception {
+
+        log.info("===============方法开始，参数信息：excel文件夹：" + ExcelConf.NEW_FILE_DICT);
+
+        List<String> result = new ArrayList<>();
+
+        String suffix = DateUtils.formateDate(new Date(), DateUtils.DAYFORMAT_STRING) + RandomUtil.randomNumbers(6) + ExcelConf.FILE_SUFFIX;
+
+        String fileName = "层板订单" + suffix;
+
+        result.add(fileName);
+
+
+        //确定表格结构
+        if (null == laminateVO.getLaminateInfos() || laminateVO.getLaminateInfos().size() <= 0) {
+            throw new MessageException("没有填写层板灯信息哦~请填写");
+        }
+
+        if (null == laminateVO.getIronwares()) {
+            laminateVO.setIronwares(new ArrayList<>());
+        }
+
+        tools.ironwareCalculate(laminateVO.getIronwares());
+        cbdOrderTools.laminateCalculate(laminateVO.getLaminateInfos());
+        cbdOrderTools.orderCalculate(laminateVO);
+
+        String orderFileName = ExcelConf.SRC_FILE_URL + ExcelConf.CBD_ORDER_FILENAME;
+        String productSrcFileName = ExcelConf.SRC_FILE_URL + ExcelConf.CBD_PRODUCT_ORDER_FILENAME;
+
+        POIFSFileSystem fs = new POIFSFileSystem(new File(orderFileName));
+
+        HSSFWorkbook wb = new HSSFWorkbook(fs);
+
+        HSSFSheet sheet = wb.getSheetAt(0);
+
+        int addnum = cbdOrderTools.extensionExcel(sheet, laminateVO);
+
+        cbdOrderTools.fillData(sheet, laminateVO, addnum);
+
+        File newFile = new File(ExcelConf.NEW_FILE_DICT + fileName);
+
+        wb.write(newFile);
+
+        Map<String, Object> dataMap = cbdOrderTools.toMap(laminateVO);
+
+        XLSTransformer transformer = new XLSTransformer();
+        transformer.transformXLS(ExcelConf.NEW_FILE_DICT + fileName, dataMap, ExcelConf.NEW_FILE_DICT + fileName);
+
+        result.add(fileName);
+
+        /**
+         * ============================================生产单制作==============================================================================================
+         */
+
+        String productFileName = "层板生产单" + suffix;
+
+        File productFile = new File(ExcelConf.NEW_FILE_DICT + productFileName);
+
+        POIFSFileSystem productFs = new POIFSFileSystem(new File(productSrcFileName));
+
+        HSSFWorkbook productWb = new HSSFWorkbook(productFs);
+
+        HSSFSheet productSheet = productWb.getSheetAt(0);
+
+        int addnum1 = cbdOrderTools.productExtensionExcel(productSheet, laminateVO);
+
+        cbdOrderTools.productFillData(productSheet, addnum1, laminateVO);
+
+        productWb.write(productFile);
+
+        Thread.sleep(1000l);
+
+        transformer.transformXLS(ExcelConf.NEW_FILE_DICT + productFileName, dataMap, ExcelConf.NEW_FILE_DICT + productFileName);
+
+        result.add(productFileName);
+
+        //=====================================================存入数据库================================================================================================================
+
+
+        OrderInfo orderInfo = tools.getOrderInfo(laminateVO);
+
+        orderInfo.setOrderType(OrderTypeEnums.CBDORDER);
+
+        orderInfoMapper.insert(orderInfo);
+
+        cbdOrderTools.saveLaminateInfoList(laminaterInfoMapper, orderInfo.getUid(), laminateVO.getLaminateInfos());
+
+        tools.saveIronwareInfoList(ironwareInfoMapper, laminateVO.getIronwares(), orderInfo.getUid());
+
+
+        return result;
+    }
 
     @Override
     public List<String> saveOrder(MaterialVO materialVO) throws Exception {
@@ -98,8 +199,6 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
         /*if (!materialValidate(materialVO.getMaterials())) {
             throw new MessageException("要保持料型号颜色、拉手类型和玻璃颜色一致哦~");
         }*/
-
-        int materialNum = materialVO.getMaterials().size() - 1;
 
         int ironwareNum = materialVO.getIronwares().size() - 1;
 
@@ -139,7 +238,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
             Map<String, List<MaterialInfoVO>> map = tools.materialsToMap(materialVO.getMaterials());
 
-            int addnum = tools.extensionExcel(sheet, map, ironwareNum, transomNum);
+            int addnum = tools.extensionExcel(sheet, map, ironwareNum, transomNum, materialVO.isHaveTransom);
 
             //填充料玻、五金数据
             tools.fillData(sheet, map, materialVO, materialVO.getIronwares(), addnum);
@@ -167,7 +266,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
             HSSFSheet productSheet = productWb.getSheetAt(0);
 
-            int addnum1 = tools.productExtensionExcel(productSheet, map, materialVO, materialNum);
+            int addnum1 = tools.productExtensionExcel(productSheet, map, materialVO);
 
             tools.productFillData(productSheet, addnum1, map, materialVO, materialVO.getIronwares());
 
@@ -184,6 +283,8 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
              */
 
             OrderInfo orderInfo = tools.getOrderInfo(materialVO);
+
+            orderInfo.setOrderType(OrderTypeEnums.DOORORDER);
 
             orderInfoMapper.insert(orderInfo);
 
@@ -234,11 +335,12 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
     }
 
     @Override
-    public MaterialVO getMaterialVOByUid(String uid) {
+    public ProductVO getMaterialVOByUid(String uid) {
 
         QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<>();
 
         queryWrapper.eq("uid", uid);
+
 
         OrderInfo orderInfo = orderInfoMapper.selectOne(queryWrapper);
 

@@ -15,4 +15,9 @@ public class Product extends SuperEntity<Product> {
      */
     private String productName;
 
+    /**
+     * 产品类型 1.门 2.层板灯
+     */
+    private Integer productType;
+
 }

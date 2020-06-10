@@ -60,9 +60,9 @@ public class ProductServiceImpl extends SuperServiceImpl<ProductMapper, Product>
     Gson gson = new Gson();
 
     @Override
-    public List<Product> getAllProducts() {
+    public List<Product> getAllProducts(Integer productType) {
 
-        return productMapper.selectAllProducts();
+        return productMapper.selectAllProducts(productType);
 
     }
 
@@ -86,7 +86,7 @@ public class ProductServiceImpl extends SuperServiceImpl<ProductMapper, Product>
 
             }.getType());
         } else {
-            productList = productMapper.selectAllProducts();
+            productList = productMapper.selectAllProducts(1);
 
             redisUtil.set(RedisConf.ALL_PRODUCT_INFORMATION, gson.toJson(productList));
         }
@@ -186,7 +186,7 @@ public class ProductServiceImpl extends SuperServiceImpl<ProductMapper, Product>
 
             }.getType());
         } else {
-            productList = productMapper.selectAllProducts();
+            productList = productMapper.selectAllProducts(1);
 
             redisUtil.set(RedisConf.ALL_PRODUCT_INFORMATION, gson.toJson(productList));
         }

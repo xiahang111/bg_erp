@@ -53,7 +53,7 @@ public class LoginRestApi {
 
     @ApiOperation(value = "用户登录", notes = "用户登录")
     @PostMapping("/login")
-    @CrossOrigin(allowCredentials="true",allowedHeaders="*")
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
     public String login(HttpServletRequest request,
                         @ApiParam(name = "username", value = "用户名或邮箱或手机号", required = false) @RequestParam(name = "username", required = false) String username,
                         @ApiParam(name = "password", value = "密码", required = false) @RequestParam(name = "password", required = false) String password,
@@ -65,9 +65,9 @@ public class LoginRestApi {
 
         String ip = IpUtils.getIpAddr(request);
         String limitCount = redisUtil.get(RedisConf.LOGIN_LIMIT + RedisConf.SEGMENTATION + ip);
-        if(StringUtils.isNotEmpty(limitCount)) {
+        if (StringUtils.isNotEmpty(limitCount)) {
             Integer tempLimitCount = Integer.valueOf(limitCount);
-            if(tempLimitCount >= 5) {
+            if (tempLimitCount >= 5) {
                 return ResultUtil.result(SysConf.ERROR, "密码输错次数过多,已被锁定30分钟");
             }
         }
@@ -129,17 +129,17 @@ public class LoginRestApi {
     }
 
 
-
     /**
      * 设置登录限制，返回剩余次数
      * 密码错误五次，将会锁定10分钟
+     *
      * @param request
      */
     private Integer setLoginCommit(HttpServletRequest request) {
         String ip = IpUtils.getIpAddr(request);
         String count = redisUtil.get(RedisConf.LOGIN_LIMIT + RedisConf.SEGMENTATION + ip);
         Integer surplusCount = 5;
-        if(StringUtils.isNotEmpty(count)) {
+        if (StringUtils.isNotEmpty(count)) {
             Integer countTemp = Integer.valueOf(count) + 1;
             surplusCount = surplusCount - countTemp;
             redisUtil.setEx(RedisConf.LOGIN_LIMIT + RedisConf.SEGMENTATION + ip, String.valueOf(countTemp), 10, TimeUnit.MINUTES);
@@ -153,14 +153,14 @@ public class LoginRestApi {
 
     @ApiOperation(value = "用户信息", notes = "用户信息", response = String.class)
     @GetMapping(value = "/info")
-    @CrossOrigin(allowCredentials="true",allowedHeaders="*")
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
     public String info(HttpServletRequest request,
                        @ApiParam(name = "token", value = "token令牌", required = false) @RequestParam(name = "token", required = false) String token) {
 
         Map<String, Object> map = new HashMap<>();
 
         //todo 暂时还不需要跨平台登录
-        if (request.getAttribute(SysConf.ADMIN_UID) == null ) {
+        if (request.getAttribute(SysConf.ADMIN_UID) == null) {
             return ResultUtil.result(SysConf.ERROR, "token用户过期");
         }
         Admin admin = adminService.getById(request.getAttribute(SysConf.ADMIN_UID).toString());
@@ -173,17 +173,19 @@ public class LoginRestApi {
 
         //加载这些角色所能访问的菜单页面列表
         //1)获取该管理员所有角色
-        List<String> roleUid = new ArrayList<>();
-        roleUid.add(admin.getRoleUid());
-        Collection<Role> roleList = roleService.listByIds(roleUid);
-        map.put(SysConf.ROLES, roleList);
-        map.put(SysConf.NAME,admin.getUserName());
+        //List<String> roleUid = new ArrayList<>();
+        //roleUid.add(admin.getRoleUid());
+        //Collection<Role> roleList = roleService.listByIds(roleUid);
+        String roleUid = admin.getRoleUid();
+        Role role = roleService.getById(roleUid);
+        map.put(SysConf.ROLES, role.getRoleName());
+        map.put(SysConf.NAME, admin.getUserName());
         return ResultUtil.result(SysConf.SUCCESS, map);
     }
 
     @ApiOperation(value = "退出登录", notes = "退出登录", response = String.class)
     @PostMapping(value = "/logout")
-    @CrossOrigin(allowCredentials="true",allowedHeaders="*")
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
     public String logout(@ApiParam(name = "token", value = "token令牌", required = false) @RequestParam(name = "token", required = false) String token) {
         String destroyToken = null;
         return ResultUtil.result(SysConf.SUCCESS, destroyToken);

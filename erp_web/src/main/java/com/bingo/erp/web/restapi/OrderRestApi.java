@@ -8,6 +8,7 @@ import com.bingo.erp.web.global.SysConf;
 import com.bingo.erp.xo.global.ExcelConf;
 import com.bingo.erp.xo.service.AdminService;
 import com.bingo.erp.xo.service.OrderService;
+import com.bingo.erp.xo.vo.LaminateVO;
 import com.bingo.erp.xo.vo.MaterialVO;
 import com.bingo.erp.xo.vo.OrderRecordPageVO;
 import com.bingo.erp.xo.vo.ProductRecordPageVO;
@@ -46,6 +47,21 @@ public class OrderRestApi {
 
         try {
             List<String> fileNames = orderService.saveOrder(materialVO);
+
+            return ResultUtil.result(SysConf.SUCCESS, fileNames);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultUtil.result(SysConf.Fail, e.getMessage());
+        }
+
+    }
+
+    @PostMapping("commitCBDOrder")
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    public String commitCBDOrder(@RequestBody(required = true) LaminateVO laminateVO) {
+
+        try {
+            List<String> fileNames = orderService.saveCBDOrder(laminateVO);
 
             return ResultUtil.result(SysConf.SUCCESS, fileNames);
         } catch (Exception e) {

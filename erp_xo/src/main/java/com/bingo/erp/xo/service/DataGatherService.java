@@ -2,6 +2,7 @@ package com.bingo.erp.xo.service;
 
 import com.bingo.erp.base.service.SuperService;
 import com.bingo.erp.commons.entity.DataGather;
+import com.bingo.erp.xo.vo.VisitVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -17,4 +18,7 @@ public interface DataGatherService extends SuperService<DataGather> {
      * @return
      */
     public DataGather getLastDataGather();
+
+
+    public VisitVO getLineData();
 }

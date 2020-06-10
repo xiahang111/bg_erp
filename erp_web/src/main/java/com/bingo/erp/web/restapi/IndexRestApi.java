@@ -38,6 +38,14 @@ public class IndexRestApi {
         return ResultUtil.result(SysConf.SUCCESS,dataGatherService.getLastDataGather());
     }
 
+    @PostMapping("/getLineData")
+    @ApiOperation(value = "获取主页线性表数据")
+    @CrossOrigin(allowCredentials="true",allowedHeaders="*")
+    public String getLineData(){
+
+        return ResultUtil.result(SysConf.SUCCESS,dataGatherService.getLineData());
+    }
+
     @GetMapping("getIndexOrderInfo")
     @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
     public String getIndexOrderInfo(HttpServletResponse response, HttpServletRequest request){

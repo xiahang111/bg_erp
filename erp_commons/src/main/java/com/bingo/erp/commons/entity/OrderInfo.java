@@ -3,6 +3,7 @@ package com.bingo.erp.commons.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.bingo.erp.base.entity.SuperEntity;
+import com.bingo.erp.base.enums.OrderTypeEnums;
 import com.bingo.erp.base.enums.ProductTypeEnums;
 import lombok.Data;
 
@@ -22,6 +23,11 @@ public class OrderInfo extends SuperEntity<OrderInfo> {
      * 产品类型（成品、半成品）
      */
     private ProductTypeEnums productType;
+
+    /**
+     * 订单类型
+     */
+    private OrderTypeEnums orderType;
 
     /**
      * 用户相关信息
@@ -68,7 +74,6 @@ public class OrderInfo extends SuperEntity<OrderInfo> {
      * 制单员
      */
     private String orderMaker;
-
 
 
     /**

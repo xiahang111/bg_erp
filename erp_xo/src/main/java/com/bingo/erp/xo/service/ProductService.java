@@ -12,7 +12,7 @@ import java.util.Map;
 
 public interface ProductService extends SuperService<Product> {
 
-    List<Product> getAllProducts();
+    List<Product> getAllProducts(Integer productType);
 
     List<GlassCalculateResultVO> glassCalculate(GlassCalculateVO glassCalculateVO);
 

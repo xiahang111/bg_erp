@@ -6,6 +6,7 @@ import com.bingo.erp.xo.service.MaterialCalculateRecordService;
 import com.bingo.erp.xo.service.ProductCalculateRecordService;
 import com.bingo.erp.xo.service.ProductService;
 import com.bingo.erp.xo.vo.GlassCalculateVO;
+import com.bingo.erp.xo.vo.GlassInfoPageVO;
 import com.bingo.erp.xo.vo.ProductRecordPageVO;
 import com.bingo.erp.xo.vo.MaterialCalculateVO;
 import io.swagger.annotations.Api;
@@ -32,52 +33,64 @@ public class ProductRestApi {
     private MaterialCalculateRecordService materialCalculateRecordService;
 
     @GetMapping("getAllProduct")
-    @CrossOrigin(allowCredentials="true",allowedHeaders="*")
-    public String getAllProduct(HttpServletRequest request){
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    public String getAllProduct(HttpServletRequest request, @RequestParam(name = "productType", required = false) Integer productType) {
 
-        return ResultUtil.result(SysConf.SUCCESS,productService.getAllProducts());
+        if (null == productType) {
+            productType = 1;
+        }
+
+        return ResultUtil.result(SysConf.SUCCESS, productService.getAllProducts(productType));
     }
 
 
     @PostMapping("glassCalculate")
-    @CrossOrigin(allowCredentials="true",allowedHeaders="*")
-    public String glassCalculate(HttpServletRequest request, @RequestBody(required = true) GlassCalculateVO glassCalculateVO ){
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    public String glassCalculate(HttpServletRequest request, @RequestBody(required = true) GlassCalculateVO glassCalculateVO) {
 
-        return ResultUtil.result(SysConf.SUCCESS,productService.glassCalculate(glassCalculateVO));
+        return ResultUtil.result(SysConf.SUCCESS, productService.glassCalculate(glassCalculateVO));
     }
 
 
     @GetMapping("getAllGlassCalculate")
-    public String getAllGlassCalculate(){
-        return ResultUtil.result(SysConf.SUCCESS,productCalculateRecordService.getAllGlassCalculateRecord());
+    public String getAllGlassCalculate() {
+        return ResultUtil.result(SysConf.SUCCESS, productCalculateRecordService.getAllGlassCalculateRecord());
     }
 
     @PostMapping("getGlassRecordByQuery")
-    @CrossOrigin(allowCredentials="true",allowedHeaders="*")
-    public String getGlassRecordByQuery(@RequestBody ProductRecordPageVO productRecordPageVO){
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    public String getGlassRecordByQuery(@RequestBody ProductRecordPageVO productRecordPageVO) {
 
-        return ResultUtil.result(SysConf.SUCCESS,productCalculateRecordService.getGlassRecordPage(productRecordPageVO));
+        return ResultUtil.result(SysConf.SUCCESS, productCalculateRecordService.getGlassRecordPage(productRecordPageVO));
 
     }
 
     @PostMapping("materialCalculate")
-    @CrossOrigin(allowCredentials="true",allowedHeaders="*")
-    public String materialCalculate(HttpServletRequest request, @RequestBody(required = true) MaterialCalculateVO materialCalculateVO ){
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    public String materialCalculate(HttpServletRequest request, @RequestBody(required = true) MaterialCalculateVO materialCalculateVO) {
 
         try {
-            return ResultUtil.result(SysConf.SUCCESS,productService.materialCalculate(materialCalculateVO));
-        }catch (Exception e){
+            return ResultUtil.result(SysConf.SUCCESS, productService.materialCalculate(materialCalculateVO));
+        } catch (Exception e) {
             e.printStackTrace();
-            return ResultUtil.result(SysConf.Fail,e.getMessage());
+            return ResultUtil.result(SysConf.Fail, e.getMessage());
         }
 
     }
 
     @PostMapping("getMaterialRecordByQuery")
-    @CrossOrigin(allowCredentials="true",allowedHeaders="*")
-    public String getMaterialRecordByQuery(@RequestBody ProductRecordPageVO productRecordPageVO){
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    public String getMaterialRecordByQuery(@RequestBody ProductRecordPageVO productRecordPageVO) {
 
-        return ResultUtil.result(SysConf.SUCCESS,materialCalculateRecordService.getMaterialRecordPage(productRecordPageVO));
+        return ResultUtil.result(SysConf.SUCCESS, materialCalculateRecordService.getMaterialRecordPage(productRecordPageVO));
+
+    }
+
+    @PostMapping("getGlassInfo")
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    public String getGlassInfo(@RequestBody GlassInfoPageVO glassInfoPageVO) {
+
+        return ResultUtil.result(SysConf.SUCCESS, productCalculateRecordService.getGlassInfo(glassInfoPageVO));
 
     }
 

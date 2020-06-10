@@ -11,6 +11,8 @@
       <module>erp_commons</module>
       <module>erp_eureka</module>
         <module>erp_web</module>
+        <module>erp_sms</module>
+        <module>erp_person</module>
     </modules>
     <parent>
     <groupId>org.springframework.boot</groupId>

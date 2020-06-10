@@ -9,7 +9,7 @@ public class BcryptTest {
     @Test
     public void test1(){
 
-        String pass = "lxygwqf";
+        String pass = "123456";
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String hashpass = bCryptPasswordEncoder.encode(pass);
 
@@ -20,6 +20,7 @@ public class BcryptTest {
         boolean f = bCryptPasswordEncoder.matches("lxygwqf",hashpass1);
 
         System.out.println(f);
+
 
 
     }

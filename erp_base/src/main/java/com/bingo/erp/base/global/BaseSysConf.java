@@ -13,4 +13,7 @@ public class BaseSysConf {
     public final static String ERROR = "error";
 
     public final static String TOKEN = "token";
+
+    public final static String ADMIN_UID = "adminUid";
+
 }
