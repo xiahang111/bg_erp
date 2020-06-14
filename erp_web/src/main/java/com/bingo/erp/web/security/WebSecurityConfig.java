@@ -104,9 +104,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/druid/**"
                 ).permitAll()
                 // 对于获取token的rest api要允许匿名访问
-                .antMatchers("/auth/**",
-                        "/product/**",
-                        "/index/**",
+                .antMatchers("/api-web/**",
                         "/creatCode/**",
                         "/file/**"
                 ).permitAll()

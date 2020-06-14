@@ -13,6 +13,7 @@
         <module>erp_web</module>
         <module>erp_sms</module>
         <module>erp_person</module>
+        <module>erp_gateway</module>
     </modules>
     <parent>
     <groupId>org.springframework.boot</groupId>

@@ -1,0 +1,8 @@
+com/bingo/erp/person/global/SysConf.class
+com/bingo/erp/person/security/WebSecurityConfig.class
+com/bingo/erp/person/config/MybatisPlusConfig.class
+com/bingo/erp/person/PersonApplication.class
+com/bingo/erp/person/security/JwtAuthenticationEntryPoint.class
+com/bingo/erp/person/restapi/CompanyRestApi.class
+com/bingo/erp/person/security/JwtAuthenticationTokenFilter.class
+com/bingo/erp/person/restapi/CustomerRestApi.class

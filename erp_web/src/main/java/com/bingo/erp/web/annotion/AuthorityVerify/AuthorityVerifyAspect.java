@@ -11,11 +11,10 @@ import com.bingo.erp.utils.RedisUtil;
 import com.bingo.erp.utils.ResultUtil;
 import com.bingo.erp.utils.StringUtils;
 import com.bingo.erp.web.global.SysConf;
-import com.bingo.erp.xo.global.MessageConf;
-import com.bingo.erp.xo.global.RedisConf;
-import com.bingo.erp.xo.global.SQLConf;
-import com.bingo.erp.xo.service.AdminService;
-import com.bingo.erp.xo.service.RoleService;
+import com.bingo.erp.xo.order.global.MessageConf;
+import com.bingo.erp.xo.order.global.RedisConf;
+import com.bingo.erp.xo.order.service.AdminService;
+import com.bingo.erp.xo.order.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -26,6 +25,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,10 +42,10 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class AuthorityVerifyAspect {
 
-    @Autowired
+    @Resource
     RoleService roleService;
 
-    @Autowired
+    @Resource
     AdminService adminService;
 
     @Autowired

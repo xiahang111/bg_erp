@@ -7,11 +7,11 @@ import com.bingo.erp.config.jwt.Audience;
 import com.bingo.erp.config.jwt.JwtHelper;
 import com.bingo.erp.utils.*;
 import com.bingo.erp.web.global.SysConf;
-import com.bingo.erp.xo.global.MessageConf;
-import com.bingo.erp.xo.global.RedisConf;
-import com.bingo.erp.xo.global.SQLConf;
-import com.bingo.erp.xo.service.AdminService;
-import com.bingo.erp.xo.service.RoleService;
+import com.bingo.erp.xo.order.global.MessageConf;
+import com.bingo.erp.xo.order.global.RedisConf;
+import com.bingo.erp.xo.order.global.SQLConf;
+import com.bingo.erp.xo.order.service.AdminService;
+import com.bingo.erp.xo.order.service.RoleService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -21,25 +21,26 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api-web/auth")
 @Slf4j
 public class LoginRestApi {
 
     @Autowired
     private RedisUtil redisUtil;
 
-    @Autowired
+    @Resource
     private AdminService adminService;
 
     @Autowired
     private JwtHelper jwtHelper;
 
-    @Autowired
+    @Resource
     private RoleService roleService;
 
     @Value(value = "${isRememberMeExpiresSecond}")
@@ -159,7 +160,6 @@ public class LoginRestApi {
 
         Map<String, Object> map = new HashMap<>();
 
-        //todo 暂时还不需要跨平台登录
         if (request.getAttribute(SysConf.ADMIN_UID) == null) {
             return ResultUtil.result(SysConf.ERROR, "token用户过期");
         }

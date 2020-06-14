@@ -9,6 +9,7 @@
 /Users/drew/IdeaProject/bg-erp/erp_commons/src/main/java/com/bingo/erp/commons/entity/LaminateInfo.java
 /Users/drew/IdeaProject/bg-erp/erp_commons/src/main/java/com/bingo/erp/commons/entity/OrderInfo.java
 /Users/drew/IdeaProject/bg-erp/erp_commons/src/main/java/com/bingo/erp/commons/entity/MaterialCalculateRecord.java
+/Users/drew/IdeaProject/bg-erp/erp_commons/src/main/java/com/bingo/erp/commons/feign/PersonFeignClient.java
 /Users/drew/IdeaProject/bg-erp/erp_commons/src/main/java/com/bingo/erp/commons/entity/vo/StoreRecordInfo.java
 /Users/drew/IdeaProject/bg-erp/erp_commons/src/main/java/com/bingo/erp/commons/entity/TransomInfo.java
 /Users/drew/IdeaProject/bg-erp/erp_commons/src/main/java/com/bingo/erp/commons/entity/ProductOrderInfo.java

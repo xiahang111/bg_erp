@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -15,13 +16,13 @@ import org.springframework.web.filter.CorsFilter;
 
 @SpringBootApplication
 @EnableEurekaServer
+@EnableFeignClients("com.bingo.erp.commons.feign")
 @ComponentScan(basePackages = {"com.bingo.erp.utils",
         "com.bingo.erp.config",
-        "com.bingo.erp.xo.service",
+        "com.bingo.erp.xo.order.service",
         "com.bingo.erp.utils",
         "com.bingo.erp.task",
-        "com.bingo.erp.xo.service",
-        "com.bingo.erp.xo.tools"})
+        "com.bingo.erp.xo.order"})
 public class SmsApplication {
 
     public static void main(String[] args) {

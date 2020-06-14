@@ -1,6 +1,7 @@
 package com.bingo.erp.commons.entity;
 
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.bingo.erp.base.entity.SuperEntity;
 import com.bingo.erp.base.enums.OrderTypeEnums;
@@ -18,6 +19,9 @@ public class OrderInfo extends SuperEntity<OrderInfo> {
      * 是否是净尺寸
      */
     private Boolean isClear;
+
+    @TableField("admin_uid")
+    String adminUid;
 
     /**
      * 产品类型（成品、半成品）

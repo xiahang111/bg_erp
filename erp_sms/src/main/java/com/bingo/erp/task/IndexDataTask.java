@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bingo.erp.commons.entity.DataGather;
 import com.bingo.erp.commons.entity.OrderInfo;
 import com.bingo.erp.utils.DateUtils;
-import com.bingo.erp.xo.mapper.DataGatherMapper;
-import com.bingo.erp.xo.mapper.OrderInfoMapper;
+import com.bingo.erp.xo.order.mapper.DataGatherMapper;
+import com.bingo.erp.xo.order.mapper.OrderInfoMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -31,7 +31,7 @@ public class IndexDataTask {
     @Resource
     private DataGatherMapper dataGatherMapper;
 
-    @Scheduled(cron = "0 0/1 * * * ?")
+    @Scheduled(cron = "0 0/10 * * * ?")
     private void statisticIndexData() {
 
         log.info("统计首页信息定时任务开始============");

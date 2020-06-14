@@ -1,0 +1,8 @@
+/Users/drew/IdeaProject/bg-erp/erp_person/src/main/java/com/bingo/erp/person/security/JwtAuthenticationTokenFilter.java
+/Users/drew/IdeaProject/bg-erp/erp_person/src/main/java/com/bingo/erp/person/security/JwtAuthenticationEntryPoint.java
+/Users/drew/IdeaProject/bg-erp/erp_person/src/main/java/com/bingo/erp/person/restapi/CustomerRestApi.java
+/Users/drew/IdeaProject/bg-erp/erp_person/src/main/java/com/bingo/erp/person/security/WebSecurityConfig.java
+/Users/drew/IdeaProject/bg-erp/erp_person/src/main/java/com/bingo/erp/person/global/SysConf.java
+/Users/drew/IdeaProject/bg-erp/erp_person/src/main/java/com/bingo/erp/person/PersonApplication.java
+/Users/drew/IdeaProject/bg-erp/erp_person/src/main/java/com/bingo/erp/person/restapi/CompanyRestApi.java
+/Users/drew/IdeaProject/bg-erp/erp_person/src/main/java/com/bingo/erp/person/config/MybatisPlusConfig.java

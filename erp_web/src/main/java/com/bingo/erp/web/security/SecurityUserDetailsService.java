@@ -4,25 +4,26 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import com.bingo.erp.commons.entity.Admin;
 import com.bingo.erp.commons.entity.Role;
-import com.bingo.erp.xo.global.SQLConf;
-import com.bingo.erp.xo.service.AdminService;
-import com.bingo.erp.xo.service.RoleService;
+import com.bingo.erp.xo.order.global.SQLConf;
+import com.bingo.erp.xo.order.service.AdminService;
+import com.bingo.erp.xo.order.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class SecurityUserDetailsService implements UserDetailsService {
 
-    @Autowired
+    @Resource
     private AdminService adminService;
 
-    @Autowired
+    @Resource
     private RoleService roleService;
 
     @Override

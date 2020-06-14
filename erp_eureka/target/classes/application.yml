@@ -11,15 +11,15 @@ eureka:
     peer-node-connect-timeout-ms: 3000
   client:
     # false表示不向注册中心注册自己
-    registerWithEureka: false
+    registerWithEureka: true
     # false表示自己端就是注册中心，职责就是维护服务实例，并不需要去检索服务
     fetchRegistry: false
     serviceUrl:
       # 设置与Eureka交互的地址查询服务和注册服务都需要依赖这个地址
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@127.0.0.1:8561/eureka/
 spring:
   application:
-    name: bingo-eureka
+    name: erp-eureka
   security:
     user:
       name: bingo

@@ -13,7 +13,7 @@
 
     <dependencies>
         <dependency>
-            <artifactId>erp_xo</artifactId>
+            <artifactId>erp_xo_order</artifactId>
             <groupId>com.bingo</groupId>
             <version>1.0-SNAPSHOT</version>
             <exclusions>

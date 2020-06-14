@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -15,6 +16,13 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @EnableSwagger2
 @EnableDiscoveryClient
+@ComponentScan(basePackages = {"com.bingo.erp.utils",
+        "com.bingo.erp.config",
+        "com.bingo.erp.xo.person.service",
+        "com.bingo.erp.person.config",
+        "com.bingo.erp.utils",
+        "com.bingo.erp.person.restapi",
+        "com.bingo.erp.person.security"})
 public class PersonApplication {
 
     public static void main(String[] args) {

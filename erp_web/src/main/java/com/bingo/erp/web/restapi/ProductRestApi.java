@@ -2,13 +2,13 @@ package com.bingo.erp.web.restapi;
 
 import com.bingo.erp.utils.ResultUtil;
 import com.bingo.erp.web.global.SysConf;
-import com.bingo.erp.xo.service.MaterialCalculateRecordService;
-import com.bingo.erp.xo.service.ProductCalculateRecordService;
-import com.bingo.erp.xo.service.ProductService;
-import com.bingo.erp.xo.vo.GlassCalculateVO;
-import com.bingo.erp.xo.vo.GlassInfoPageVO;
-import com.bingo.erp.xo.vo.ProductRecordPageVO;
-import com.bingo.erp.xo.vo.MaterialCalculateVO;
+import com.bingo.erp.xo.order.service.MaterialCalculateRecordService;
+import com.bingo.erp.xo.order.service.ProductCalculateRecordService;
+import com.bingo.erp.xo.order.service.ProductService;
+import com.bingo.erp.xo.order.vo.GlassCalculateVO;
+import com.bingo.erp.xo.order.vo.GlassInfoPageVO;
+import com.bingo.erp.xo.order.vo.MaterialCalculateVO;
+import com.bingo.erp.xo.order.vo.ProductRecordPageVO;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/api-web/product")
 @Api(value = "产品相关api")
 @Slf4j
 public class ProductRestApi {

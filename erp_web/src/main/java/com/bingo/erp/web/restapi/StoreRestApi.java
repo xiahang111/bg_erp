@@ -3,12 +3,12 @@ package com.bingo.erp.web.restapi;
 import com.bingo.erp.utils.ResultUtil;
 import com.bingo.erp.web.annotion.AuthorityVerify.AuthorityVerify;
 import com.bingo.erp.web.global.SysConf;
-import com.bingo.erp.xo.service.StoreRecordInfoService;
-import com.bingo.erp.xo.service.StoreSummaryInfoService;
-import com.bingo.erp.xo.vo.StoreRecordPageVO;
-import com.bingo.erp.xo.vo.StoreRecordVO;
-import com.bingo.erp.xo.vo.StoreSummaryPageVO;
-import com.bingo.erp.xo.vo.StoreSummaryVO;
+import com.bingo.erp.xo.order.service.StoreRecordInfoService;
+import com.bingo.erp.xo.order.service.StoreSummaryInfoService;
+import com.bingo.erp.xo.order.vo.StoreRecordPageVO;
+import com.bingo.erp.xo.order.vo.StoreRecordVO;
+import com.bingo.erp.xo.order.vo.StoreSummaryPageVO;
+import com.bingo.erp.xo.order.vo.StoreSummaryVO;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/store")
+@RequestMapping("/api-web/store")
 @Api(value = "库存相关api")
 @Slf4j
 public class StoreRestApi {

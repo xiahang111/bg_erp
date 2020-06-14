@@ -8,6 +8,7 @@ com/bingo/erp/commons/entity/StoreSummaryInfo.class
 com/bingo/erp/commons/entity/vo/GlassInfoVO.class
 com/bingo/erp/commons/entity/Role.class
 com/bingo/erp/commons/entity/LaminateInfo.class
+com/bingo/erp/commons/feign/PersonFeignClient.class
 com/bingo/erp/commons/entity/OrderInfo.class
 com/bingo/erp/commons/entity/MaterialInfo.class
 com/bingo/erp/commons/entity/DataGather.class

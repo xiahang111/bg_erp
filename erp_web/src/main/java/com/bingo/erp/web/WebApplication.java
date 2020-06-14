@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -14,15 +15,16 @@ import org.springframework.web.filter.CorsFilter;
 @EnableTransactionManagement
 @SpringBootApplication
 @EnableEurekaServer
+@EnableFeignClients("com.bingo.erp.commons.feign")
 @ComponentScan(basePackages = {"com.bingo.erp.utils",
         "com.bingo.erp.config",
         "com.bingo.erp.web.restapi",
-        "com.bingo.erp.xo.service",
+        "com.bingo.erp.web.config",
+        "com.bingo.erp.xo.order.service",
         "com.bingo.erp.utils",
         "com.bingo.erp.web.security",
-        "com.bingo.erp.web.restapi",
-        "com.bingo.erp.xo.service",
-        "com.bingo.erp.xo.tools"})
+        "com.bingo.erp.xo.order.service",
+        "com.bingo.erp.xo.order.tools"})
 public class WebApplication {
 
     public static void main(String[] args) {

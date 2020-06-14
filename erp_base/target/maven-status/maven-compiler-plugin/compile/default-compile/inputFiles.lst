@@ -12,6 +12,7 @@
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/StoreMaterialResource.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/service/SuperService.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/ProductTypeEnums.java
+/Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/vo/CustomerVO.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/validator/annotion/NotBlank.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/validator/constraint/BooleanValidator.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/validator/group/GetOne.java
@@ -23,6 +24,7 @@
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/validator/annotion/NotNull.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/vo/BaseCalculateResultVO.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/StoreMaterialStatus.java
+/Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/CustomerResourceEnums.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/holder/RequestHolder.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/global/Constants.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/fatocry/CalculateFactory.java
@@ -35,6 +37,7 @@
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/validator/Messages.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/validator/constraint/StringValidator.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/mapper/SuperMapper.java
+/Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/CompanyUseEnums.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/BaseEnums.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/MaterialTypeEnums.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/validator/annotion/LongNotNull.java

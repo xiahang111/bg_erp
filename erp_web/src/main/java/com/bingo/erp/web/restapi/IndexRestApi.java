@@ -2,11 +2,9 @@ package com.bingo.erp.web.restapi;
 
 import com.bingo.erp.utils.ResultUtil;
 import com.bingo.erp.web.global.SysConf;
-import com.bingo.erp.xo.service.*;
-import com.bingo.erp.xo.vo.GlassCalculateVO;
-import com.bingo.erp.xo.vo.IndexOrderVO;
-import com.bingo.erp.xo.vo.MaterialCalculateVO;
-import com.bingo.erp.xo.vo.ProductRecordPageVO;
+
+import com.bingo.erp.xo.order.service.DataGatherService;
+import com.bingo.erp.xo.order.service.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
-@RequestMapping("/index")
+@RequestMapping("/api-web/index")
 @Api(value = "首页相关api")
 @Slf4j
 public class IndexRestApi {

@@ -31,4 +31,14 @@ public class BaseRedisConf {
      * 登录限制
      */
     public final static String LOGIN_LIMIT = "LOGIN_LIMIT";
+
+    /**
+     * 用户名和adminuid菜单
+     */
+    public final static String ALL_ADMIN_ADMINUID = "ALL_ADMIN_ADMINUID";
+
+
+
+
+
 }

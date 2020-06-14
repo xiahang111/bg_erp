@@ -1,0 +1,46 @@
+server:
+  port: 8562
+
+spring:
+  application:
+    name: erp-gateway
+  security:
+    user:
+      name: bingo
+      password: password123
+  boot:
+    instance: http://localhost:8562
+
+  cloud:
+    gateway:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+        routes:
+        - id: api-eureka
+          uri: lb://erp-eureka
+          predicates:
+            - Path=/api-eureka/**
+
+        - id: api-web
+          uri: lb://erp-web
+          predicates:
+           - Path=/api-web/**
+
+        - id: api-person
+          uri: lb://erp-person
+          predicates:
+           - Path=/api-person/**
+
+#eureka相关配置
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@127.0.0.1:8561/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${spring.application.instance_id:${server.port}}
+    lease-renewal-interval-in-seconds: 5
+

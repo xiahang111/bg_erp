@@ -16,4 +16,8 @@ public class BaseSysConf {
 
     public final static String ADMIN_UID = "adminUid";
 
+    public final static String ADMIN = "admin";
+
+
+
 }

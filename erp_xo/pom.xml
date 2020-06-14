@@ -10,10 +10,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>erp_xo</artifactId>
+    <packaging>pom</packaging>
 
     <name>erp_xo</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
+    <modules>
+        <module>erp_xo_order</module>
+        <module>erp_xo_person</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

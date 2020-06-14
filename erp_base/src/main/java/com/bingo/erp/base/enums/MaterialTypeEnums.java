@@ -21,6 +21,7 @@ public enum MaterialTypeEnums implements IEnum {
     BG3H(7003, "兵哥3号"),
     BG4H(7004, "兵哥4号"),
     CBD2(8001, "二代层板灯"),
+    CBDJJ(8003, "层板酒架"),
     CBD1(8002, "一代层板灯");
 
 

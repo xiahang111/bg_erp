@@ -6,7 +6,7 @@ import com.bingo.erp.utils.RedisUtil;
 import com.bingo.erp.utils.ResultUtil;
 import com.bingo.erp.utils.StringUtils;
 import com.bingo.erp.web.global.SysConf;
-import com.bingo.erp.xo.global.RedisConf;
+import com.bingo.erp.xo.order.global.RedisConf;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

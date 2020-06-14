@@ -5,13 +5,12 @@ import com.bingo.erp.commons.entity.Admin;
 import com.bingo.erp.utils.ExportExecUtil;
 import com.bingo.erp.utils.ResultUtil;
 import com.bingo.erp.web.global.SysConf;
-import com.bingo.erp.xo.global.ExcelConf;
-import com.bingo.erp.xo.service.AdminService;
-import com.bingo.erp.xo.service.OrderService;
-import com.bingo.erp.xo.vo.LaminateVO;
-import com.bingo.erp.xo.vo.MaterialVO;
-import com.bingo.erp.xo.vo.OrderRecordPageVO;
-import com.bingo.erp.xo.vo.ProductRecordPageVO;
+import com.bingo.erp.xo.order.global.ExcelConf;
+import com.bingo.erp.xo.order.service.AdminService;
+import com.bingo.erp.xo.order.service.OrderService;
+import com.bingo.erp.xo.order.vo.LaminateVO;
+import com.bingo.erp.xo.order.vo.MaterialVO;
+import com.bingo.erp.xo.order.vo.OrderRecordPageVO;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.ArchiveEntry;
@@ -30,7 +29,7 @@ import java.io.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/api-web/order")
 @Api(value = "订单相关api")
 @Slf4j
 public class OrderRestApi {
@@ -38,15 +37,20 @@ public class OrderRestApi {
     @Resource
     private OrderService orderService;
 
-    @Autowired
+    @Resource
     private AdminService adminService;
 
     @PostMapping("commitOrder")
     @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
-    public String commitOrder(@RequestBody(required = true) MaterialVO materialVO) {
+    public String commitOrder(HttpServletRequest request,@RequestBody(required = true) MaterialVO materialVO) {
+
+        String adminUid = (String) request.getAttribute(SysConf.ADMIN_UID);
+        if (adminUid == null) {
+            return ResultUtil.result(SysConf.ERROR, "token用户过期");
+        }
 
         try {
-            List<String> fileNames = orderService.saveOrder(materialVO);
+            List<String> fileNames = orderService.saveOrder(adminUid,materialVO);
 
             return ResultUtil.result(SysConf.SUCCESS, fileNames);
         } catch (Exception e) {
@@ -58,10 +62,15 @@ public class OrderRestApi {
 
     @PostMapping("commitCBDOrder")
     @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
-    public String commitCBDOrder(@RequestBody(required = true) LaminateVO laminateVO) {
+    public String commitCBDOrder(HttpServletRequest request,@RequestBody(required = true) LaminateVO laminateVO) {
+
+        String adminUid = (String) request.getAttribute(SysConf.ADMIN_UID);
+        if (adminUid == null) {
+            return ResultUtil.result(SysConf.ERROR, "token用户过期");
+        }
 
         try {
-            List<String> fileNames = orderService.saveCBDOrder(laminateVO);
+            List<String> fileNames = orderService.saveCBDOrder(adminUid,laminateVO);
 
             return ResultUtil.result(SysConf.SUCCESS, fileNames);
         } catch (Exception e) {
