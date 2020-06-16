@@ -38,8 +38,6 @@ import java.util.*;
 @Component
 public class OrderTools {
 
-
-
     @Resource
     private RabbitTemplate rabbitTemplate;
 

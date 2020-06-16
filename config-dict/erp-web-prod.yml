@@ -1,4 +1,11 @@
+server:
+  port: 8501
+
 spring:
+  application:
+    name: erp-web
+
+    # DATABASE CONFIG
   datasource:
     username: root
     password: Cjcslhp178
@@ -22,13 +29,14 @@ spring:
     #配置连接在池中的最小生存时间
     minEvictableIdleTimeMillis: 300000
 
+
   #redis
   redis:
-    host: 178.236.44.94 #redis的主机ip
+    host: 127.0.0.1 #redis的主机ip
     port: 6379
   #RabbitMq
   rabbitmq:
-    host: 178.236.44.94 #rabbitmq的主机ip
+    host: 127.0.0.1 #rabbitmq的主机ip
     port: 5672
     username: bingo
     password: bingo
@@ -36,6 +44,20 @@ spring:
     user:
       name: bingo
       password: password123
+
+#eureka相关配置
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@127.0.0.1:8561/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${spring.application.instance_id:${server.port}}
+    lease-renewal-interval-in-seconds: 5
 
 # 或者：
 feign.hystrix.enabled: false # 索性禁用feign的hystrix支持
@@ -99,5 +121,6 @@ audience:
   name: mogublog
   expiresSecond: 28800  #8个小时 3600
 
+#/home/data/template/   /Users/drew/IdeaProject/bg-erp/excel/
 srcFileUrl: /home/data/template/
 newFileDict: /home/data/template/
