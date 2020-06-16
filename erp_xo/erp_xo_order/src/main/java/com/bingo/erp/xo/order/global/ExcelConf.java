@@ -12,9 +12,6 @@ public class ExcelConf {
 
     public static final String FILE_SUFFIX = ".xls";
 
-    public static final String SRC_FILE_URL = "/home/data/template/";
-    public static final String NEW_FILE_DICT = "/home/data/template/";
-
     //门单模板
     public static final String ORDER_FILENAME = "door-order.xls";
 

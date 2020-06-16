@@ -8,10 +8,10 @@ spring:
     # DATABASE CONFIG
   datasource:
     username: root
-    password: Cjcslhp178
-    #password: root
-    url: jdbc:mysql://178.236.44.94:3306/bg_person?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
-    #url: jdbc:mysql://localhost:3306/bg_person?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
+    #password: Cjcslhp178
+    password: root
+    #url: jdbc:mysql://178.236.44.94:3306/bg_person?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/bg_person?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
 
@@ -32,8 +32,14 @@ spring:
 
   #redis
   redis:
-    host: 178.236.44.94 #redis的主机ip
+    host: 127.0.0.1 #redis的主机ip
     port: 6379
+  #RabbitMq
+  rabbitmq:
+    host: 127.0.0.1 #rabbitmq的主机ip
+    port: 5672
+    username: bingo
+    password: bingo
   security:
     user:
       name: bingo
@@ -47,7 +53,7 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@178.236.44.94:8561/eureka/
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@127.0.0.1:8561/eureka/
   instance:
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${spring.application.instance_id:${server.port}}

@@ -25,6 +25,18 @@
         </dependency>
 
         <dependency>
+            <artifactId>erp_xo_person</artifactId>
+            <groupId>com.bingo</groupId>
+            <version>1.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-data-solr</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
@@ -126,7 +138,9 @@
             </plugin>
 
         </plugins>
+
     </build>
+
 
 
 </project>

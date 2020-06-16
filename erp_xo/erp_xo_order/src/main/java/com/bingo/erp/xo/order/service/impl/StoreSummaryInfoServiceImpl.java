@@ -8,6 +8,7 @@ import com.bingo.erp.base.exception.MessageException;
 import com.bingo.erp.base.serviceImpl.SuperServiceImpl;
 import com.bingo.erp.commons.entity.StoreSummaryInfo;
 import com.bingo.erp.utils.StringUtils;
+import com.bingo.erp.xo.order.global.SysConf;
 import com.bingo.erp.xo.order.mapper.StoreSummaryInfoMapper;
 import com.bingo.erp.xo.order.service.StoreSummaryInfoService;
 import com.bingo.erp.xo.order.vo.StoreSummaryPageVO;
@@ -31,6 +32,8 @@ public class StoreSummaryInfoServiceImpl extends SuperServiceImpl<StoreSummaryIn
     public IPage<StoreSummaryInfo> getStoreSummaryByPage(StoreSummaryPageVO storeSummaryPageVO) {
 
         QueryWrapper<StoreSummaryInfo> queryWrapper = new QueryWrapper<>();
+
+        queryWrapper.eq("status", SysConf.NORMAL_STATUS);
 
         if (StringUtils.isNotBlank(storeSummaryPageVO.getKeyword())) {
             queryWrapper.like("material_name", storeSummaryPageVO.getKeyword());
@@ -120,7 +123,11 @@ public class StoreSummaryInfoServiceImpl extends SuperServiceImpl<StoreSummaryIn
 
         String uid = storeSummaryVO.getUid();
 
-        storeSummaryInfoMapper.deleteById(uid);
+        StoreSummaryInfo storeSummaryInfo = storeSummaryInfoMapper.selectById(uid);
+
+        storeSummaryInfo.setStatus(SysConf.DELETE_STATUS);
+
+        storeSummaryInfoMapper.updateById(storeSummaryInfo);
 
     }
 }

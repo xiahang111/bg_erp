@@ -12,4 +12,6 @@ public interface StoreRecordInfoService extends SuperService<StoreRecordInfo> {
     IPage<StoreRecordInfo> getStoreRecord(StoreRecordPageVO storeRecordPageVO);
 
     void saveStoreRecord(StoreRecordVO storeRecordVO) throws  Exception;
+
+    void callbackStoreRecord(String storeRecordUid) throws Exception;
 }

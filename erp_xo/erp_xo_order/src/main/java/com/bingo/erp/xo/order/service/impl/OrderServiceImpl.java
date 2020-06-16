@@ -26,6 +26,7 @@ import net.sf.jxls.transformer.XLSTransformer;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -66,6 +67,12 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
     @Resource
     private PersonFeignClient personFeignClient;
 
+    @Value(value = "${srcFileUrl}")
+    private String SRC_FILE_URL;
+
+    @Value(value = "${newFileDict}")
+    private String NEW_FILE_DICT;
+
 
     @Override
     public List<IndexOrderVO> getIndexOrderInfo() {
@@ -85,7 +92,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
     @Override
     public List<String> saveCBDOrder(String adminUid, LaminateVO laminateVO) throws Exception {
 
-        log.info("===============方法开始，参数信息：excel文件夹：" + ExcelConf.NEW_FILE_DICT);
+        log.info("===============方法开始，参数信息：excel文件夹：" + NEW_FILE_DICT);
 
         List<String> result = new ArrayList<>();
 
@@ -109,8 +116,8 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
         cbdOrderTools.laminateCalculate(laminateVO.getLaminateInfos());
         cbdOrderTools.orderCalculate(laminateVO);
 
-        String orderFileName = ExcelConf.SRC_FILE_URL + ExcelConf.CBD_ORDER_FILENAME;
-        String productSrcFileName = ExcelConf.SRC_FILE_URL + ExcelConf.CBD_PRODUCT_ORDER_FILENAME;
+        String orderFileName = SRC_FILE_URL + ExcelConf.CBD_ORDER_FILENAME;
+        String productSrcFileName = SRC_FILE_URL + ExcelConf.CBD_PRODUCT_ORDER_FILENAME;
 
         POIFSFileSystem fs = new POIFSFileSystem(new File(orderFileName));
 
@@ -122,14 +129,14 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
         cbdOrderTools.fillData(sheet, laminateVO, addnum);
 
-        File newFile = new File(ExcelConf.NEW_FILE_DICT + fileName);
+        File newFile = new File(NEW_FILE_DICT + fileName);
 
         wb.write(newFile);
 
         Map<String, Object> dataMap = cbdOrderTools.toMap(laminateVO);
 
         XLSTransformer transformer = new XLSTransformer();
-        transformer.transformXLS(ExcelConf.NEW_FILE_DICT + fileName, dataMap, ExcelConf.NEW_FILE_DICT + fileName);
+        transformer.transformXLS(NEW_FILE_DICT + fileName, dataMap, NEW_FILE_DICT + fileName);
 
         result.add(fileName);
 
@@ -139,7 +146,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
         String productFileName = "层板生产单" + suffix;
 
-        File productFile = new File(ExcelConf.NEW_FILE_DICT + productFileName);
+        File productFile = new File(NEW_FILE_DICT + productFileName);
 
         POIFSFileSystem productFs = new POIFSFileSystem(new File(productSrcFileName));
 
@@ -155,7 +162,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
         Thread.sleep(1000l);
 
-        transformer.transformXLS(ExcelConf.NEW_FILE_DICT + productFileName, dataMap, ExcelConf.NEW_FILE_DICT + productFileName);
+        transformer.transformXLS(NEW_FILE_DICT + productFileName, dataMap, NEW_FILE_DICT + productFileName);
 
         result.add(productFileName);
 
@@ -182,7 +189,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
     @Override
     public List<String> saveOrder(String adminUid, MaterialVO materialVO) throws Exception {
 
-        log.info("===============方法开始，参数信息：excel文件夹：" + ExcelConf.NEW_FILE_DICT);
+        log.info("===============方法开始，参数信息：excel文件夹：" + NEW_FILE_DICT);
 
         List<String> result = new ArrayList<>();
 
@@ -228,11 +235,11 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
             String productSrcFileName = "";
 
             if (materialVO.isHaveTransom && null != materialVO.getTransoms() && materialVO.getTransoms().size() > 0) {
-                orderFileName = ExcelConf.SRC_FILE_URL + ExcelConf.TDHL_ORDER_FILENAME;
-                productSrcFileName = ExcelConf.SRC_FILE_URL + ExcelConf.TDHL_PRODUCT_ORDER_FILENAME;
+                orderFileName = SRC_FILE_URL + ExcelConf.TDHL_ORDER_FILENAME;
+                productSrcFileName = SRC_FILE_URL + ExcelConf.TDHL_PRODUCT_ORDER_FILENAME;
             } else {
-                orderFileName = ExcelConf.SRC_FILE_URL + ExcelConf.ORDER_FILENAME;
-                productSrcFileName = ExcelConf.SRC_FILE_URL + ExcelConf.PRODUCT_ORDER_FILENAME;
+                orderFileName = SRC_FILE_URL + ExcelConf.ORDER_FILENAME;
+                productSrcFileName = SRC_FILE_URL + ExcelConf.PRODUCT_ORDER_FILENAME;
 
             }
 
@@ -249,14 +256,14 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
             //填充料玻、五金数据
             tools.fillData(sheet, map, materialVO, materialVO.getIronwares(), addnum);
 
-            File newFile = new File(ExcelConf.NEW_FILE_DICT + fileName);
+            File newFile = new File(NEW_FILE_DICT + fileName);
 
             wb.write(newFile);
 
             Map<String, Object> dataMap = tools.toMap(materialVO);
 
             XLSTransformer transformer = new XLSTransformer();
-            transformer.transformXLS(ExcelConf.NEW_FILE_DICT + fileName, dataMap, ExcelConf.NEW_FILE_DICT + fileName);
+            transformer.transformXLS(NEW_FILE_DICT + fileName, dataMap, NEW_FILE_DICT + fileName);
 
             /**
              =========================== 生产单制作 ================================
@@ -264,7 +271,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
             String productFileName = "生产单" + suffix;
 
-            File productFile = new File(ExcelConf.NEW_FILE_DICT + productFileName);
+            File productFile = new File(NEW_FILE_DICT + productFileName);
 
             POIFSFileSystem productFs = new POIFSFileSystem(new File(productSrcFileName));
 
@@ -280,7 +287,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
             Thread.sleep(1000l);
 
-            transformer.transformXLS(ExcelConf.NEW_FILE_DICT + productFileName, dataMap, ExcelConf.NEW_FILE_DICT + productFileName);
+            transformer.transformXLS(NEW_FILE_DICT + productFileName, dataMap, NEW_FILE_DICT + productFileName);
 
             result.add(productFileName);
 

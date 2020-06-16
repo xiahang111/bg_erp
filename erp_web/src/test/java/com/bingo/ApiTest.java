@@ -15,6 +15,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -28,6 +29,12 @@ import java.util.List;
 @SpringBootTest(classes = WebApplication.class)
 @Slf4j
 public class ApiTest {
+
+    @Value(value = "${srcFileUrl}")
+    private String SRC_FILE_URL;
+
+    @Value(value = "${newFileDict}")
+    private String NEW_FILE_DICT;
 
     @Resource
     private OrderService orderService;
@@ -50,7 +57,7 @@ public class ApiTest {
     @Test
     public void test2() throws Exception {
 
-        File file = new File(ExcelConf.NEW_FILE_DICT + "store.xls");
+        File file = new File(NEW_FILE_DICT + "store.xls");
 
         POIFSFileSystem poifsFileSystem = new POIFSFileSystem(file);
 

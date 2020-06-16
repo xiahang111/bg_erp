@@ -11,6 +11,7 @@ import com.bingo.erp.base.serviceImpl.SuperServiceImpl;
 import com.bingo.erp.commons.entity.StoreSummaryInfo;
 import com.bingo.erp.commons.entity.vo.StoreRecordInfo;
 import com.bingo.erp.utils.StringUtils;
+import com.bingo.erp.xo.order.global.SysConf;
 import com.bingo.erp.xo.order.mapper.StoreRecordInfoMapper;
 import com.bingo.erp.xo.order.mapper.StoreSummaryInfoMapper;
 import com.bingo.erp.xo.order.service.StoreRecordInfoService;
@@ -47,6 +48,9 @@ public class StoreRecordInfoServiceImpl
 
         queryWrapper.eq("material_status", storeRecordPageVO.getMaterialStatus());
 
+        //查询状态为1的数据记录
+        queryWrapper.eq("status", SysConf.NORMAL_STATUS);
+
         if (StringUtils.isNotBlank(storeRecordPageVO.getKeyword())) {
             queryWrapper.like("material_name", storeRecordPageVO.getKeyword());
         }
@@ -54,13 +58,13 @@ public class StoreRecordInfoServiceImpl
         if (StringUtils.isNotBlank(storeRecordPageVO.getOrderBy())) {
 
             if (storeRecordPageVO.getDesc()) {
-                queryWrapper.orderByDesc(storeRecordPageVO.getOrderBy());
+                queryWrapper.orderByDesc(storeRecordPageVO.getOrderBy(),"create_time");
             } else {
                 queryWrapper.orderByAsc(storeRecordPageVO.getOrderBy());
             }
 
         } else {
-            queryWrapper.orderByAsc("material_name");
+            queryWrapper.orderByAsc("create_time");
         }
 
         if (null != storeRecordPageVO.getMaterialColor()) {
@@ -118,7 +122,7 @@ public class StoreRecordInfoServiceImpl
 
 
         if (storeRecordVO.getMaterialStatus() == StoreMaterialStatus.IN.code) {
-            storeSummaryInfo.setTotalPrice(storeRecordInfo.getTotalPrice().add(storeRecordInfo.getTotalPrice()));
+            storeSummaryInfo.setTotalPrice(storeSummaryInfo.getTotalPrice().add(storeRecordInfo.getTotalPrice()));
             storeSummaryInfo.setTotalWeight(storeSummaryInfo.getTotalWeight().add(storeRecordInfo.getMaterialNum().multiply(storeSummaryInfo.getWeight())));
             storeSummaryInfo.setMaterialNum(storeSummaryInfo.getMaterialNum().add(storeRecordInfo.getMaterialNum()));
 
@@ -128,7 +132,7 @@ public class StoreRecordInfoServiceImpl
                 throw new MessageException("材料不足,请确认！");
             }
 
-            storeSummaryInfo.setTotalPrice(storeRecordInfo.getTotalPrice().subtract(storeRecordInfo.getTotalPrice()));
+            storeSummaryInfo.setTotalPrice(storeSummaryInfo.getTotalPrice().subtract(storeRecordInfo.getTotalPrice()));
             storeSummaryInfo.setTotalWeight(storeSummaryInfo.getTotalWeight().subtract(storeRecordInfo.getMaterialNum().multiply(storeSummaryInfo.getWeight())));
             storeSummaryInfo.setMaterialNum(storeSummaryInfo.getMaterialNum().subtract(storeRecordInfo.getMaterialNum()));
 
@@ -138,6 +142,62 @@ public class StoreRecordInfoServiceImpl
         //更新总表
         storeRecordInfoMapper.insert(storeRecordInfo);
         storeSummaryInfoMapper.updateById(storeSummaryInfo);
+
+    }
+
+    @Override
+    @Transactional
+    public void callbackStoreRecord(String storeRecordUid) throws Exception {
+
+        StoreRecordInfo storeRecordInfo = storeRecordInfoMapper.selectById(storeRecordUid);
+
+        if (null == storeRecordInfo) {
+            throw new MessageException("无此库存记录信息");
+        }
+
+        QueryWrapper<StoreSummaryInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("material_name", storeRecordInfo.getMaterialName());
+        queryWrapper.eq("material_color", storeRecordInfo.getMaterialColor());
+        queryWrapper.eq("specification", storeRecordInfo.getSpecification());
+
+        StoreSummaryInfo storeSummaryInfo = storeSummaryInfoService.getOne(queryWrapper);
+
+        if (null == storeSummaryInfo) {
+            throw new MessageException("无此库存材料信息");
+        }
+
+        //入库，回滚的话总库存应该减去相应数值
+        if (storeRecordInfo.getMaterialStatus().code == StoreMaterialStatus.IN.code) {
+
+            storeSummaryInfo.setTotalWeight(storeSummaryInfo.getTotalWeight().
+                    subtract(storeSummaryInfo.getWeight().
+                            multiply(storeRecordInfo.getMaterialNum())).
+                    setScale(2, BigDecimal.ROUND_HALF_UP));
+
+            storeSummaryInfo.setTotalPrice(storeSummaryInfo.getTotalPrice().
+                    subtract(storeRecordInfo.getTotalPrice()).setScale(2, BigDecimal.ROUND_HALF_UP));
+
+            storeSummaryInfo.setMaterialNum(storeSummaryInfo.getMaterialNum().subtract(storeRecordInfo.getMaterialNum()));
+
+        } else {
+
+            storeSummaryInfo.setTotalWeight(storeSummaryInfo.getTotalWeight().
+                    add(storeSummaryInfo.getWeight().
+                            multiply(storeRecordInfo.getMaterialNum())).
+                    setScale(2, BigDecimal.ROUND_HALF_UP));
+
+            storeSummaryInfo.setTotalPrice(storeSummaryInfo.getTotalPrice().
+                    add(storeRecordInfo.getTotalPrice()).setScale(2, BigDecimal.ROUND_HALF_UP));
+
+            storeSummaryInfo.setMaterialNum(storeSummaryInfo.getMaterialNum().add(storeRecordInfo.getMaterialNum()));
+
+        }
+
+        storeSummaryInfoMapper.updateById(storeSummaryInfo);
+
+        storeRecordInfo.setStatus(SysConf.DELETE_STATUS);
+
+        storeRecordInfoMapper.updateById(storeRecordInfo);
 
     }
 }

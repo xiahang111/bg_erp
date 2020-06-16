@@ -19,6 +19,7 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -39,6 +40,12 @@ public class OrderRestApi {
 
     @Resource
     private AdminService adminService;
+
+    @Value(value = "${srcFileUrl}")
+    private String SRC_FILE_URL;
+
+    @Value(value = "${newFileDict}")
+    private String NEW_FILE_DICT;
 
     @PostMapping("commitOrder")
     @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
@@ -123,7 +130,7 @@ public class OrderRestApi {
             ZipArchiveOutputStream zous = new ZipArchiveOutputStream(out);
 
             for (String fileName : fileNames) {
-                File file = new File(ExcelConf.NEW_FILE_DICT + fileName);
+                File file = new File(NEW_FILE_DICT + fileName);
 
                 InputStream inputStream = new FileInputStream(file);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -160,6 +167,9 @@ public class OrderRestApi {
         }
 
     }
+
+
+
 
 
 }

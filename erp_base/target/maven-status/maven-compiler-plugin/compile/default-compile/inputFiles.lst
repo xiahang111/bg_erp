@@ -32,6 +32,7 @@
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/validator/annotion/BooleanNotNULL.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/HandleEnums.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/fatocry/material/MaterialCalculateFactory.java
+/Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/OrderStatusEnums.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/validator/annotion/IdValid.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/global/BaseSysConf.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/validator/Messages.java

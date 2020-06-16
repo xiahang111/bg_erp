@@ -8,9 +8,11 @@ import com.bingo.erp.commons.entity.MaterialInfo;
 import com.bingo.erp.commons.entity.OrderInfo;
 import com.bingo.erp.commons.entity.TransomInfo;
 import com.bingo.erp.commons.feign.PersonFeignClient;
+import com.bingo.erp.utils.JsonUtils;
 import com.bingo.erp.xo.order.enums.MaterialFactoryEnum;
 import com.bingo.erp.xo.order.global.ExcelConf;
 import com.bingo.erp.xo.order.global.NormalConf;
+import com.bingo.erp.xo.order.global.SysConf;
 import com.bingo.erp.xo.order.mapper.IronwareInfoMapper;
 import com.bingo.erp.xo.order.mapper.MaterialInfoMapper;
 import com.bingo.erp.xo.order.mapper.TransomMapper;
@@ -20,8 +22,12 @@ import net.sf.jxls.util.Util;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -31,6 +37,11 @@ import java.util.*;
 @Slf4j
 @Component
 public class OrderTools {
+
+
+
+    @Resource
+    private RabbitTemplate rabbitTemplate;
 
     public boolean materialValidate(List<MaterialInfoVO> materialInfoVOS) {
 
@@ -1189,7 +1200,7 @@ public class OrderTools {
 
     }
 
-    public void saveCustomer(String adminUid, ProductVO productVO, PersonFeignClient personFeignClient){
+    public void saveCustomer(String adminUid, ProductVO productVO, PersonFeignClient personFeignClient) {
         //保存客户信息
         CustomerVO customerVO = new CustomerVO();
         customerVO.setAdminUid(adminUid);
@@ -1198,7 +1209,8 @@ public class OrderTools {
         customerVO.setCustomerAddr(productVO.getCustomerAddr());
         customerVO.setCutomerPhone(productVO.getCustomerPhoneNum());
         customerVO.setSalesman(productVO.getSalesman());
-        //todo 改成发送消息
+        //改成发送消息
+        rabbitTemplate.convertAndSend(SysConf.EXCHANGE_DIRECT, SysConf.BINGO_WEB, JsonUtils.objectToJson(customerVO));
         //personFeignClient.saveCustomerByOrder(customerVO);
     }
 }

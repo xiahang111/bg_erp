@@ -35,10 +35,10 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <!-- RabbitMq  -->
-        <!-- <dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
-        </dependency> -->
+        </dependency>
     </dependencies>
 
     <!-- Package as an executable jar -->

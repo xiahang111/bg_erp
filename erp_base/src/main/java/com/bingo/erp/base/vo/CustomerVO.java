@@ -2,9 +2,11 @@ package com.bingo.erp.base.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 //向person微服务保存客户信息的vo
 @Data
-public class CustomerVO {
+public class CustomerVO implements Serializable {
 
     private String adminUid;
 

@@ -27,10 +27,10 @@ spring:
       password: password123
   datasource:
     username: root
-    password: Cjcslhp178
-    #password: root
-    url: jdbc:mysql://178.236.44.94:3306/bg_erp?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
-    #url: jdbc:mysql://localhost:3306/bg_erp?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
+    #password: Cjcslhp178
+    password: root
+    #url: jdbc:mysql://178.236.44.94:3306/bg_erp?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/bg_erp?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
 
@@ -58,6 +58,21 @@ spring:
     port: 5672
     username: bingo
     password: bingo
+
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 30000
+
+ribbon:
+  ReadTimeout: 30000
+  ConnectTimeout: 30000
 
 #mybatis
 mybatis-plus:
@@ -87,3 +102,6 @@ mybatis-plus:
     cache-enabled: false
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   type-enums-package: com.bingo.erp.base.enums
+
+srcFileUrl: /Users/drew/IdeaProject/bg-erp/excel/
+newFileDict: /Users/drew/IdeaProject/bg-erp/excel/

@@ -19,6 +19,7 @@ import org.springframework.web.filter.CorsFilter;
 @EnableFeignClients("com.bingo.erp.commons.feign")
 @ComponentScan(basePackages = {"com.bingo.erp.utils",
         "com.bingo.erp.config",
+        "com.bingo.erp.listener",
         "com.bingo.erp.xo.order.service",
         "com.bingo.erp.utils",
         "com.bingo.erp.task",

@@ -45,6 +45,7 @@ com/bingo/erp/base/validator/constraint/NumericValidator.class
 com/bingo/erp/base/validator/annotion/IntegerNotNull.class
 com/bingo/erp/base/enums/GlassColor.class
 com/bingo/erp/base/enums/ProductTypeEnums.class
+com/bingo/erp/base/enums/OrderStatusEnums.class
 com/bingo/erp/base/global/BaseSQLConf.class
 com/bingo/erp/base/vo/BaseVO.class
 com/bingo/erp/base/enums/OrderTypeEnums.class

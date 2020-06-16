@@ -43,9 +43,9 @@ public class StoreRestApi {
 
         try {
             storeSummaryInfoService.saveStoreSummary(storeSummaryVO);
-            return ResultUtil.result(SysConf.SUCCESS,"");
-        }catch (Exception e){
-            return ResultUtil.result(SysConf.Fail,e.getMessage());
+            return ResultUtil.result(SysConf.SUCCESS, "");
+        } catch (Exception e) {
+            return ResultUtil.result(SysConf.Fail, e.getMessage());
         }
 
 
@@ -58,9 +58,9 @@ public class StoreRestApi {
 
         try {
             storeSummaryInfoService.deleteStoreSummary(storeSummaryVO);
-            return ResultUtil.result(SysConf.SUCCESS,"");
-        }catch (Exception e){
-            return ResultUtil.result(SysConf.Fail,e.getMessage());
+            return ResultUtil.result(SysConf.SUCCESS, "");
+        } catch (Exception e) {
+            return ResultUtil.result(SysConf.Fail, e.getMessage());
         }
 
 
@@ -88,4 +88,15 @@ public class StoreRestApi {
 
     }
 
+    @GetMapping("callbackStoreRecord")
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    public String callbackStoreRecord(@RequestParam("recordUid") String recordUid) {
+
+        try {
+            storeRecordInfoService.callbackStoreRecord(recordUid);
+            return ResultUtil.result(SysConf.SUCCESS, "删除成功");
+        } catch (Exception e) {
+            return ResultUtil.result(SysConf.Fail, e.getMessage());
+        }
+    }
 }

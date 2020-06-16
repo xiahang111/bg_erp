@@ -15,6 +15,7 @@ import net.sf.jxls.util.Util;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -25,6 +26,8 @@ import java.util.Map;
 
 @Component
 public class CBDOrderTools {
+
+
 
     public Map<String, List<LaminateInfoVO>> laminateToMap(List<LaminateInfoVO> laminateInfoVOS) {
 

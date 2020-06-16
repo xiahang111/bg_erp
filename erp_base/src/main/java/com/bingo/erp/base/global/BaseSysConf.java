@@ -19,5 +19,15 @@ public class BaseSysConf {
     public final static String ADMIN = "admin";
 
 
+    /**
+     * rabbitmq相关
+     */
+    public final static String EXCHANGE_DIRECT = "exchange.direct";
+
+    public final static String BINGO_WEB = "bingo.web";
+    public final static String BINGO_PERSON = "bingo.persdon";
+    public final static String BINGO_SMS = "bingo.sms";
+
+
 
 }

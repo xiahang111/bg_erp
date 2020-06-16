@@ -14,6 +14,7 @@
         <module>erp_sms</module>
         <module>erp_person</module>
         <module>erp_gateway</module>
+        <module>config_center</module>
     </modules>
     <parent>
     <groupId>org.springframework.boot</groupId>
