@@ -38,7 +38,7 @@ public class RedisDataTask {
     /**
      *
      */
-    @Scheduled(cron = " 0 0/5 * * * ?")
+    @Scheduled(cron = " 0 0 0/2 * * ?")
     public void saveRoleList() {
 
         log.info("更新权限信息到redis开始");

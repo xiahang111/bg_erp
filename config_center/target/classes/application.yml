@@ -1,0 +1,15 @@
+server:
+  port: 9000
+spring:
+  application:
+    name: config-center
+  cloud:
+    config:
+      server:
+        git:
+          search-paths: config-dict
+          uri: https://github.com/xiahang111/bg_erp.git
+          username: xiahang111
+          password: xia13012256416
+
+
