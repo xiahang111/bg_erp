@@ -16,7 +16,7 @@ import org.springframework.web.filter.CorsFilter;
 
 @EnableTransactionManagement
 @SpringBootApplication
-@EnableDiscoveryClient
+@EnableEurekaClient
 @EnableFeignClients("com.bingo.erp.commons.feign")
 @ComponentScan(basePackages = {"com.bingo.erp.utils",
         "com.bingo.erp.config",
