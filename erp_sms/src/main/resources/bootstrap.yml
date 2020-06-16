@@ -1,9 +1,9 @@
 server:
-  port: 8501
+  port: 8503
 
 spring:
   application:
-    name: erp-web
+    name: erp-sms
   cloud:
     config:
       discovery:
@@ -12,7 +12,6 @@ spring:
       profile: dev
       label: master
       fail-fast: true
-
 
 #eureka相关配置
 eureka:
@@ -27,4 +26,3 @@ eureka:
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${spring.application.instance_id:${server.port}}
     lease-renewal-interval-in-seconds: 5
-

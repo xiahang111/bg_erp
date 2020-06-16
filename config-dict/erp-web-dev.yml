@@ -21,6 +21,20 @@ spring:
 
     #配置连接在池中的最小生存时间
     minEvictableIdleTimeMillis: 300000
+  #redis
+  redis:
+    host: 127.0.0.1 #redis的主机ip
+    port: 6379
+  #RabbitMq
+  rabbitmq:
+    host: 127.0.0.1 #rabbitmq的主机ip
+    port: 5672
+    username: bingo
+    password: bingo
+  security:
+    user:
+      name: bingo
+      password: password123
 
 # 或者：
 feign.hystrix.enabled: false # 索性禁用feign的hystrix支持
@@ -74,5 +88,16 @@ ribbon:
   ReadTimeout: 30000
   ConnectTimeout: 30000
 
+##jwt配置
+tokenHead: bearer;
+tokenHeader: Authorization
+isRememberMeExpiresSecond: 259200 #记住账号为3天有效
+audience:
+  clientId: 098f6bcd4621d373cade4e832627b4f6
+  base64Secret: MDk4ZjZiY2Q0NjIxZDM3M2NhZGU0ZTgzMjYyN2I0ZjY=
+  name: mogublog
+  expiresSecond: 28800  #8个小时 3600
+
 srcFileUrl: /Users/drew/IdeaProject/bg-erp/excel/
 newFileDict: /Users/drew/IdeaProject/bg-erp/excel/
+
