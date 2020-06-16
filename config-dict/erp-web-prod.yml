@@ -24,11 +24,11 @@ spring:
 
   #redis
   redis:
-    host: 127.0.0.1 #redis的主机ip
+    host: 178.236.44.94 #redis的主机ip
     port: 6379
   #RabbitMq
   rabbitmq:
-    host: 127.0.0.1 #rabbitmq的主机ip
+    host: 178.236.44.94 #rabbitmq的主机ip
     port: 5672
     username: bingo
     password: bingo

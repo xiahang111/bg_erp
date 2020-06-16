@@ -9,9 +9,13 @@ spring:
       discovery:
         enabled: true
         service-id: config-center
-      profile: dev
+      profile: prod
       label: master
       fail-fast: true
+  security:
+    user:
+      name: bingo
+      password: password123
 
 #eureka相关配置
 eureka:

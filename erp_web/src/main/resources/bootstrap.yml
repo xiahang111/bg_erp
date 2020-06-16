@@ -12,6 +12,10 @@ spring:
       profile: dev
       label: master
       fail-fast: true
+  security:
+    user:
+      name: bingo
+      password: password123
 
 
 #eureka相关配置

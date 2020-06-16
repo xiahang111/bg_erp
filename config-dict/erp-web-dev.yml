@@ -31,13 +31,7 @@ spring:
     port: 5672
     username: bingo
     password: bingo
-  security:
-    user:
-      name: bingo
-      password: password123
 
-# 或者：
-feign.hystrix.enabled: false # 索性禁用feign的hystrix支持
 
 #mybatis
 mybatis-plus:
