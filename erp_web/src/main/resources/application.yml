@@ -4,32 +4,12 @@ server:
 spring:
   application:
     name: erp-web
-
-    # DATABASE CONFIG
-  datasource:
-    username: root
-    #password: Cjcslhp178
-    password: root
-    #url: jdbc:mysql://178.236.44.94:3306/bg_erp?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
-    url: jdbc:mysql://localhost:3306/bg_erp?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    type: com.alibaba.druid.pool.DruidDataSource
-
-    # 初始化大小，最小，最大
-    initialSize: 5
-    minIdle: 5
-    maxActive: 50
-
-    #连接等待超时时间
-    maxWait: 60000
-
-    #配置隔多久进行一次检测(检测可以关闭的空闲连接)
-    timeBetweenEvictionRunsMillis: 60000
-
-    #配置连接在池中的最小生存时间
-    minEvictableIdleTimeMillis: 300000
-
-
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-center
+      profile: dev
   #redis
   redis:
     host: 127.0.0.1 #redis的主机ip
