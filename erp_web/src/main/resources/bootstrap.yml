@@ -1,0 +1,51 @@
+server:
+  port: 8501
+spring:
+  application:
+    name: erp-web
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-center
+      profile: dev
+      label: master
+      fail-fast: true
+
+  #redis
+  redis:
+    host: 127.0.0.1 #redis的主机ip
+    port: 6379
+  #RabbitMq
+  rabbitmq:
+    host: 127.0.0.1 #rabbitmq的主机ip
+    port: 5672
+    username: bingo
+    password: bingo
+  security:
+    user:
+      name: bingo
+      password: password123
+#eureka相关配置
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@127.0.0.1:8561/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${spring.application.instance_id:${server.port}}
+    lease-renewal-interval-in-seconds: 5
+
+##jwt配置
+tokenHead: bearer;
+tokenHeader: Authorization
+isRememberMeExpiresSecond: 259200 #记住账号为3天有效
+audience:
+  clientId: 098f6bcd4621d373cade4e832627b4f6
+  base64Secret: MDk4ZjZiY2Q0NjIxZDM3M2NhZGU0ZTgzMjYyN2I0ZjY=
+  name: mogublog
+  expiresSecond: 28800  #8个小时 3600
