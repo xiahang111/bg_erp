@@ -1,9 +1,11 @@
 com/bingo/erp/xo/person/service/impl/CompanyInfoServiceImpl.class
 com/bingo/erp/xo/person/service/impl/CustomerInfoServiceImpl.class
 com/bingo/erp/xo/person/service/CustomerInfoService.class
+com/bingo/erp/xo/person/vo/CompanyVO.class
 com/bingo/erp/xo/person/mapper/CompanyInfoMapper.class
 com/bingo/erp/xo/person/entity/CompanyInfo.class
 com/bingo/erp/xo/person/service/CompanyInfoService.class
+com/bingo/erp/xo/person/vo/CustomerPageVO.class
 com/bingo/erp/xo/person/mapper/CustomerInfoMapper.class
 com/bingo/erp/xo/person/vo/CompanyPageVO.class
 com/bingo/erp/xo/person/entity/CustomerInfo.class

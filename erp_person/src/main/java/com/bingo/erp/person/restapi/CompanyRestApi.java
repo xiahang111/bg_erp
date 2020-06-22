@@ -1,9 +1,11 @@
 package com.bingo.erp.person.restapi;
 
+import com.bingo.erp.base.vo.CustomerVO;
 import com.bingo.erp.person.global.SysConf;
 import com.bingo.erp.utils.ResultUtil;
 import com.bingo.erp.xo.person.service.CompanyInfoService;
 import com.bingo.erp.xo.person.vo.CompanyPageVO;
+import com.bingo.erp.xo.person.vo.CompanyVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,5 +34,20 @@ public class CompanyRestApi {
         }
 
         return ResultUtil.result(SysConf.SUCCESS, companyInfoService.getCompanyInfo(companyPageVO));
+    }
+
+    @PostMapping("/saveCompany")
+    public String saveCustomerByOrder(HttpServletRequest request, @RequestBody CompanyVO companyVO) {
+
+
+        try {
+            companyInfoService.saveCompanyInfo(companyVO);
+
+            return ResultUtil.result(SysConf.SUCCESS, "保存成功");
+        } catch (Exception e) {
+            return ResultUtil.result(SysConf.Fail, e.getMessage());
+        }
+
+
     }
 }

@@ -1,5 +1,6 @@
 package com.bingo.erp.xo.order.service.impl;
 
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bingo.erp.base.serviceImpl.SuperServiceImpl;
 import com.bingo.erp.commons.entity.DataGather;
@@ -23,11 +24,13 @@ public class DataGatherServiceImpl extends SuperServiceImpl<DataGatherMapper, Da
     private DataGatherMapper dataGatherMapper;
 
     @Override
+    @DS("slave")
     public DataGather getLastDataGather() {
         return dataGatherMapper.getLastDataGather();
     }
 
     @Override
+    @DS("slave")
     public VisitVO getLineData() {
 
         //获取最近七天的订单数和销售额

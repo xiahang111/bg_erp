@@ -32,7 +32,7 @@ public class MaterialVO extends ProductVO{
     /**
      * 是否含有天地横梁
      */
-    public Boolean isHaveTransom;
+    public Boolean isHaveTransom = false;
 
     /**
      * 天地横梁信息

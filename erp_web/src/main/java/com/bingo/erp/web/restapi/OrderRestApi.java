@@ -49,7 +49,7 @@ public class OrderRestApi {
 
     @PostMapping("commitOrder")
     @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
-    public String commitOrder(HttpServletRequest request,@RequestBody(required = true) MaterialVO materialVO) {
+    public String commitOrder(HttpServletRequest request, @RequestBody(required = true) MaterialVO materialVO) {
 
         String adminUid = (String) request.getAttribute(SysConf.ADMIN_UID);
         if (adminUid == null) {
@@ -57,7 +57,7 @@ public class OrderRestApi {
         }
 
         try {
-            List<String> fileNames = orderService.saveOrder(adminUid,materialVO);
+            List<String> fileNames = orderService.saveOrder(adminUid, materialVO);
 
             return ResultUtil.result(SysConf.SUCCESS, fileNames);
         } catch (Exception e) {
@@ -69,7 +69,7 @@ public class OrderRestApi {
 
     @PostMapping("commitCBDOrder")
     @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
-    public String commitCBDOrder(HttpServletRequest request,@RequestBody(required = true) LaminateVO laminateVO) {
+    public String commitCBDOrder(HttpServletRequest request, @RequestBody(required = true) LaminateVO laminateVO) {
 
         String adminUid = (String) request.getAttribute(SysConf.ADMIN_UID);
         if (adminUid == null) {
@@ -77,9 +77,27 @@ public class OrderRestApi {
         }
 
         try {
-            List<String> fileNames = orderService.saveCBDOrder(adminUid,laminateVO);
+            List<String> fileNames = orderService.saveCBDOrder(adminUid, laminateVO);
 
             return ResultUtil.result(SysConf.SUCCESS, fileNames);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultUtil.result(SysConf.Fail, e.getMessage());
+        }
+
+    }
+
+    @GetMapping("saveOrderAgain")
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    public String saveOrderAgain(HttpServletRequest request, @RequestParam("orderUid") String orderUid) {
+
+        String adminUid = (String) request.getAttribute(SysConf.ADMIN_UID);
+        if (adminUid == null) {
+            return ResultUtil.result(SysConf.ERROR, "token用户过期");
+        }
+
+        try {
+            return ResultUtil.result(SysConf.SUCCESS, orderService.saveOrderAgain(adminUid, orderUid));
         } catch (Exception e) {
             e.printStackTrace();
             return ResultUtil.result(SysConf.Fail, e.getMessage());
@@ -167,9 +185,6 @@ public class OrderRestApi {
         }
 
     }
-
-
-
 
 
 }

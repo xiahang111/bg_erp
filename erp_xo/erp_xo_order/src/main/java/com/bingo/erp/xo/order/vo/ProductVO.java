@@ -19,6 +19,8 @@ public class ProductVO {
 
     public int orderType;
 
+    public int orderStatus;
+
     /**
      * 收货人
      */

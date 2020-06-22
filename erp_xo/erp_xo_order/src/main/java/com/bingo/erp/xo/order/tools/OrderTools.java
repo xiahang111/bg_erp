@@ -1,6 +1,7 @@
 package com.bingo.erp.xo.order.tools;
 
 import com.bingo.erp.base.enums.*;
+import com.bingo.erp.base.exception.MessageException;
 import com.bingo.erp.base.fatocry.material.MaterialCalculateFactory;
 import com.bingo.erp.base.vo.CustomerVO;
 import com.bingo.erp.commons.entity.IronwareInfo;
@@ -9,9 +10,11 @@ import com.bingo.erp.commons.entity.OrderInfo;
 import com.bingo.erp.commons.entity.TransomInfo;
 import com.bingo.erp.commons.feign.PersonFeignClient;
 import com.bingo.erp.utils.JsonUtils;
+import com.bingo.erp.utils.RedisUtil;
 import com.bingo.erp.xo.order.enums.MaterialFactoryEnum;
 import com.bingo.erp.xo.order.global.ExcelConf;
 import com.bingo.erp.xo.order.global.NormalConf;
+import com.bingo.erp.xo.order.global.RedisConf;
 import com.bingo.erp.xo.order.global.SysConf;
 import com.bingo.erp.xo.order.mapper.IronwareInfoMapper;
 import com.bingo.erp.xo.order.mapper.MaterialInfoMapper;
@@ -30,6 +33,8 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * 订单方法集中类，先放在这里，以后再重构订单的生成方法
@@ -40,6 +45,9 @@ public class OrderTools {
 
     @Resource
     private RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    RedisUtil redisUtil;
 
     public boolean materialValidate(List<MaterialInfoVO> materialInfoVOS) {
 
@@ -1116,6 +1124,9 @@ public class OrderTools {
         materialVO.setSalesman(orderInfo.getSalesman());
         materialVO.setOrderMaker(orderInfo.getOrderMaker());
         materialVO.setOrderTotalPrice(orderInfo.getTotalPrice());
+        materialVO.setOrderType(orderInfo.getOrderType().code);
+        materialVO.setOrderStatus(orderInfo.getOrderStatus().code);
+
 
         List<MaterialInfoVO> materialInfoVOS = new ArrayList<>();
         for (MaterialInfo materialInfo : materialInfos) {
@@ -1186,6 +1197,7 @@ public class OrderTools {
             ironwareInfoVO.setPrice(ironwareInfo.getPrice());
             ironwareInfoVO.setRemark(ironwareInfo.getRemark());
             ironwareInfoVO.setTotalPrice(ironwareInfo.getTotalPrice());
+            ironwareInfoVO.setIronwareNum(ironwareInfo.getIronwareNum());
 
             ironwareInfoVOS.add(ironwareInfoVO);
 
@@ -1210,5 +1222,34 @@ public class OrderTools {
         //改成发送消息
         rabbitTemplate.convertAndSend(SysConf.EXCHANGE_DIRECT, SysConf.BINGO_WEB, JsonUtils.objectToJson(customerVO));
         //personFeignClient.saveCustomerByOrder(customerVO);
+    }
+
+    public String getRoleNameByAdminUid(String adminUid) throws Exception {
+
+        String adminInfoJson = redisUtil.get(RedisConf.USER_ADMIN_INFO_KEY);
+
+        if (null == adminInfoJson) {
+            throw new MessageException("无法获取用户权限相关信息");
+        }
+
+        List<Map<String, String>> adminInfoMapList = (List<Map<String, String>>) JsonUtils.jsonArrayToArrayList(adminInfoJson);
+
+        List<Map<String, String>> adminMapList = adminInfoMapList.stream().filter(new Predicate<Map<String, String>>() {
+            @Override
+            public boolean test(Map<String, String> stringStringMap) {
+
+                String uid = stringStringMap.get("uid");
+
+                if (uid.equals(adminUid)) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            }
+        }).collect(Collectors.toList());
+
+        return adminMapList.get(0).get("roleName");
+
     }
 }
