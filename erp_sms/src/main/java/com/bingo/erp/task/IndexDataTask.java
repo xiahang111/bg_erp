@@ -31,7 +31,7 @@ public class IndexDataTask {
     @Resource
     private DataGatherMapper dataGatherMapper;
 
-    @Scheduled(cron = "0 0/10 * * * ?")
+    @Scheduled(cron = "30 0/10 * * * ?")
     private void statisticIndexData() {
 
         log.info("统计首页信息定时任务开始============");

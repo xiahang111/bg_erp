@@ -18,4 +18,6 @@ public class RedisConf extends BaseRedisConf {
      * 权限菜单
      */
     public final static String ALL_ROLE_LIST = "ALL_ROLE_LIST";
+
+    public final static String ORDER_UID_PRE = "ORDER_UID-";
 }

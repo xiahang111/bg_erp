@@ -8,6 +8,7 @@ public class SysConf extends BaseSysConf {
      * admin权限名称
      */
     public static final String ADMIN_ROLE = "admin";
+    public static final String CLERK_ROLE = "clerk";
 
     public static final Integer NORMAL_STATUS = 1;
 

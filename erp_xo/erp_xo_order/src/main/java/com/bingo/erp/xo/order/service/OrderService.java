@@ -7,6 +7,7 @@ import com.bingo.erp.commons.entity.OrderInfo;
 import com.bingo.erp.xo.order.vo.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface OrderService extends SuperService<OrderInfo> {
 
@@ -19,4 +20,6 @@ public interface OrderService extends SuperService<OrderInfo> {
     IPage<OrderInfo> getMaterialVOByUser(Admin admin, OrderRecordPageVO orderRecordPageVO);
 
     ProductVO getMaterialVOByUid(String uid);
+
+    Map<String ,Object> saveOrderAgain(String adminUid, String orderUid);
 }

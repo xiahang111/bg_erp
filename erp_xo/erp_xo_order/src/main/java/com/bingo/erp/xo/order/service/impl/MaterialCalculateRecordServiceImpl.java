@@ -1,5 +1,6 @@
 package com.bingo.erp.xo.order.service.impl;
 
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -23,6 +24,7 @@ public class MaterialCalculateRecordServiceImpl extends
     private MaterialCalculateRecordService materialCalculateRecordService;
 
     @Override
+    @DS("slave")
     public IPage<MaterialCalculateRecord> getMaterialRecordPage(ProductRecordPageVO productRecordPageVO) {
         QueryWrapper<MaterialCalculateRecord> queryWrapper = new QueryWrapper<>();
 

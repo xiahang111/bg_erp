@@ -1,5 +1,6 @@
 package com.bingo.erp.xo.order.service.impl;
 
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.bingo.erp.base.fatocry.material.MaterialCalculateFactory;
 import com.bingo.erp.base.serviceImpl.SuperServiceImpl;
 import com.bingo.erp.commons.entity.MaterialCalculateRecord;
@@ -55,6 +56,7 @@ public class ProductServiceImpl extends SuperServiceImpl<ProductMapper, Product>
     Gson gson = new Gson();
 
     @Override
+    @DS("slave")
     public List<Product> getAllProducts(Integer productType) {
 
         return productMapper.selectAllProducts(productType);
@@ -62,6 +64,7 @@ public class ProductServiceImpl extends SuperServiceImpl<ProductMapper, Product>
     }
 
     @Override
+    @DS("slave")
     public List<GlassCalculateResultVO> glassCalculate(GlassCalculateVO glassCalculateVO) {
 
         List<Product> productList;

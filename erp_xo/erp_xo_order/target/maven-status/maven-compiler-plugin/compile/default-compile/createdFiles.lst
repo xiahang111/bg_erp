@@ -17,6 +17,7 @@ com/bingo/erp/xo/order/factory/SP1HCalculateFactory.class
 com/bingo/erp/xo/order/tools/OrderTools.class
 com/bingo/erp/xo/order/vo/GlassCalculateRecordVO.class
 com/bingo/erp/xo/order/vo/UserPageVO.class
+com/bingo/erp/xo/order/tools/OrderTools$1.class
 com/bingo/erp/xo/order/mapper/MaterialCalculateRecordMapper.class
 com/bingo/erp/xo/order/vo/IndexOrderVO.class
 com/bingo/erp/xo/order/factory/JH22CalculateFactory.class

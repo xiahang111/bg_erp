@@ -4,6 +4,7 @@ package com.bingo.erp.commons.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.bingo.erp.base.entity.SuperEntity;
+import com.bingo.erp.base.enums.OrderStatusEnums;
 import com.bingo.erp.base.enums.OrderTypeEnums;
 import com.bingo.erp.base.enums.ProductTypeEnums;
 import lombok.Data;
@@ -32,6 +33,8 @@ public class OrderInfo extends SuperEntity<OrderInfo> {
      * 订单类型
      */
     private OrderTypeEnums orderType;
+
+    private OrderStatusEnums orderStatus;
 
     /**
      * 用户相关信息
