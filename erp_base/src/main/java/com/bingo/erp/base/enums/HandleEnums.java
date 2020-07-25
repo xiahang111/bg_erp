@@ -11,7 +11,7 @@ public enum HandleEnums implements IEnum {
     Handle168(1, "168拉手"),
     Handle1100(2, "1100拉手"),
     HandleTT(3, "通体拉手"),
-    HandleXZ(4, "50斜边镶钻拉手"),
+    HandleXZ(4, "50斜边镶嵌拉手"),
     HandleHZLS(5, "联动1号后装拉手"),
     HandleXQ168(6, "镶嵌168拉手");
 
