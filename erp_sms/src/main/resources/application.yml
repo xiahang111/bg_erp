@@ -1,17 +1,36 @@
 server:
-  port: 8502
+  port: 8503
+
+
+#eureka相关配置
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@127.0.0.1:8561/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${spring.application.instance_id:${server.port}}
+    lease-renewal-interval-in-seconds: 5
 
 spring:
+  jmx:
+    default-domain: bingo_sms
   application:
-    name: erp-person
-
-    # DATABASE CONFIG
+    name: bingo-sms
+  security:
+    user:
+      name: bingo
+      password: password123
   datasource:
     username: root
     #password: Cjcslhp178
     password: root
-    #url: jdbc:mysql://178.236.44.94:3306/bg_person?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
-    url: jdbc:mysql://localhost:3306/bg_person?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
+    #url: jdbc:mysql://178.236.44.94:3306/bg_erp?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/bg_erp?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
 
@@ -28,39 +47,32 @@ spring:
 
     #配置连接在池中的最小生存时间
     minEvictableIdleTimeMillis: 300000
-
-
-  #redis
+    #redis
   redis:
     host: 127.0.0.1 #redis的主机ip
     port: 6379
+
   #RabbitMq
   rabbitmq:
     host: 127.0.0.1 #rabbitmq的主机ip
     port: 5672
     username: bingo
     password: bingo
-  security:
-    user:
-      name: bingo
-      password: password123
 
-#eureka相关配置
-eureka:
-  client:
-    healthcheck:
-      enabled: true
-    registerWithEureka: true
-    fetchRegistry: true
-    serviceUrl:
-      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@127.0.0.1:8561/eureka/
-  instance:
-    prefer-ip-address: true
-    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${spring.application.instance_id:${server.port}}
-    lease-renewal-interval-in-seconds: 5
 
-# 或者：
-feign.hystrix.enabled: false # 索性禁用feign的hystrix支持
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 30000
+
+ribbon:
+  ReadTimeout: 30000
+  ConnectTimeout: 30000
 
 #mybatis
 mybatis-plus:
@@ -91,13 +103,6 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   type-enums-package: com.bingo.erp.base.enums
 
-##jwt配置
-tokenHead: bearer;
-tokenHeader: Authorization
-isRememberMeExpiresSecond: 259200 #记住账号为3天有效
-audience:
-  clientId: 098f6bcd4621d373cade4e832627b4f6
-  base64Secret: MDk4ZjZiY2Q0NjIxZDM3M2NhZGU0ZTgzMjYyN2I0ZjY=
-  name: mogublog
-  expiresSecond: 28800  #8个小时 3600
-
+#/home/data/template/   /Users/drew/IdeaProject/bg-erp/excel/
+srcFileUrl: /Users/drew/IdeaProject/bg-erp/excel/
+newFileDict: /Users/drew/IdeaProject/bg-erp/excel/

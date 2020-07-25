@@ -1,3 +1,4 @@
+/Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/service/impl/StoreOriginalInfoServiceImpl.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/vo/ProductVO.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/mapper/OrderInfoMapper.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/global/ExcelConf.java
@@ -9,6 +10,7 @@
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/vo/StoreSummaryPageVO.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/service/StoreSummaryInfoService.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/vo/StoreRecordPageVO.java
+/Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/mapper/StoreOriginalInfoMapper.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/factory/CBDCalculateFactory.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/factory/XB50CalculateFactory.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/vo/AdminVO.java
@@ -47,6 +49,7 @@
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/service/impl/OrderServiceImpl.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/service/UserService.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/service/RoleService.java
+/Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/service/impl/StoreOriginalRecordInfoServiceImpl.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/factory/SP2HCalculateFactory.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/vo/AddUserVO.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/mapper/StoreRecordInfoMapper.java
@@ -58,6 +61,7 @@
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/service/MaterialInfoService.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/service/OrderService.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/vo/IndexOrderVO.java
+/Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/mapper/StoreOriginalRecordInfoMapper.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/vo/MaterialVO.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/service/ProductService.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/service/DataGatherService.java
@@ -66,6 +70,7 @@
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/enums/MaterialFactoryEnum.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/vo/material/LD1H/CalculateVO.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/vo/GlassCalculateVO.java
+/Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/vo/StoreOriginRecordVO.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/vo/VisitVO.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/service/impl/StoreSummaryInfoServiceImpl.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/service/StoreRecordInfoService.java
@@ -73,7 +78,9 @@
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/mapper/DataGatherMapper.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/service/impl/ProductServiceImpl.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/vo/GlassCalculateResultVO.java
+/Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/service/StoreOriginalRecordInfoService.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/tools/OrderTools.java
+/Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/service/StoreOriginalInfoService.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/vo/MaterialCalculateResultVO.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/factory/TD1HCalculateFactory.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/vo/LaminateVO.java
@@ -83,3 +90,4 @@
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/factory/BG4HCalculateFactory.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/service/impl/MaterialCalculateRecordServiceImpl.java
 /Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/mapper/StoreSummaryInfoMapper.java
+/Users/drew/IdeaProject/bg-erp/erp_xo/erp_xo_order/src/main/java/com/bingo/erp/xo/order/vo/StoreOriginalPageVO.java

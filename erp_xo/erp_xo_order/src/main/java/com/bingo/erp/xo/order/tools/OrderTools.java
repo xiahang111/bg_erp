@@ -673,7 +673,7 @@ public class OrderTools {
                     }
 
                     if (j == 10) {
-                        cell.setCellValue(materialInfoVO0.getRemark() + "");
+                        cell.setCellValue(materialInfoVO0.getRemark());
                     }
                 }
 
@@ -771,7 +771,7 @@ public class OrderTools {
                 }
 
                 if (m == 10) {
-                    cell.setCellValue(ironwareInfoVO0.getRemark() + "");
+                    cell.setCellValue(ironwareInfoVO0.getRemark());
                 }
             }
 

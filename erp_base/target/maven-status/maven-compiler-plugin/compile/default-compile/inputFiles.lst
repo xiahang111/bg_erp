@@ -14,6 +14,8 @@
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/ProductTypeEnums.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/vo/CustomerVO.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/validator/annotion/NotBlank.java
+/Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/StoreOriginalResource.java
+/Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/MaterialStatusEnums.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/validator/constraint/BooleanValidator.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/validator/group/GetOne.java
 /Users/drew/IdeaProject/bg-erp/erp_base/src/main/java/com/bingo/erp/base/enums/CornerEnums.java

@@ -1,7 +1,9 @@
 /Users/drew/IdeaProject/bg-erp/erp_commons/src/main/java/com/bingo/erp/commons/entity/vo/GlassInfoVO.java
+/Users/drew/IdeaProject/bg-erp/erp_commons/src/main/java/com/bingo/erp/commons/entity/StoreOriginalInfo.java
 /Users/drew/IdeaProject/bg-erp/erp_commons/src/main/java/com/bingo/erp/commons/entity/Product.java
 /Users/drew/IdeaProject/bg-erp/erp_commons/src/main/java/com/bingo/erp/commons/entity/MaterialInfo.java
 /Users/drew/IdeaProject/bg-erp/erp_commons/src/main/java/com/bingo/erp/commons/entity/ProductCalculateRecord.java
+/Users/drew/IdeaProject/bg-erp/erp_commons/src/main/java/com/bingo/erp/commons/entity/StoreOriginalRecordInfo.java
 /Users/drew/IdeaProject/bg-erp/erp_commons/src/main/java/com/bingo/erp/commons/entity/ProductCalculate.java
 /Users/drew/IdeaProject/bg-erp/erp_commons/src/main/java/com/bingo/erp/commons/entity/StoreSummaryInfo.java
 /Users/drew/IdeaProject/bg-erp/erp_commons/src/main/java/com/bingo/erp/commons/entity/Role.java

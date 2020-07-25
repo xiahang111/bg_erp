@@ -2,9 +2,11 @@ package com.bingo;
 
 import com.bingo.erp.base.enums.MaterialColorEnums;
 import com.bingo.erp.commons.entity.OrderInfo;
+import com.bingo.erp.commons.entity.StoreOriginalInfo;
 import com.bingo.erp.commons.entity.StoreSummaryInfo;
 import com.bingo.erp.web.WebApplication;
 import com.bingo.erp.xo.order.global.ExcelConf;
+import com.bingo.erp.xo.order.mapper.StoreOriginalInfoMapper;
 import com.bingo.erp.xo.order.mapper.StoreSummaryInfoMapper;
 import com.bingo.erp.xo.order.service.OrderService;
 import com.bingo.erp.xo.order.vo.IndexOrderVO;
@@ -42,6 +44,9 @@ public class ApiTest {
     @Resource
     private StoreSummaryInfoMapper storeSummaryInfoMapper;
 
+    @Resource
+    private StoreOriginalInfoMapper storeOriginalInfoMapper;
+
 
     @Test
     public void test1() {
@@ -57,7 +62,7 @@ public class ApiTest {
     @Test
     public void test2() throws Exception {
 
-        File file = new File(NEW_FILE_DICT + "store.xls");
+        File file = new File(NEW_FILE_DICT + "origin.xls");
 
         POIFSFileSystem poifsFileSystem = new POIFSFileSystem(file);
 
@@ -68,49 +73,45 @@ public class ApiTest {
 
         for (int i = 0; i < sheet.getLastRowNum(); i++) {
 
-            StoreSummaryInfo storeSummaryInfo = new StoreSummaryInfo();
+            StoreOriginalInfo storeOriginalInfo = new StoreOriginalInfo();
 
             HSSFRow row = sheet.getRow(i);
 
             for (int j = 0; j < row.getLastCellNum(); j++) {
 
                 if (j == 0) {
-                    storeSummaryInfo.setMaterialName(row.getCell(j).getStringCellValue());
+                    storeOriginalInfo.setMaterialName(row.getCell(j).getStringCellValue());
                 }
 
                 if (j == 1) {
-                    String name = row.getCell(j).getStringCellValue();
-                    storeSummaryInfo.setMaterialColor(MaterialColorEnums.getByName(name));
+
+                    storeOriginalInfo.setSpecification(row.getCell(j).getStringCellValue());
                 }
                 if (j == 2) {
 
-                    storeSummaryInfo.setSpecification(row.getCell(j).getStringCellValue());
-                }
-                if (j == 3) {
-
-                    storeSummaryInfo.setUnit(row.getCell(j).getStringCellValue());
+                    storeOriginalInfo.setUnit(row.getCell(j).getStringCellValue());
 
                 }
                 if (j == 4) {
 
-                    storeSummaryInfo.setPrice(new BigDecimal(row.getCell(j).getNumericCellValue()).setScale(2,BigDecimal.ROUND_HALF_UP));
+                    storeOriginalInfo.setPrice(new BigDecimal(row.getCell(j).getNumericCellValue()).setScale(2,BigDecimal.ROUND_HALF_UP));
+                }
+                if (j == 3) {
+
+                    storeOriginalInfo.setWeight(new BigDecimal(row.getCell(j).getNumericCellValue()).setScale(2,BigDecimal.ROUND_HALF_UP));
+
                 }
                 if (j == 5) {
-
-                    storeSummaryInfo.setWeight(new BigDecimal(row.getCell(j).getNumericCellValue()).setScale(2,BigDecimal.ROUND_HALF_UP));
-
+                    storeOriginalInfo.setMaterialNum(new BigDecimal(row.getCell(j).getNumericCellValue()+""));
                 }
                 if (j == 6) {
-                    storeSummaryInfo.setMaterialNum(new BigDecimal(row.getCell(j).getNumericCellValue()+""));
+                    storeOriginalInfo.setTotalWeight(new BigDecimal(row.getCell(j).getNumericCellValue()).setScale(2,BigDecimal.ROUND_HALF_UP));
                 }
                 if (j == 7) {
-                    storeSummaryInfo.setTotalWeight(new BigDecimal(row.getCell(j).getNumericCellValue()).setScale(2,BigDecimal.ROUND_HALF_UP));
-                }
-                if (j == 8) {
 
-                    storeSummaryInfo.setTotalPrice(new BigDecimal(row.getCell(j).getNumericCellValue()).setScale(2,BigDecimal.ROUND_HALF_UP));
+                    storeOriginalInfo.setTotalPrice(new BigDecimal(row.getCell(j).getNumericCellValue()).setScale(2,BigDecimal.ROUND_HALF_UP));
 
-                    storeSummaryInfoMapper.insert(storeSummaryInfo);
+                    storeOriginalInfoMapper.insert(storeOriginalInfo);
 
                     log.info("=========第" + i + "条数据插入成功===============");
                 }

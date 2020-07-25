@@ -13,6 +13,7 @@ com/bingo/erp/base/enums/StoreMaterialResource.class
 com/bingo/erp/base/enums/EStatus.class
 com/bingo/erp/base/enums/TransomTypeEnums.class
 com/bingo/erp/base/serviceImpl/SuperServiceImpl.class
+com/bingo/erp/base/enums/StoreOriginalResource.class
 com/bingo/erp/base/holder/SpringContextHolder.class
 com/bingo/erp/base/vo/CustomerVO.class
 com/bingo/erp/base/validator/annotion/NotBlank.class
@@ -63,3 +64,4 @@ com/bingo/erp/base/fatocry/CalculateFactory.class
 com/bingo/erp/base/validator/group/Insert.class
 com/bingo/erp/base/enums/MaterialCalculateEnums.class
 com/bingo/erp/base/enums/CompanyUseEnums.class
+com/bingo/erp/base/enums/MaterialStatusEnums.class

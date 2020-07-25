@@ -32,11 +32,11 @@ spring:
 
   #redis
   redis:
-    host: 178.236.44.89 #redis的主机ip
+    host: 127.0.0.1 #redis的主机ip
     port: 6379
   #RabbitMq
   rabbitmq:
-    host: 178.236.44.89 #rabbitmq的主机ip
+    host: 127.0.0.1 #rabbitmq的主机ip
     port: 5672
     username: bingo
     password: bingo
@@ -53,7 +53,7 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@178.236.44.89:8561/eureka/
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@127.0.0.1:8561/eureka/
   instance:
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${spring.application.instance_id:${server.port}}
