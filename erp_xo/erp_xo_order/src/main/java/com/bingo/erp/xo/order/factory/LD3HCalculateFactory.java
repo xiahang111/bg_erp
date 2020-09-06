@@ -41,9 +41,11 @@ public class LD3HCalculateFactory implements MaterialCalculateFactory<MaterialIn
 
         //计算料的长度
 
-        if (vo.getHandleType() != 0 || StringUtils.isNotEmpty(vo.getHandlePlace().trim())) {
+        if (vo.getHandleType() != 0) {
             throw new MessageException("联动3号没有带拉手的产品哦~");
         }
+
+        vo.setHandlePlace("通体拉手");
 
         resultVO.setMaterialHeight(vo.getHeight());
         resultVO.setMaterialWidth(vo.getWidth().subtract(new BigDecimal(0)));

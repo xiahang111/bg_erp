@@ -427,10 +427,13 @@ public class OrderTools {
             //判定最小计算面积s
             // if (materialInfoVO.getMaterialType())
             switch (materialInfoVO.getMaterialType()) {
-                case 2001:
+                /*case 2001:
                     minArea = new BigDecimal("0.8");
                     break;
                 case 4001:
+                    minArea = new BigDecimal("0.8");
+                    break;
+                case 7004:
                     minArea = new BigDecimal("0.8");
                     break;
                 case 5003:
@@ -438,7 +441,7 @@ public class OrderTools {
                     break;
                 case 6001:
                     minArea = new BigDecimal("0.8");
-                    break;
+                    break;*/
                 case 7001:
                     minArea = new BigDecimal("0.8");
                     break;
@@ -448,6 +451,7 @@ public class OrderTools {
                 case 7003:
                     minArea = new BigDecimal("0.8");
                     break;
+
                 default:
                     minArea = new BigDecimal("0.5");
                     break;
@@ -828,17 +832,28 @@ public class OrderTools {
                     if (c == 0) {
                         cell.setCellValue(letMap.get(i));
                     }
-                    if (ProductTypeEnums.Complete.code == materialVO.getProductType() && c == 1) {
+                    if (CBDOrderTools.isNeedGlass(key) && ProductTypeEnums.Complete.code == materialVO.getProductType() && c == 1) {
                         cell.setCellValue(materialInfoVO0.getGlassHeight() + "");
+                    } else if (!CBDOrderTools.isNeedGlass(key)) {
+                        cell.setCellValue("/");
                     }
-                    if (ProductTypeEnums.Complete.code == materialVO.getProductType() && c == 2) {
+
+                    if (CBDOrderTools.isNeedGlass(key) && ProductTypeEnums.Complete.code == materialVO.getProductType() && c == 2) {
                         cell.setCellValue(materialInfoVO0.getGlassWidth() + "");
+                    } else if (!CBDOrderTools.isNeedGlass(key)) {
+                        cell.setCellValue("/");
                     }
-                    if (c == 3) {
+
+                    if (CBDOrderTools.isNeedGlass(key) && c == 3) {
                         cell.setCellValue(GlassColor.getNameByCode(materialInfoVO0.getGlassColor()));
+                    } else if (!CBDOrderTools.isNeedGlass(key)) {
+                        cell.setCellValue("/");
                     }
-                    if (ProductTypeEnums.Complete.code == materialVO.getProductType() && c == 4) {
+
+                    if (CBDOrderTools.isNeedGlass(key) && ProductTypeEnums.Complete.code == materialVO.getProductType() && c == 4) {
                         cell.setCellValue(materialInfoVO0.getMaterialNum());
+                    } else if (!CBDOrderTools.isNeedGlass(key)) {
+                        cell.setCellValue("/");
                     }
                     //下料详情先不写，螺丝数量和角码往下移
                     /*

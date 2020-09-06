@@ -28,6 +28,19 @@ import java.util.Map;
 public class CBDOrderTools {
 
 
+    public static boolean isNeedGlass(String name) {
+
+        for (String key : ExcelConf.NO_GLASS_STRINGS) {
+
+            if (name.contains(key)) {
+                return false;
+            }
+
+        }
+
+        return true;
+
+    }
 
     public Map<String, List<LaminateInfoVO>> laminateToMap(List<LaminateInfoVO> laminateInfoVOS) {
 
@@ -459,6 +472,7 @@ public class CBDOrderTools {
 
     }
 
+
     public void productFillData(HSSFSheet sheet, int addNum, LaminateVO laminateVO) {
 
         Map<String, List<LaminateInfoVO>> map = laminateToMap(laminateVO.getLaminateInfos());
@@ -507,21 +521,46 @@ public class CBDOrderTools {
                 for (int c = 0; c < row2.getLastCellNum(); c++) {
                     HSSFCell cell = row2.getCell(c);
 
-                    if (c == 0) {
-                        cell.setCellValue(letMap.get(i));
+                    switch (c) {
+                        case 0:
+                            cell.setCellValue(letMap.get(i));
+                            break;
+
+                        case 1:
+                            if (isNeedGlass(key) && ProductTypeEnums.Complete.code == laminateVO.getProductType()) {
+                                cell.setCellValue(laminateInfoVO.getGlassWidth() + "");
+                            } else if (!isNeedGlass(key)) {
+                                cell.setCellValue("/");
+                            }
+                            break;
+
+                        case 2:
+                            if (isNeedGlass(key) && ProductTypeEnums.Complete.code == laminateVO.getProductType()) {
+                                cell.setCellValue(laminateInfoVO.getGlassDepth() + "");
+                            } else if (!isNeedGlass(key)) {
+                                cell.setCellValue("/");
+                            }
+                            break;
+
+                        case 3:
+                            if (isNeedGlass(key)) {
+                                cell.setCellValue(GlassColor.getNameByCode(laminateInfoVO.getGlassColor()));
+                            } else if (!isNeedGlass(key)) {
+                                cell.setCellValue("/");
+                            }
+                            break;
+
+                        case 4:
+                            if (isNeedGlass(key) && ProductTypeEnums.Complete.code == laminateVO.getProductType() && c == 4) {
+                                cell.setCellValue(laminateInfoVO.getLaminateNum());
+                            } else if (!isNeedGlass(key)) {
+                                cell.setCellValue("/");
+                            }
+                            break;
+
                     }
-                    if (ProductTypeEnums.Complete.code == laminateVO.getProductType() && c == 1) {
-                        cell.setCellValue(laminateInfoVO.getGlassWidth() + "");
-                    }
-                    if (ProductTypeEnums.Complete.code == laminateVO.getProductType() && c == 2) {
-                        cell.setCellValue(laminateInfoVO.getGlassDepth() + "");
-                    }
-                    if (c == 3) {
-                        cell.setCellValue(GlassColor.getNameByCode(laminateInfoVO.getGlassColor()));
-                    }
-                    if (ProductTypeEnums.Complete.code == laminateVO.getProductType() && c == 4) {
-                        cell.setCellValue(laminateInfoVO.getLaminateNum());
-                    }
+
+
                     //下料详情先不写，螺丝数量和角码往下移
                     /*
                     if (c == 5) {
@@ -710,10 +749,12 @@ public class CBDOrderTools {
                     multiply(new BigDecimal(2)).
                     multiply(new BigDecimal(laminateInfoVO.getLaminateNum())).divide(new BigDecimal("1000").setScale(5, BigDecimal.ROUND_HALF_UP)).setScale(2, BigDecimal.ROUND_HALF_UP);
 
-            laminateInfoVO.setPerimeter(perimeter);
+
             if (perimeter.compareTo(minxPeri) <= 0) {
+                laminateInfoVO.setPerimeter(minxPeri);
                 laminateInfoVO.setTotalPrice(laminateInfoVO.getPrice().multiply(minxPeri).setScale(0, BigDecimal.ROUND_HALF_UP));
             } else {
+                laminateInfoVO.setPerimeter(perimeter);
                 laminateInfoVO.setTotalPrice(laminateInfoVO.getPrice().multiply(perimeter).setScale(0, BigDecimal.ROUND_HALF_UP));
             }
         }
