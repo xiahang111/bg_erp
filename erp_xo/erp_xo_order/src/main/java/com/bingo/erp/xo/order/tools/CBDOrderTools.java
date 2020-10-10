@@ -28,6 +28,17 @@ import java.util.Map;
 public class CBDOrderTools {
 
 
+    //判断产品类型是否是8003
+    public static boolean is8003(int materialType) {
+
+        if (materialType == MaterialTypeEnums.CBDJJ.code) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
     public static boolean isNeedGlass(String name) {
 
         for (String key : ExcelConf.NO_GLASS_STRINGS) {
@@ -527,7 +538,7 @@ public class CBDOrderTools {
                             break;
 
                         case 1:
-                            if (isNeedGlass(key) && ProductTypeEnums.Complete.code == laminateVO.getProductType()) {
+                            if (isNeedGlass(key) && !is8003(laminateInfoVO.getMaterialType()) &&ProductTypeEnums.Complete.code == laminateVO.getProductType()) {
                                 cell.setCellValue(laminateInfoVO.getGlassWidth() + "");
                             } else if (!isNeedGlass(key)) {
                                 cell.setCellValue("/");
@@ -535,7 +546,7 @@ public class CBDOrderTools {
                             break;
 
                         case 2:
-                            if (isNeedGlass(key) && ProductTypeEnums.Complete.code == laminateVO.getProductType()) {
+                            if (isNeedGlass(key) && !is8003(laminateInfoVO.getMaterialType()) &&ProductTypeEnums.Complete.code == laminateVO.getProductType()) {
                                 cell.setCellValue(laminateInfoVO.getGlassDepth() + "");
                             } else if (!isNeedGlass(key)) {
                                 cell.setCellValue("/");
@@ -543,7 +554,7 @@ public class CBDOrderTools {
                             break;
 
                         case 3:
-                            if (isNeedGlass(key)) {
+                            if (!is8003(laminateInfoVO.getMaterialType()) &&isNeedGlass(key)) {
                                 cell.setCellValue(GlassColor.getNameByCode(laminateInfoVO.getGlassColor()));
                             } else if (!isNeedGlass(key)) {
                                 cell.setCellValue("/");
@@ -551,7 +562,7 @@ public class CBDOrderTools {
                             break;
 
                         case 4:
-                            if (isNeedGlass(key) && ProductTypeEnums.Complete.code == laminateVO.getProductType() && c == 4) {
+                            if (isNeedGlass(key) && !is8003(laminateInfoVO.getMaterialType()) &&ProductTypeEnums.Complete.code == laminateVO.getProductType() && c == 4) {
                                 cell.setCellValue(laminateInfoVO.getLaminateNum());
                             } else if (!isNeedGlass(key)) {
                                 cell.setCellValue("/");
@@ -735,6 +746,7 @@ public class CBDOrderTools {
 
         for (LaminateInfoVO laminateInfoVO : laminateInfos) {
 
+            //获取材料种类
             int materialType = laminateInfoVO.getMaterialType();
 
             MaterialCalculateFactory factory = (MaterialCalculateFactory) MaterialFactoryEnum.getFactoryClass(Integer.valueOf(materialType)).newInstance();

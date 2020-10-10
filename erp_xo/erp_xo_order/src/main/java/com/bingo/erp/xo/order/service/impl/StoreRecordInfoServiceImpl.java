@@ -64,7 +64,7 @@ public class StoreRecordInfoServiceImpl
             }
 
         } else {
-            queryWrapper.orderByAsc("create_time");
+            queryWrapper.orderByDesc("create_time");
         }
 
         if (null != storeRecordPageVO.getMaterialColor()) {

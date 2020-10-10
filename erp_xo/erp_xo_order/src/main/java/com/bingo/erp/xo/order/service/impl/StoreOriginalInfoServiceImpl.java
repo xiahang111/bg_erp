@@ -3,6 +3,7 @@ package com.bingo.erp.xo.order.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.bingo.erp.base.enums.MaterialColorEnums;
 import com.bingo.erp.base.enums.MaterialStatusEnums;
 import com.bingo.erp.base.enums.StoreMaterialStatus;
 import com.bingo.erp.base.enums.StoreOriginalResource;
@@ -17,9 +18,7 @@ import com.bingo.erp.xo.order.global.SysConf;
 import com.bingo.erp.xo.order.mapper.StoreOriginalInfoMapper;
 import com.bingo.erp.xo.order.service.StoreOriginalInfoService;
 import com.bingo.erp.xo.order.service.StoreOriginalRecordInfoService;
-import com.bingo.erp.xo.order.vo.StoreOriginRecordVO;
-import com.bingo.erp.xo.order.vo.StoreOriginalPageVO;
-import com.bingo.erp.xo.order.vo.StoreRecordPageVO;
+import com.bingo.erp.xo.order.vo.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +35,9 @@ public class StoreOriginalInfoServiceImpl
     @Resource
     private StoreOriginalRecordInfoService storeOriginalRecordInfoService;
 
+    @Resource
+    private StoreOriginalInfoMapper storeOriginalInfoMapper;
+
     @Override
     public IPage<StoreOriginalInfo> getStoreOriginal(StoreOriginalPageVO storeOriginalPageVO) {
 
@@ -43,6 +45,7 @@ public class StoreOriginalInfoServiceImpl
 
         queryWrapper.orderByDesc("material_name");
         queryWrapper.isNotNull("material_name");
+        queryWrapper.eq("status", SysConf.NORMAL_STATUS);
 
         if (StringUtils.isNotBlank(storeOriginalPageVO.getKeyword())) {
             queryWrapper.like("material_name", storeOriginalPageVO.getKeyword());
@@ -91,7 +94,7 @@ public class StoreOriginalInfoServiceImpl
             }
 
         } else {
-            queryWrapper.orderByAsc("create_time");
+            queryWrapper.orderByDesc("create_time");
         }
 
         //分页查询
@@ -159,7 +162,7 @@ public class StoreOriginalInfoServiceImpl
             //重新计算单价
 
             //非0校验
-            if (one.getMaterialNum().compareTo(new BigDecimal(0)) > 0 ){
+            if (one.getMaterialNum().compareTo(new BigDecimal(0)) > 0) {
                 BigDecimal newPrice = one.getTotalPrice().divide(one.getMaterialNum(), BigDecimal.ROUND_HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP);
                 one.setPrice(newPrice);
             }
@@ -180,15 +183,74 @@ public class StoreOriginalInfoServiceImpl
             one.setTotalWeight(one.getTotalWeight().subtract(storeOriginalRecordInfo.getTotalWeight()).setScale(2, BigDecimal.ROUND_HALF_UP));
             one.setMaterialNum(one.getMaterialNum().subtract(storeOriginalRecordInfo.getMaterialNum()).setScale(0, BigDecimal.ROUND_HALF_UP));
 
-            if (one.getMaterialNum().compareTo(new BigDecimal(0)) <= 0){
+            if (one.getMaterialNum().compareTo(new BigDecimal(0)) < 0) {
                 throw new MessageException("库存不足！不得出库！");
             }
         }
 
 
-
         storeOriginalRecordInfoService.save(storeOriginalRecordInfo);
         storeOriginalInfoService.updateById(one);
+
+    }
+
+    @Override
+    public void saveStoreOrigin(StoreOriginVO storeOriginVO) throws Exception {
+
+        //校验
+        if (StringUtils.isBlank(storeOriginVO.getMaterialName()) || StringUtils.isBlank(storeOriginVO.getSpecification())) {
+            throw new MessageException("信息不能为空哦");
+        }
+        QueryWrapper<StoreOriginalInfo> queryWrapper = new QueryWrapper<>();
+
+        StoreOriginalInfo storeOriginalInfo;
+        if (storeOriginVO.getUid() == null) {
+
+            queryWrapper.eq("material_name", storeOriginVO.getMaterialName());
+            queryWrapper.eq("specification", storeOriginVO.getSpecification());
+
+            storeOriginalInfo = storeOriginalInfoService.getOne(queryWrapper);
+
+            if (null != storeOriginalInfo) {
+                throw new MessageException("数据库已有此材料，不可新增，请确认！");
+            }
+
+            storeOriginalInfo = new StoreOriginalInfo();
+
+        } else {
+            queryWrapper.eq("uid", storeOriginVO.getUid());
+
+            storeOriginalInfo = storeOriginalInfoService.getOne(queryWrapper);
+        }
+
+
+        storeOriginalInfo.setMaterialName(storeOriginVO.getMaterialName());
+
+        if (null != storeOriginVO.getMaterialNum()) {
+            storeOriginalInfo.setMaterialNum(storeOriginVO.getMaterialNum());
+        }
+        storeOriginalInfo.setSpecification(storeOriginVO.getSpecification());
+        storeOriginalInfo.setUnit(storeOriginVO.getUnit());
+        storeOriginalInfo.setPrice(storeOriginVO.getPrice());
+        storeOriginalInfo.setWeight(storeOriginVO.getWeight());
+
+        storeOriginalInfo.setTotalWeight(storeOriginalInfo.getWeight().multiply(storeOriginalInfo.getMaterialNum()).setScale(2, BigDecimal.ROUND_HALF_UP));
+        storeOriginalInfo.setTotalPrice(storeOriginalInfo.getPrice().multiply(storeOriginalInfo.getMaterialNum()).setScale(2, BigDecimal.ROUND_HALF_UP));
+
+        storeOriginalInfoService.saveOrUpdate(storeOriginalInfo);
+
+    }
+
+    @Override
+    public void deleteStoreOrigin(StoreOriginVO storeOriginVO) {
+
+        String uid = storeOriginVO.getUid();
+
+        StoreOriginalInfo storeOriginalInfo = storeOriginalInfoMapper.selectById(uid);
+
+        storeOriginalInfo.setStatus(SysConf.DELETE_STATUS);
+
+        storeOriginalInfoMapper.updateById(storeOriginalInfo);
 
     }
 }

@@ -39,6 +39,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.*;
 
 @Service
@@ -248,6 +249,13 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
         if (materialVO.isHaveTransom && null != materialVO.getTransoms()) {
             transomNum = materialVO.getTransoms().size() - 1;
             tools.transomCalculate(materialVO.getTransoms());
+
+            //添加螺丝配件信息
+            List<TransomVO> transomVOS = materialVO.getTransoms();
+
+            for (TransomVO transomVO : transomVOS) {
+                materialVO.getIronwares().addAll(tools.getIronByHeight(transomVO.getHeight()));
+            }
         }
 
         tools.orderCalculate(materialVO);
