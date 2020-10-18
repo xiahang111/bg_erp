@@ -30,6 +30,12 @@ public class StoreRestApi {
     private StoreOriginalInfoService storeOriginalInfoService;
 
 
+    /**
+     * 获取库存数据
+     * @param request
+     * @param storeSummaryPageVO
+     * @return
+     */
     @PostMapping("getStoreSummary")
     @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
     public String getStoreSummary(HttpServletRequest request, @RequestBody StoreSummaryPageVO storeSummaryPageVO) {
@@ -38,6 +44,12 @@ public class StoreRestApi {
 
     }
 
+    /**
+     * 获取坯料数据
+     * @param request
+     * @param storeOriginalPageVO
+     * @return
+     */
     @PostMapping("getStoreOrigin")
     @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
     public String getStoreOrigin(HttpServletRequest request, @RequestBody StoreOriginalPageVO storeOriginalPageVO) {
@@ -46,6 +58,13 @@ public class StoreRestApi {
 
     }
 
+
+    /**
+     * 新增仓库种类信息
+     * @param request
+     * @param storeSummaryVO
+     * @return
+     */
     @PostMapping("saveStoreSummary")
     @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
     public String saveStoreSummary(HttpServletRequest request, @RequestBody StoreSummaryVO storeSummaryVO) {
@@ -60,6 +79,32 @@ public class StoreRestApi {
 
     }
 
+    /**
+     * 新增坯料种类信息
+     * @param request
+     * @param storeOriginVO
+     * @return
+     */
+    @PostMapping("saveStoreOrigin")
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    public String saveStoreOrigin(HttpServletRequest request, @RequestBody StoreOriginVO storeOriginVO) {
+
+        try {
+            storeOriginalInfoService.saveStoreOrigin(storeOriginVO);
+            return ResultUtil.result(SysConf.SUCCESS, "");
+        } catch (Exception e) {
+            return ResultUtil.result(SysConf.Fail, e.getMessage());
+        }
+
+
+    }
+
+    /**
+     * 删除仓库种类信息
+     * @param request
+     * @param storeSummaryVO
+     * @return
+     */
     @PostMapping("deleteStoreSummary")
     @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
     @AuthorityVerify
@@ -67,6 +112,27 @@ public class StoreRestApi {
 
         try {
             storeSummaryInfoService.deleteStoreSummary(storeSummaryVO);
+            return ResultUtil.result(SysConf.SUCCESS, "");
+        } catch (Exception e) {
+            return ResultUtil.result(SysConf.Fail, e.getMessage());
+        }
+
+
+    }
+
+    /**
+     * 删除坯料种类信息
+     * @param request
+     * @param storeOriginVO
+     * @return
+     */
+    @PostMapping("deleteStoreOrigin")
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    @AuthorityVerify
+    public String deleteStoreOrigin(HttpServletRequest request, @RequestBody StoreOriginVO storeOriginVO) {
+
+        try {
+            storeOriginalInfoService.deleteStoreOrigin(storeOriginVO);
             return ResultUtil.result(SysConf.SUCCESS, "");
         } catch (Exception e) {
             return ResultUtil.result(SysConf.Fail, e.getMessage());

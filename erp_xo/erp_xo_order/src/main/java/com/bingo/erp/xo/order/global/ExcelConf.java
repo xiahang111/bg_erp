@@ -30,6 +30,8 @@ public class ExcelConf {
     //层板灯生产单模板
     public static final String CBD_PRODUCT_ORDER_FILENAME = "cbd-production-order.xls";
 
+    public static final String NO_GLASS_STRINGS[] =new  String []{ "无玻璃","层板酒架" };
+
     // /home/data/template/   /Users/drew/IdeaProject/bg-erp/excel/
 
 

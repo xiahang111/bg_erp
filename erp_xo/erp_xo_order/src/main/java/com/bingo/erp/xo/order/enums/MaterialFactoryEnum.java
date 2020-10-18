@@ -19,7 +19,9 @@ public enum MaterialFactoryEnum {
     BG1H(7001, NotCalculateFactory.class),
     BG2H(7002, NotCalculateFactory.class),
     BG3H(7003, NotCalculateFactory.class),
-    CBD(8001, CBDCalculateFactory.class);
+    CBD(8001, CBDCalculateFactory.class),
+    CBD1(8002, CBDCalculateFactory.class),
+    JGCB(8003, CBDCalculateFactory.class),;
 
 
     MaterialFactoryEnum(int code, Class factoryClass) {

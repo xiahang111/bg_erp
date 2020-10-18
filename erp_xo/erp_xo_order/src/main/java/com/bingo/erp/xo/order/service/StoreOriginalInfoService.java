@@ -4,9 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.bingo.erp.base.service.SuperService;
 import com.bingo.erp.commons.entity.StoreOriginalInfo;
 import com.bingo.erp.commons.entity.StoreOriginalRecordInfo;
-import com.bingo.erp.xo.order.vo.StoreOriginRecordVO;
-import com.bingo.erp.xo.order.vo.StoreOriginalPageVO;
-import com.bingo.erp.xo.order.vo.StoreRecordPageVO;
+import com.bingo.erp.xo.order.vo.*;
 
 public interface StoreOriginalInfoService extends SuperService<StoreOriginalInfo> {
 
@@ -15,4 +13,8 @@ public interface StoreOriginalInfoService extends SuperService<StoreOriginalInfo
     IPage<StoreOriginalRecordInfo> getStoreOriginalRecord(StoreRecordPageVO storeRecordPageVO);
 
     void saveStoreOriginalRecord(StoreOriginRecordVO storeOriginRecordVO)throws Exception;
+
+    void saveStoreOrigin(StoreOriginVO storeOriginVO) throws Exception;
+
+    void deleteStoreOrigin(StoreOriginVO storeOriginVO);
 }

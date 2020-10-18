@@ -427,16 +427,21 @@ public class OrderTools {
             //判定最小计算面积s
             // if (materialInfoVO.getMaterialType())
             switch (materialInfoVO.getMaterialType()) {
-                case 2001:
-                    minArea = new BigDecimal("0.8");
-                    break;
-                case 4001:
+                /*
+
+                case 7004:
                     minArea = new BigDecimal("0.8");
                     break;
                 case 5003:
                     minArea = new BigDecimal("0.8");
                     break;
                 case 6001:
+                    minArea = new BigDecimal("0.8");
+                    break;*/
+                case 4001:
+                    minArea = new BigDecimal("0.8");
+                    break;
+                case 2001:
                     minArea = new BigDecimal("0.8");
                     break;
                 case 7001:
@@ -448,6 +453,7 @@ public class OrderTools {
                 case 7003:
                     minArea = new BigDecimal("0.8");
                     break;
+
                 default:
                     minArea = new BigDecimal("0.5");
                     break;
@@ -467,6 +473,37 @@ public class OrderTools {
 
         }
 
+
+    }
+
+    public List<IronwareInfoVO> getIronByHeight(BigDecimal height) {
+
+        List<IronwareInfoVO> results = new ArrayList<>();
+
+        if (height.compareTo(new BigDecimal("500")) < 0) {
+            IronwareInfoVO ironwareInfoVO1 = new IronwareInfoVO();
+            ironwareInfoVO1.setIronwareNum(1);
+            ironwareInfoVO1.setIronwareName("60螺丝");
+            ironwareInfoVO1.setUnit("个");
+
+            IronwareInfoVO ironwareInfoVO2 = new IronwareInfoVO();
+            ironwareInfoVO2.setIronwareNum(3);
+            ironwareInfoVO2.setIronwareName("30螺丝");
+            ironwareInfoVO2.setUnit("个");
+
+            results.add(ironwareInfoVO1);
+            results.add(ironwareInfoVO2);
+
+        } else {
+
+            IronwareInfoVO ironwareInfoVO1 = new IronwareInfoVO();
+            ironwareInfoVO1.setIronwareNum(6);
+            ironwareInfoVO1.setIronwareName("30螺丝");
+            ironwareInfoVO1.setUnit("个");
+            results.add(ironwareInfoVO1);
+        }
+
+        return results;
 
     }
 
@@ -502,6 +539,8 @@ public class OrderTools {
                 ironwareInfoVO.setTotalPrice(ironwareInfoVO.getPrice().
                         multiply(new BigDecimal(ironwareInfoVO.getIronwareNum()).setScale(0, BigDecimal.ROUND_HALF_UP)));
             });
+        } else {
+
         }
 
     }
@@ -533,8 +572,9 @@ public class OrderTools {
 
         for (IronwareInfoVO ironwareInfoVO : materialVO.getIronwares()) {
 
-            ironwareTotalPrice = ironwareTotalPrice.add(ironwareInfoVO.getTotalPrice());
-
+            if(null != ironwareInfoVO.getTotalPrice()){
+                ironwareTotalPrice = ironwareTotalPrice.add(ironwareInfoVO.getTotalPrice());
+            }
         }
 
         BigDecimal packageTotalPrice = NormalConf.BIG_PACKAGE_PRICE.
@@ -828,17 +868,28 @@ public class OrderTools {
                     if (c == 0) {
                         cell.setCellValue(letMap.get(i));
                     }
-                    if (ProductTypeEnums.Complete.code == materialVO.getProductType() && c == 1) {
+                    if (CBDOrderTools.isNeedGlass(key) && ProductTypeEnums.Complete.code == materialVO.getProductType() && c == 1) {
                         cell.setCellValue(materialInfoVO0.getGlassHeight() + "");
+                    } else if (!CBDOrderTools.isNeedGlass(key)) {
+                        cell.setCellValue("/");
                     }
-                    if (ProductTypeEnums.Complete.code == materialVO.getProductType() && c == 2) {
+
+                    if (CBDOrderTools.isNeedGlass(key) && ProductTypeEnums.Complete.code == materialVO.getProductType() && c == 2) {
                         cell.setCellValue(materialInfoVO0.getGlassWidth() + "");
+                    } else if (!CBDOrderTools.isNeedGlass(key)) {
+                        cell.setCellValue("/");
                     }
-                    if (c == 3) {
+
+                    if (CBDOrderTools.isNeedGlass(key) && c == 3) {
                         cell.setCellValue(GlassColor.getNameByCode(materialInfoVO0.getGlassColor()));
+                    } else if (!CBDOrderTools.isNeedGlass(key)) {
+                        cell.setCellValue("/");
                     }
-                    if (ProductTypeEnums.Complete.code == materialVO.getProductType() && c == 4) {
+
+                    if (CBDOrderTools.isNeedGlass(key) && ProductTypeEnums.Complete.code == materialVO.getProductType() && c == 4) {
                         cell.setCellValue(materialInfoVO0.getMaterialNum());
+                    } else if (!CBDOrderTools.isNeedGlass(key)) {
+                        cell.setCellValue("/");
                     }
                     //下料详情先不写，螺丝数量和角码往下移
                     /*

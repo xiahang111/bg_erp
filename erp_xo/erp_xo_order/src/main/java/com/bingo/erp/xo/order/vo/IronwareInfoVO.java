@@ -7,9 +7,9 @@ import java.math.BigDecimal;
 @Data
 public class IronwareInfoVO {
 
-    public String ironwareName;
+    public String ironwareName = "";
 
-    public String unit;
+    public String unit = "";
 
     public int ironwareColor;
 
@@ -17,10 +17,10 @@ public class IronwareInfoVO {
 
     public int ironwareNum;
 
-    public BigDecimal price;
+    public BigDecimal price = new BigDecimal("0");
 
     private String remark;
 
-    protected BigDecimal totalPrice;
+    protected BigDecimal totalPrice = new BigDecimal("0");
 
 }
