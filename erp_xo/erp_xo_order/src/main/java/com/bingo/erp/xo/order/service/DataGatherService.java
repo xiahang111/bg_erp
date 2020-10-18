@@ -3,6 +3,9 @@ package com.bingo.erp.xo.order.service;
 import com.bingo.erp.base.service.SuperService;
 import com.bingo.erp.commons.entity.DataGather;
 import com.bingo.erp.xo.order.vo.VisitVO;
+import lombok.Data;
+
+import java.math.BigDecimal;
 
 
 /**
@@ -20,4 +23,5 @@ public interface DataGatherService extends SuperService<DataGather> {
 
 
     public VisitVO getLineData();
+
 }

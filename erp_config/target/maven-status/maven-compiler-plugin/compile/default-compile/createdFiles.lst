@@ -1,5 +1,5 @@
-com/bingo/erp/config/jwt/Audience.class
-com/bingo/erp/config/mybatis/MetaObjectHandlerConfig.class
-com/bingo/erp/config/feign/FeignConfiguration.class
-com/bingo/erp/config/jwt/JwtHelper.class
-com/bingo/erp/config/security/SecurityUser.class
+com\bingo\erp\config\mybatis\MetaObjectHandlerConfig.class
+com\bingo\erp\config\security\SecurityUser.class
+com\bingo\erp\config\feign\FeignConfiguration.class
+com\bingo\erp\config\jwt\JwtHelper.class
+com\bingo\erp\config\jwt\Audience.class

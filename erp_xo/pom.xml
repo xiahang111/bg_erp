@@ -19,6 +19,7 @@
         <module>erp_xo_order</module>
         <module>erp_xo_person</module>
         <module>erp_xo_manufacture</module>
+        <module>erp_xo_data</module>
     </modules>
 
     <properties>

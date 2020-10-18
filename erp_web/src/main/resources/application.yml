@@ -13,8 +13,8 @@ spring:
         master:
           username: root
           #password: Cjcslhp178
-          password: root
-          url: jdbc:mysql://127.0.0.1:3306/bg_erp?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
+          password: Cjcslhp178
+          url: jdbc:mysql://178.236.44.89:3306/bg_erp?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
           #url: jdbc:mysql://localhost:3306/bg_erp?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
           driver-class-name: com.mysql.cj.jdbc.Driver
 
@@ -22,8 +22,8 @@ spring:
         slave:
           username: root
           #password: Cjcslhp178
-          password: root
-          url: jdbc:mysql://127.0.0.1:3306/bg_erp?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
+          password: Cjcslhp178
+          url: jdbc:mysql://178.236.44.89:3306/bg_erp?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
           #url: jdbc:mysql://localhost:3306/bg_erp?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
           driver-class-name: com.mysql.cj.jdbc.Driver
 

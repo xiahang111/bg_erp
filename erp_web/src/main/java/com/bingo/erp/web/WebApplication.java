@@ -20,6 +20,7 @@ import org.springframework.web.filter.CorsFilter;
 @ComponentScan(basePackages = {"com.bingo.erp.utils",
         "com.bingo.erp.config",
         "com.bingo.erp.web.restapi",
+        "com.bingo.erp.web.feign",
         "com.bingo.erp.web.config",
         "com.bingo.erp.xo.order.service",
         "com.bingo.erp.utils",
