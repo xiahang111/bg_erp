@@ -1,13 +1,9 @@
 package com.bingo.erp.xo.order.tools;
 
 import com.bingo.erp.base.enums.*;
-import com.bingo.erp.base.exception.MessageException;
 import com.bingo.erp.base.fatocry.material.MaterialCalculateFactory;
 import com.bingo.erp.base.vo.CustomerVO;
-import com.bingo.erp.commons.entity.IronwareInfo;
-import com.bingo.erp.commons.entity.MaterialInfo;
-import com.bingo.erp.commons.entity.OrderInfo;
-import com.bingo.erp.commons.entity.TransomInfo;
+import com.bingo.erp.commons.entity.*;
 import com.bingo.erp.commons.feign.PersonFeignClient;
 import com.bingo.erp.utils.JsonUtils;
 import com.bingo.erp.utils.RedisUtil;
@@ -19,6 +15,8 @@ import com.bingo.erp.xo.order.global.SysConf;
 import com.bingo.erp.xo.order.mapper.IronwareInfoMapper;
 import com.bingo.erp.xo.order.mapper.MaterialInfoMapper;
 import com.bingo.erp.xo.order.mapper.TransomMapper;
+import com.bingo.erp.xo.order.service.AdminService;
+import com.bingo.erp.xo.order.service.RoleService;
 import com.bingo.erp.xo.order.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jxls.util.Util;
@@ -27,12 +25,12 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -48,6 +46,12 @@ public class OrderTools {
 
     @Autowired
     RedisUtil redisUtil;
+
+    @Resource
+    private RoleService roleService;
+
+    @Resource
+    private AdminService adminService;
 
     public boolean materialValidate(List<MaterialInfoVO> materialInfoVOS) {
 
@@ -1067,8 +1071,9 @@ public class OrderTools {
 
     }
 
-    public void saveMaterialInfoList(MaterialInfoMapper mapper, String uid, List<MaterialInfoVO> materialInfoVOS) {
+    public List<MaterialInfo> saveMaterialInfoList(MaterialInfoMapper mapper, String uid, List<MaterialInfoVO> materialInfoVOS) {
 
+        List<MaterialInfo> result = new ArrayList<>();
         for (MaterialInfoVO materialInfoVO : materialInfoVOS) {
 
             MaterialInfo info = new MaterialInfo(uid, MaterialColorEnums.getByCode(materialInfoVO.getGlassColor()),
@@ -1083,10 +1088,10 @@ public class OrderTools {
                     materialInfoVO.getMaterialDetail(), materialInfoVO.getRemark(),
                     materialInfoVO.getPrice(), materialInfoVO.getArea(), materialInfoVO.getTotalPrice());
             mapper.insert(info);
+            result.add(info);
 
         }
-
-
+        return result;
     }
 
     public void saveIronwareInfoList(IronwareInfoMapper mapper, List<IronwareInfoVO> ironwareInfoVOS, String uid) {
@@ -1275,12 +1280,36 @@ public class OrderTools {
         //personFeignClient.saveCustomerByOrder(customerVO);
     }
 
+
+
     public String getRoleNameByAdminUid(String adminUid) throws Exception {
 
         String adminInfoJson = redisUtil.get(RedisConf.USER_ADMIN_INFO_KEY);
 
         if (null == adminInfoJson) {
-            throw new MessageException("无法获取用户权限相关信息");
+
+            //更新用户权限相关
+
+            List<Admin> admins = adminService.list();
+
+            List<Map<String, String>> adminMapList = new ArrayList<>();
+
+            for (Admin admin : admins) {
+                String uid = admin.getUid();
+                String username = admin.getUserName();
+                String roleUid = admin.getRoleUid();
+                Role role = roleService.getById(roleUid);
+
+                Map<String, String> adminMap = new HashMap<>();
+                adminMap.put("uid", uid);
+                adminMap.put("username", username);
+                adminMap.put("roleName", role.getRoleName());
+
+                adminMapList.add(adminMap);
+            }
+
+            adminInfoJson = JsonUtils.objectToJson(adminMapList);
+            redisUtil.setEx(RedisConf.USER_ADMIN_INFO_KEY, adminInfoJson, 2l, TimeUnit.HOURS);
         }
 
         List<Map<String, String>> adminInfoMapList = (List<Map<String, String>>) JsonUtils.jsonArrayToArrayList(adminInfoJson);

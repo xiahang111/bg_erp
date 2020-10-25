@@ -4,19 +4,17 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bingo.erp.commons.entity.DataGather;
 import com.bingo.erp.commons.entity.OrderInfo;
 import com.bingo.erp.utils.DateUtils;
+import com.bingo.erp.xo.order.global.SysConf;
 import com.bingo.erp.xo.order.mapper.DataGatherMapper;
 import com.bingo.erp.xo.order.mapper.OrderInfoMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Configuration
@@ -31,13 +29,14 @@ public class IndexDataTask {
     @Resource
     private DataGatherMapper dataGatherMapper;
 
-    @Scheduled(cron = "30 0/10 * * * ?")
+    @Scheduled(cron = "0 0/10 * * * ?")
     private void statisticIndexData() {
 
         log.info("统计首页信息定时任务开始============");
 
         QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<>();
 
+        queryWrapper.eq("status",SysConf.NORMAL_STATUS);
         List<OrderInfo> orderInfos = orderInfoMapper.selectList(queryWrapper);
 
         List<OrderInfo> todays = new ArrayList<>();

@@ -1,30 +1,25 @@
 package com.bingo.erp.xo.order.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.bingo.erp.base.enums.CustomerResourceEnums;
-import com.bingo.erp.base.enums.OrderStatusEnums;
-import com.bingo.erp.base.enums.OrderTypeEnums;
+import com.bingo.erp.base.enums.*;
 import com.bingo.erp.base.exception.MessageException;
 import com.bingo.erp.base.serviceImpl.SuperServiceImpl;
-import com.bingo.erp.base.vo.CustomerVO;
-import com.bingo.erp.commons.entity.Admin;
-import com.bingo.erp.commons.entity.IronwareInfo;
-import com.bingo.erp.commons.entity.MaterialInfo;
-import com.bingo.erp.commons.entity.OrderInfo;
+import com.bingo.erp.commons.entity.*;
 import com.bingo.erp.commons.feign.PersonFeignClient;
 import com.bingo.erp.utils.DateUtils;
 import com.bingo.erp.utils.JsonUtils;
 import com.bingo.erp.utils.RedisUtil;
+import com.bingo.erp.utils.StringUtils;
 import com.bingo.erp.xo.order.global.ExcelConf;
-import com.bingo.erp.xo.order.global.NormalConf;
 import com.bingo.erp.xo.order.global.RedisConf;
 import com.bingo.erp.xo.order.global.SysConf;
 import com.bingo.erp.xo.order.mapper.*;
-import com.bingo.erp.xo.order.service.OrderService;
+import com.bingo.erp.xo.order.service.*;
 import com.bingo.erp.xo.order.tools.CBDOrderTools;
 import com.bingo.erp.xo.order.tools.OrderTools;
 import com.bingo.erp.xo.order.vo.*;
@@ -36,10 +31,10 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.File;
-import java.math.BigDecimal;
 import java.util.*;
 
 @Service
@@ -56,10 +51,19 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
     private MaterialInfoMapper materialInfoMapper;
 
     @Resource
+    private MaterialInfoService materialInfoService;
+
+    @Resource
     private IronwareInfoMapper ironwareInfoMapper;
 
     @Resource
+    private IronwareInforService ironwareInforService;
+
+    @Resource
     private LaminaterInfoMapper laminaterInfoMapper;
+
+    @Resource
+    private LaminateInfoService laminateInfoService;
 
     @Resource
     private OrderService orderService;
@@ -70,8 +74,14 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
     @Resource
     CBDOrderTools cbdOrderTools;
 
+    @Resource
+    private OrderGlassDetailService orderGlassDetailService;
+
     @Autowired
     RedisUtil redisUtil;
+
+    @Resource
+    private OrderFileRecordService orderFileRecordService;
 
     @Resource
     private PersonFeignClient personFeignClient;
@@ -100,6 +110,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
 
     @Override
+    @Transactional
     public List<String> saveCBDOrder(String adminUid, LaminateVO laminateVO) throws Exception {
 
         log.info("===============方法开始，参数信息：excel文件夹：" + NEW_FILE_DICT);
@@ -188,7 +199,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
         String roleName = tools.getRoleNameByAdminUid(adminUid);
 
-        if (SysConf.CLERK_ROLE.equals(roleName)) {
+        if (SysConf.CLERK_ROLE.equals(roleName) || SysConf.ADMIN_ROLE.equals(roleName)) {
             laminateVO.setOrderStatus(OrderStatusEnums.STAY_CONFIRM.code);
             orderInfo.setOrderStatus(OrderStatusEnums.STAY_CONFIRM);
         } else {
@@ -198,7 +209,26 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
         orderInfoMapper.insert(orderInfo);
 
-        cbdOrderTools.saveLaminateInfoList(laminaterInfoMapper, orderInfo.getUid(), laminateVO.getLaminateInfos());
+        //保存文件信息
+        OrderFileRecord orderFileRecord = new OrderFileRecord();
+
+        orderFileRecord.setFileName(getStringByList(result));
+
+        orderFileRecord.setOrderUid(orderInfo.getUid());
+
+        orderFileRecord.setOrderId(orderInfo.getOrderId());
+
+        orderFileRecordService.save(orderFileRecord);
+
+
+        //保存层板灯信息
+        List<LaminateInfo> laminateInfos = cbdOrderTools.saveLaminateInfoList(laminaterInfoMapper, orderInfo.getUid(), laminateVO.getLaminateInfos());
+        //保存玻璃信息 不保存半成品的
+        if (orderInfo.getProductType() == ProductTypeEnums.Complete) {
+            List<OrderGlassDetail> orderGlassDetails = getOrderGlassDetail(laminateInfos,orderInfo);
+            orderGlassDetailService.saveBatch(orderGlassDetails);
+        }
+
 
         tools.saveIronwareInfoList(ironwareInfoMapper, laminateVO.getIronwares(), orderInfo.getUid());
 
@@ -343,13 +373,30 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
             orderInfoMapper.insert(orderInfo);
 
-            tools.saveMaterialInfoList(materialInfoMapper, orderInfo.getUid(), materialVO.getMaterials());
+            List<MaterialInfo> materialInfos = tools.saveMaterialInfoList(materialInfoMapper, orderInfo.getUid(), materialVO.getMaterials());
 
             tools.saveIronwareInfoList(ironwareInfoMapper, materialVO.getIronwares(), orderInfo.getUid());
 
             if (materialVO.isHaveTransom && null != materialVO.getTransoms() && materialVO.getTransoms().size() > 0) {
 
                 tools.saveTransomInfoList(transomMapper, materialVO.transoms, orderInfo.getUid());
+            }
+
+            //保存文件信息
+            OrderFileRecord orderFileRecord = new OrderFileRecord();
+
+            orderFileRecord.setFileName(getStringByList(result));
+
+            orderFileRecord.setOrderUid(orderInfo.getUid());
+
+            orderFileRecord.setOrderId(orderInfo.getOrderId());
+
+            orderFileRecordService.save(orderFileRecord);
+
+            //保存玻璃信息 不保存半成品的
+            if (orderInfo.getProductType() == ProductTypeEnums.Complete) {
+                List<OrderGlassDetail> orderGlassDetails = getOrderGlassDetailByMaterial(materialInfos,orderInfo);
+                orderGlassDetailService.saveBatch(orderGlassDetails);
             }
 
             //保存客户信息
@@ -366,9 +413,24 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
         } catch (Exception e) {
 
             e.printStackTrace();
-            throw new MessageException("生成表格失败！");
+            throw new MessageException("生成表格失败！原因：" + e.getMessage());
         }
 
+
+    }
+
+    private String getStringByList(List<String> list) {
+
+        String result = "";
+
+        if (CollectionUtil.isNotEmpty(list)) {
+            for (String string : list) {
+                result = result + string + "-";
+            }
+        }
+
+
+        return result;
 
     }
 
@@ -386,6 +448,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
             queryWrapper.eq("admin_uid", adminUid);
         }
         queryWrapper.orderByDesc("create_time");
+        queryWrapper.eq("status", SysConf.NORMAL_STATUS);
 
         //分页查询
         Page<OrderInfo> page = new Page<>();
@@ -436,6 +499,165 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
         result.put("productVO", productVO);
 
         return result;
+    }
+
+    @Override
+    public List<String> getFileNamesByOrderUid(String orderUid) throws MessageException {
+
+        if (StringUtils.isBlank(orderUid)) {
+            throw new MessageException("传入订单uid为空！");
+        }
+
+        QueryWrapper<OrderFileRecord> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("order_uid", orderUid);
+        OrderFileRecord orderFileRecord = orderFileRecordService.getOne(queryWrapper);
+
+        if (null == orderFileRecord) {
+            throw new MessageException("库内无此订单文件信息！");
+        }
+
+        String files = orderFileRecord.getFileName();
+
+        String[] filenames = files.split("-");
+
+        List<String> result = new ArrayList<>();
+
+        for (String s : filenames) {
+            if (StringUtils.isNotBlank(s)) {
+                result.add(s);
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    @Transactional
+    public void deleteOrderById(String uid) throws Exception {
+
+        if (StringUtils.isBlank(uid)) {
+            throw new MessageException("传入订单uid为空！");
+        }
+
+        QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("uid", uid);
+        OrderInfo orderInfo = orderService.getOne(queryWrapper);
+
+        if (null == orderInfo) {
+            throw new MessageException("库内无此订单文件信息！");
+        }
+
+        orderInfo.setStatus(2);
+
+        orderInfoMapper.updateById(orderInfo);
+
+        //将材料和五金状态设置为2
+
+        List<MaterialInfo> materialInfos = materialInfoMapper.getAllByOrderUid(uid);
+
+        List<IronwareInfo> ironwareInfos = ironwareInfoMapper.getAllByOrderUid(uid);
+
+        //将材料信息置为删除状态
+        if (CollectionUtil.isNotEmpty(materialInfos)) {
+            materialInfos.stream().forEach(materialInfo -> {
+                materialInfo.setStatus(SysConf.DELETE_STATUS);
+            });
+
+            materialInfoService.updateBatchById(materialInfos);
+        }
+
+        /**
+         * 将五金信息置为删除状态
+         */
+        if (CollectionUtil.isNotEmpty(ironwareInfos)) {
+            ironwareInfos.stream().forEach(ironwareInfo -> {
+                ironwareInfo.setStatus(SysConf.DELETE_STATUS);
+            });
+
+            ironwareInforService.updateBatchById(ironwareInfos);
+        }
+
+        QueryWrapper<LaminateInfo> laminateInfoQueryWrapper = new QueryWrapper<>();
+        laminateInfoQueryWrapper.eq("order_info_uid", uid);
+
+        List<LaminateInfo> laminateInfos = laminaterInfoMapper.selectList(laminateInfoQueryWrapper);
+
+        if (CollectionUtil.isNotEmpty(laminateInfos)) {
+            laminateInfos.stream().forEach(laminateInfo -> {
+                laminateInfo.setStatus(SysConf.DELETE_STATUS);
+            });
+
+            laminateInfoService.updateBatchById(laminateInfos);
+        }
+
+        //将玻璃置为删除状态
+        QueryWrapper<OrderGlassDetail> detailQueryWrapper = new QueryWrapper<>();
+        detailQueryWrapper.eq("order_uid",uid);
+        List<OrderGlassDetail> orderGlassDetails = orderGlassDetailService.list(detailQueryWrapper);
+
+        if (CollectionUtil.isNotEmpty(orderGlassDetails)) {
+            orderGlassDetails.stream().forEach(orderGlassDetail -> {
+                orderGlassDetail.setStatus(SysConf.DELETE_STATUS);
+            });
+            orderGlassDetailService.updateBatchById(orderGlassDetails);
+        }
+
+
+    }
+
+    private List<OrderGlassDetail> getOrderGlassDetail(List<LaminateInfo> laminateInfos, OrderInfo orderInfo) {
+
+        List<OrderGlassDetail> orderGlassDetails = new ArrayList<>();
+
+        for (LaminateInfo laminateInfo : laminateInfos) {
+            if (laminateInfo.getMaterialType().code != MaterialTypeEnums.CBDJJ.code) {
+
+                ProductCalculateEnums enums = ProductCalculateEnums.getByCode(laminateInfo.getMaterialType().code);
+                String glassDetail = laminateInfo.getGlassColor().name + enums.getGlassType();
+
+                OrderGlassDetail orderGlassDetail = new OrderGlassDetail();
+                orderGlassDetail.setOrderId(orderInfo.getOrderId());
+                orderGlassDetail.setMaterialUid(laminateInfo.getUid());
+                orderGlassDetail.setOrderUid(laminateInfo.getOrderInfouId());
+                orderGlassDetail.setGlassColor(laminateInfo.getGlassColor().name);
+                orderGlassDetail.setGlassHeight(laminateInfo.getGlassWidth());
+                orderGlassDetail.setGlassWidth(laminateInfo.getGlassDepth());
+                orderGlassDetail.setMaterialNum(laminateInfo.getLaminateNum());
+                orderGlassDetail.setMaterialType(laminateInfo.getMaterialType().name);
+                orderGlassDetail.setGlassDetail(glassDetail);
+
+                orderGlassDetails.add(orderGlassDetail);
+            }
+        }
+
+        return orderGlassDetails;
+    }
+
+    private List<OrderGlassDetail> getOrderGlassDetailByMaterial(List<MaterialInfo> materialInfos, OrderInfo orderInfo) {
+
+        List<OrderGlassDetail> orderGlassDetails = new ArrayList<>();
+
+        for (MaterialInfo materialInfo : materialInfos) {
+
+            ProductCalculateEnums enums = ProductCalculateEnums.getByCode(materialInfo.getMaterialType().code);
+            String glassDetail = materialInfo.getGlassColor().name + enums.getGlassType();
+
+            OrderGlassDetail orderGlassDetail = new OrderGlassDetail();
+            orderGlassDetail.setOrderId(orderInfo.getOrderId());
+            orderGlassDetail.setMaterialUid(materialInfo.getUid());
+            orderGlassDetail.setOrderUid(materialInfo.getOrderInfouId());
+            orderGlassDetail.setGlassColor(materialInfo.getGlassColor().name);
+            orderGlassDetail.setGlassHeight(materialInfo.getGlassHeight());
+            orderGlassDetail.setGlassWidth(materialInfo.getGlassWidth());
+            orderGlassDetail.setMaterialNum(materialInfo.getMaterialNum());
+            orderGlassDetail.setMaterialType(materialInfo.getMaterialType().name);
+            orderGlassDetail.setGlassDetail(glassDetail);
+
+            orderGlassDetails.add(orderGlassDetail);
+
+        }
+
+        return orderGlassDetails;
     }
 }
 

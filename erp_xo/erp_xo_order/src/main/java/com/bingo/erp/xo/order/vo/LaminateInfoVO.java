@@ -44,6 +44,11 @@ public class LaminateInfoVO {
 
     private BigDecimal totalPrice;
 
+    /**
+     * 管道类型 双管or单管
+     */
+    private String pipeType = "/";
+
     private String remark;
 
     /**

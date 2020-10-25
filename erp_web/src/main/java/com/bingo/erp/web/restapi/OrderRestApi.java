@@ -2,10 +2,8 @@ package com.bingo.erp.web.restapi;
 
 import cn.hutool.core.util.RandomUtil;
 import com.bingo.erp.commons.entity.Admin;
-import com.bingo.erp.utils.ExportExecUtil;
 import com.bingo.erp.utils.ResultUtil;
 import com.bingo.erp.web.global.SysConf;
-import com.bingo.erp.xo.order.global.ExcelConf;
 import com.bingo.erp.xo.order.service.AdminService;
 import com.bingo.erp.xo.order.service.OrderService;
 import com.bingo.erp.xo.order.vo.LaminateVO;
@@ -16,9 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +21,10 @@ import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.List;
 
 @RestController
@@ -131,6 +129,30 @@ public class OrderRestApi {
         return ResultUtil.result(SysConf.SUCCESS, orderService.getMaterialVOByUid(orderUid));
     }
 
+    @GetMapping("getFileNamesByOrderUid")
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    public String getFileNamesByOrderUid(HttpServletResponse response, @RequestParam(value = "orderUid")String orderUid){
+
+        try {
+            return ResultUtil.result(SysConf.SUCCESS, orderService.getFileNamesByOrderUid(orderUid));
+        }catch (Exception e){
+            return ResultUtil.result(SysConf.Fail, "文件获取失败！");
+        }
+
+    }
+
+    @GetMapping("deleteByOrderUid")
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    public String deleteByOrderUid(HttpServletResponse response, @RequestParam(value = "orderUid")String orderUid){
+
+        try {
+            orderService.deleteOrderById(orderUid);
+            return ResultUtil.result(SysConf.SUCCESS,"删除成功");
+        }catch (Exception e){
+            return ResultUtil.result(SysConf.Fail, "删除失败！原因："+e.getMessage());
+        }
+
+    }
 
     @GetMapping("excelDownload")
     @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")

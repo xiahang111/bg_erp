@@ -15,7 +15,6 @@ import net.sf.jxls.util.Util;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -626,6 +625,10 @@ public class CBDOrderTools {
                     }
 
                     if (j == 8) {
+                        cell.setCellValue(laminateInfoVO.getPipeType());
+                    }
+
+                    if (j == 9) {
                         cell.setCellValue(laminateInfoVO.getRemark());
                     }
 
@@ -715,8 +718,9 @@ public class CBDOrderTools {
 
     }
 
-    public void saveLaminateInfoList(LaminaterInfoMapper mapper, String uid, List<LaminateInfoVO> laminateInfoVOS) {
+    public List<LaminateInfo> saveLaminateInfoList(LaminaterInfoMapper mapper, String uid, List<LaminateInfoVO> laminateInfoVOS) {
 
+        List<LaminateInfo> result = new ArrayList<>();
         for (LaminateInfoVO laminateInfoVO : laminateInfoVOS) {
 
             LaminateInfo info = new LaminateInfo(uid,
@@ -736,10 +740,12 @@ public class CBDOrderTools {
                     laminateInfoVO.getPrice(),
                     laminateInfoVO.getTotalPrice(),
                     laminateInfoVO.getRemark());
-
             mapper.insert(info);
+            result.add(info);
 
         }
+
+        return result;
     }
 
     public void laminateCalculate(List<LaminateInfoVO> laminateInfos) throws Exception {

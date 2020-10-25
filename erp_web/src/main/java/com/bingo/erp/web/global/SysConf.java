@@ -11,4 +11,6 @@ public class SysConf extends BaseSysConf {
     public final static String ROLES = "roles";
 
     public final static String NAME = "name";
+
+    public final static String REALNAME = "realName";
 }

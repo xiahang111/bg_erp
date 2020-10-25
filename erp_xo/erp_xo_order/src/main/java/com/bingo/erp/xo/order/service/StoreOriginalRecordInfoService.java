@@ -4,4 +4,6 @@ import com.bingo.erp.base.service.SuperService;
 import com.bingo.erp.commons.entity.StoreOriginalRecordInfo;
 
 public interface StoreOriginalRecordInfoService extends SuperService<StoreOriginalRecordInfo> {
+
+    void callbackStoreRecord(String storeRecordUid) throws Exception;
 }

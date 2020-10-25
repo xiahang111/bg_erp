@@ -1,9 +1,11 @@
 package com.bingo.erp.web.restapi;
 
 import com.bingo.erp.utils.ResultUtil;
+import com.bingo.erp.utils.StringUtils;
 import com.bingo.erp.web.annotion.AuthorityVerify.AuthorityVerify;
 import com.bingo.erp.web.global.SysConf;
 import com.bingo.erp.xo.order.service.StoreOriginalInfoService;
+import com.bingo.erp.xo.order.service.StoreOriginalRecordInfoService;
 import com.bingo.erp.xo.order.service.StoreRecordInfoService;
 import com.bingo.erp.xo.order.service.StoreSummaryInfoService;
 import com.bingo.erp.xo.order.vo.*;
@@ -28,6 +30,9 @@ public class StoreRestApi {
 
     @Resource
     private StoreOriginalInfoService storeOriginalInfoService;
+
+    @Resource
+    private StoreOriginalRecordInfoService storeOriginalRecordInfoService;
 
 
     /**
@@ -182,10 +187,14 @@ public class StoreRestApi {
 
     @GetMapping("callbackStoreRecord")
     @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
-    public String callbackStoreRecord(@RequestParam("recordUid") String recordUid) {
+    public String callbackStoreRecord(@RequestParam("recordUid") String recordUid,@RequestParam(value = "type",defaultValue = "",required = false) String type) {
 
         try {
-            storeRecordInfoService.callbackStoreRecord(recordUid);
+            if(StringUtils.isNotBlank(type) && type.equals("origin")){
+                storeOriginalRecordInfoService.callbackStoreRecord(recordUid);
+            }else {
+                storeRecordInfoService.callbackStoreRecord(recordUid);
+            }
             return ResultUtil.result(SysConf.SUCCESS, "删除成功");
         } catch (Exception e) {
             return ResultUtil.result(SysConf.Fail, e.getMessage());

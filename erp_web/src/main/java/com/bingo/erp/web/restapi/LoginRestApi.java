@@ -180,6 +180,7 @@ public class LoginRestApi {
         Role role = roleService.getById(roleUid);
         map.put(SysConf.ROLES, role.getRoleName());
         map.put(SysConf.NAME, admin.getUserName());
+        map.put(SysConf.REALNAME,admin.getNickName());
         return ResultUtil.result(SysConf.SUCCESS, map);
     }
 

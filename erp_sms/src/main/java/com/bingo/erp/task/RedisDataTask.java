@@ -1,15 +1,12 @@
 package com.bingo.erp.task;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bingo.erp.commons.entity.Admin;
 import com.bingo.erp.commons.entity.OrderInfo;
 import com.bingo.erp.commons.entity.Role;
 import com.bingo.erp.utils.JsonUtils;
 import com.bingo.erp.utils.RedisUtil;
 import com.bingo.erp.xo.order.global.RedisConf;
-import com.bingo.erp.xo.order.service.AdminService;
-import com.bingo.erp.xo.order.service.OrderService;
-import com.bingo.erp.xo.order.service.RoleService;
+import com.bingo.erp.xo.order.service.*;
 import com.bingo.erp.xo.order.vo.ProductVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
@@ -41,10 +38,19 @@ public class RedisDataTask {
     @Resource
     private OrderService orderService;
 
+    @Resource
+    private MaterialInfoService materialInfoService;
+
+    @Resource
+    private LaminateInfoService laminateInfoService;
+
+    @Resource
+    private OrderGlassDetailService orderGlassDetailService;
+
     /**
      *
      */
-    @Scheduled(cron = " 0 0/10 * * * ?")
+    @Scheduled(cron = " 0 0 0/2 * * ?")
     public void saveRoleList() {
 
         log.info("更新权限信息到redis开始");
@@ -120,4 +126,5 @@ public class RedisDataTask {
 
         log.info("更新所有订单开始");
     }
+
 }

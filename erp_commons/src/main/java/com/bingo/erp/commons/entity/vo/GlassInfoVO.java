@@ -1,6 +1,5 @@
 package com.bingo.erp.commons.entity.vo;
 
-import com.bingo.erp.base.enums.GlassColor;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -15,7 +14,9 @@ public class GlassInfoVO {
 
     private BigDecimal glassWidth;
 
-    private String glassColor;
+    private String MaterialType;
+
+    private String glassDetail;
 
     private Integer glassNum;
 
@@ -24,12 +25,13 @@ public class GlassInfoVO {
     public GlassInfoVO() {
     }
 
-    public GlassInfoVO(String orderId, BigDecimal glassHeight, BigDecimal glassWidth, String glassColor, Integer glassNum, Date createTime) {
+    public GlassInfoVO(String orderId, BigDecimal glassHeight, BigDecimal glassWidth, String MaterialType, Integer glassNum, Date createTime,String glassDetail) {
         this.orderId = orderId;
         this.glassHeight = glassHeight;
         this.glassWidth = glassWidth;
-        this.glassColor = glassColor;
+        this.MaterialType = MaterialType;
         this.glassNum = glassNum;
         this.createTime = createTime;
+        this.glassDetail = glassDetail;
     }
 }
