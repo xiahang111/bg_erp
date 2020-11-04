@@ -3,7 +3,6 @@ package com.bingo.erp.xo.order.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.bingo.erp.base.enums.MaterialColorEnums;
 import com.bingo.erp.base.enums.MaterialStatusEnums;
 import com.bingo.erp.base.enums.StoreMaterialStatus;
 import com.bingo.erp.base.enums.StoreOriginalResource;
@@ -11,14 +10,15 @@ import com.bingo.erp.base.exception.MessageException;
 import com.bingo.erp.base.serviceImpl.SuperServiceImpl;
 import com.bingo.erp.commons.entity.StoreOriginalInfo;
 import com.bingo.erp.commons.entity.StoreOriginalRecordInfo;
-import com.bingo.erp.commons.entity.StoreSummaryInfo;
-import com.bingo.erp.commons.entity.vo.StoreRecordInfo;
 import com.bingo.erp.utils.StringUtils;
 import com.bingo.erp.xo.order.global.SysConf;
 import com.bingo.erp.xo.order.mapper.StoreOriginalInfoMapper;
 import com.bingo.erp.xo.order.service.StoreOriginalInfoService;
 import com.bingo.erp.xo.order.service.StoreOriginalRecordInfoService;
-import com.bingo.erp.xo.order.vo.*;
+import com.bingo.erp.xo.order.vo.StoreOriginRecordVO;
+import com.bingo.erp.xo.order.vo.StoreOriginVO;
+import com.bingo.erp.xo.order.vo.StoreOriginalPageVO;
+import com.bingo.erp.xo.order.vo.StoreRecordPageVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -116,7 +116,7 @@ public class StoreOriginalInfoServiceImpl
 
         queryWrapper.eq("material_name", storeOriginRecordVO.getMaterialName());
         queryWrapper.eq("specification", storeOriginRecordVO.getSpecification());
-
+        queryWrapper.eq("status","1");
         StoreOriginalInfo one = storeOriginalInfoService.getOne(queryWrapper);
 
         if (null == one) {
@@ -208,6 +208,7 @@ public class StoreOriginalInfoServiceImpl
 
             queryWrapper.eq("material_name", storeOriginVO.getMaterialName());
             queryWrapper.eq("specification", storeOriginVO.getSpecification());
+            queryWrapper.eq("status","1");
 
             storeOriginalInfo = storeOriginalInfoService.getOne(queryWrapper);
 

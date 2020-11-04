@@ -139,10 +139,7 @@ public class ProductCalculateRecordServiceImpl extends
             queryWrapper.le("create_time", glassInfoPageVO.getEndTime());
         }
 
-        if (null != glassInfoPageVO.getGlassColor() && glassInfoPageVO.getGlassColor() != 0) {
-            queryWrapper.eq("glass_color", glassInfoPageVO.getGlassColor());
-        }
-        queryWrapper.orderByDesc("create_time");
+        queryWrapper.orderByAsc("create_time");
 
         queryWrapper.eq("status",SysConf.NORMAL_STATUS);
 

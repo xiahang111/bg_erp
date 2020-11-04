@@ -121,5 +121,5 @@ audience:
   expiresSecond: 28800  #8个小时 3600
 
 #/home/data/template/   /Users/drew/IdeaProject/bg-erp/excel/
-srcFileUrl: /Users/drew/IdeaProject/bg-erp/excel/
-newFileDict: /Users/drew/IdeaProject/bg-erp/excel/
+srcFileUrl: D:\workspace\bg_erp\excel\
+newFileDict: D:\workspace\bg_erp\excel\

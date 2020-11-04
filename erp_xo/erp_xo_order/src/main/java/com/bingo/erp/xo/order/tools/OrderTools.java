@@ -480,6 +480,35 @@ public class OrderTools {
 
     }
 
+    /**
+     * 给半成品层板灯添加配件
+     * @return
+     */
+    public List<IronwareInfoVO> getCBDIronByNotComplete() {
+        List<IronwareInfoVO> results = new ArrayList<>();
+        IronwareInfoVO ironwareInfoVO1 = new IronwareInfoVO();
+        ironwareInfoVO1.setIronwareNum(4);
+        ironwareInfoVO1.setIronwareName("层板角码");
+        ironwareInfoVO1.setUnit("个");
+
+        IronwareInfoVO ironwareInfoVO2 = new IronwareInfoVO();
+        ironwareInfoVO2.setIronwareNum(4);
+        ironwareInfoVO2.setIronwareName("层板托");
+        ironwareInfoVO2.setUnit("个");
+
+        IronwareInfoVO ironwareInfoVO3 = new IronwareInfoVO();
+        ironwareInfoVO3.setIronwareNum(4);
+        ironwareInfoVO3.setIronwareName("层板托螺丝");
+        ironwareInfoVO3.setUnit("个");
+
+        results.add(ironwareInfoVO1);
+        results.add(ironwareInfoVO2);
+        results.add(ironwareInfoVO3);
+
+        return results;
+
+    }
+
     public List<IronwareInfoVO> getIronByHeight(BigDecimal height) {
 
         List<IronwareInfoVO> results = new ArrayList<>();
@@ -576,7 +605,7 @@ public class OrderTools {
 
         for (IronwareInfoVO ironwareInfoVO : materialVO.getIronwares()) {
 
-            if(null != ironwareInfoVO.getTotalPrice()){
+            if (null != ironwareInfoVO.getTotalPrice()) {
                 ironwareTotalPrice = ironwareTotalPrice.add(ironwareInfoVO.getTotalPrice());
             }
         }
@@ -693,15 +722,15 @@ public class OrderTools {
                     }
 
                     if (j == 4) {
-                        cell.setCellValue(materialInfoVO0.getHandlePlace());
+                        cell.setCellValue(materialInfoVO0.getHandlePlace() + "");
                     }
 
                     if (j == 5) {
-                        cell.setCellValue(materialInfoVO0.getHingeLocation());
+                        cell.setCellValue(materialInfoVO0.getHingeLocation() + "");
                     }
 
                     if (j == 6) {
-                        cell.setCellValue(materialInfoVO0.getDirection());
+                        cell.setCellValue(materialInfoVO0.getDirection() + "");
                     }
 
                     if (j == 7) {
@@ -758,7 +787,7 @@ public class OrderTools {
                         cell.setCellValue(infoVO.getHeight() + "");
                     }
                     if (j == 7) {
-                        cell.setCellValue(infoVO.getTransomNum());
+                        cell.setCellValue(infoVO.getTransomNum() + "");
                     }
                     if (j == 8) {
                         cell.setCellValue(infoVO.getPrice() + "");
@@ -767,7 +796,7 @@ public class OrderTools {
                         cell.setCellValue(infoVO.getTotalPrice() + "");
                     }
                     if (j == 10) {
-                        cell.setCellValue(infoVO.getRemark());
+                        cell.setCellValue(infoVO.getRemark() + "");
                     }
 
                 }
@@ -799,11 +828,11 @@ public class OrderTools {
                 }
 
                 if (m == 6) {
-                    cell.setCellValue(ironwareInfoVO0.getSpecification());
+                    cell.setCellValue(ironwareInfoVO0.getSpecification() + "");
                 }
 
                 if (m == 7) {
-                    cell.setCellValue(ironwareInfoVO0.getIronwareNum());
+                    cell.setCellValue(ironwareInfoVO0.getIronwareNum() + "");
                 }
 
                 if (m == 8) {
@@ -815,7 +844,7 @@ public class OrderTools {
                 }
 
                 if (m == 10) {
-                    cell.setCellValue(ironwareInfoVO0.getRemark());
+                    cell.setCellValue(ironwareInfoVO0.getRemark() + "");
                 }
             }
 
@@ -933,15 +962,15 @@ public class OrderTools {
                     }
 
                     if (j == 4) {
-                        cell.setCellValue(materialInfoVO0.getHandlePlace());
+                        cell.setCellValue(materialInfoVO0.getHandlePlace() + "");
                     }
 
                     if (j == 5) {
-                        cell.setCellValue(materialInfoVO0.getHingeLocation());
+                        cell.setCellValue(materialInfoVO0.getHingeLocation() + "");
                     }
 
                     if (j == 6) {
-                        cell.setCellValue(materialInfoVO0.getDirection());
+                        cell.setCellValue(materialInfoVO0.getDirection() + "");
                     }
 
                     if (j == 7) {
@@ -949,7 +978,7 @@ public class OrderTools {
                     }
 
                     if (j == 8) {
-                        cell.setCellValue(materialInfoVO0.getRemark());
+                        cell.setCellValue(materialInfoVO0.getRemark() + "");
                     }
 
                     /*if (j == 9) {
@@ -1000,10 +1029,10 @@ public class OrderTools {
                         cell.setCellValue(infoVO.getHeight() + "");
                     }
                     if (j == 5) {
-                        cell.setCellValue(infoVO.getTransomNum());
+                        cell.setCellValue(infoVO.getTransomNum() + "");
                     }
                     if (j == 7) {
-                        cell.setCellValue(infoVO.getRemark());
+                        cell.setCellValue(infoVO.getRemark() + "");
                     }
 
                 }
@@ -1025,22 +1054,22 @@ public class OrderTools {
 
                 HSSFCell cell = row.getCell(e);
                 if (e == 1) {
-                    cell.setCellValue(infoVO.getIronwareName());
+                    cell.setCellValue(infoVO.getIronwareName() + "");
                 }
                 if (e == 3) {
-                    cell.setCellValue(infoVO.getIronwareNum());
+                    cell.setCellValue(infoVO.getIronwareNum() + "");
                 }
                 if (e == 4) {
-                    cell.setCellValue(infoVO.getUnit());
+                    cell.setCellValue(infoVO.getUnit() + "");
                 }
                 if (e == 5) {
                     cell.setCellValue(IronwareColorEnums.getEnumByCode(infoVO.getIronwareColor()));
                 }
                 if (e == 6) {
-                    cell.setCellValue(infoVO.getSpecification());
+                    cell.setCellValue(infoVO.getSpecification() + "");
                 }
                 if (e == 7) {
-                    cell.setCellValue(infoVO.getRemark());
+                    cell.setCellValue(infoVO.getRemark() + "");
                 }
 
             }
@@ -1279,7 +1308,6 @@ public class OrderTools {
         rabbitTemplate.convertAndSend(SysConf.EXCHANGE_DIRECT, SysConf.BINGO_WEB, JsonUtils.objectToJson(customerVO));
         //personFeignClient.saveCustomerByOrder(customerVO);
     }
-
 
 
     public String getRoleNameByAdminUid(String adminUid) throws Exception {

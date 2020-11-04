@@ -29,7 +29,7 @@ public enum  IronwareColorEnums implements IEnum {
 
         }
 
-        return null;
+        return "/";
     }
 
     public static IronwareColorEnums getEnumByName(String name) {

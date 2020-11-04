@@ -1,7 +1,6 @@
 com\bingo\erp\data\security\JwtAuthenticationTokenFilter.class
 com\bingo\erp\data\security\WebSecurityConfig.class
 com\bingo\erp\data\DataApplication.class
-com\bingo\erp\data\feign\OrderFeignClient.class
 com\bingo\erp\data\security\JwtAuthenticationEntryPoint.class
-com\bingo\erp\data\task\StoreDataCalculateTask.class
 com\bingo\erp\data\config\MybatisPlusConfig.class
+com\bingo\erp\data\restapi\StoreDataRestApi.class

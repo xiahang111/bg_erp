@@ -36,7 +36,7 @@ public enum MaterialColorEnums implements IEnum {
 
         }
 
-        return null;
+        return "/";
     }
 
     public static MaterialColorEnums getByCode(int code) {

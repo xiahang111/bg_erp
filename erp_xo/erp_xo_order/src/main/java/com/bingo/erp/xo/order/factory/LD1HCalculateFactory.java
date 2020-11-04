@@ -35,9 +35,9 @@ public class LD1HCalculateFactory implements MaterialCalculateFactory<MaterialIn
 
         ProductCalculateEnums productCalculateEnums = ProductCalculateEnums.getByCode(materialType);
 
-        resultVO.setGlassHeight(vo.getHeight().subtract(productCalculateEnums.getHigth()));
+        resultVO.setGlassHeight(vo.getHeight().subtract(productCalculateEnums.getHigth()).setScale(4,BigDecimal.ROUND_HALF_DOWN));
 
-        resultVO.setGlassWidth(vo.getWidth().subtract(productCalculateEnums.getWidth()));
+        resultVO.setGlassWidth(vo.getWidth().subtract(productCalculateEnums.getWidth()).setScale(4,BigDecimal.ROUND_HALF_DOWN));
 
         //计算料的长度
         resultVO.setMaterialHeight(vo.getHeight());

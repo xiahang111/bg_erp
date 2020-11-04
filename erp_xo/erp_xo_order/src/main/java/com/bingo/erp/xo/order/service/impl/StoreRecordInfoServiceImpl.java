@@ -91,6 +91,7 @@ public class StoreRecordInfoServiceImpl
         queryWrapper.eq("material_name", storeRecordVO.getMaterialName());
         queryWrapper.eq("material_color", storeRecordVO.getMaterialColor());
         queryWrapper.eq("specification", storeRecordVO.getSpecification());
+        queryWrapper.eq("status","1");
 
         StoreSummaryInfo storeSummaryInfo = storeSummaryInfoService.getOne(queryWrapper);
 

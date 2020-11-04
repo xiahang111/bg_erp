@@ -24,7 +24,7 @@ public enum  LightColor implements IEnum {
 
         }
 
-        return null;
+        return "/";
     }
 
     public static LightColor getByCode(int code) {

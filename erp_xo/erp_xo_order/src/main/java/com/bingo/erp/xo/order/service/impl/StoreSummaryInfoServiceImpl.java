@@ -81,6 +81,7 @@ public class StoreSummaryInfoServiceImpl extends SuperServiceImpl<StoreSummaryIn
             queryWrapper.eq("material_name",storeSummaryVO.getMaterialName());
             queryWrapper.eq("specification",storeSummaryVO.getSpecification());
             queryWrapper.eq("material_color",storeSummaryVO.getMaterialColor());
+            queryWrapper.eq("status","1");
 
             storeSummaryInfo = storeSummaryInfoService.getOne(queryWrapper);
 

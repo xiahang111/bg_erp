@@ -8,7 +8,6 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <packaging>jar</packaging>
 
     <artifactId>erp_data</artifactId>
 
@@ -102,7 +101,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <!-- 指定该Main Class为全局的唯一入口 -->
-                    <mainClass>com.bingo.erp.web.WebApplication</mainClass>
+                    <mainClass>com.bingo.erp.data.DataApplication</mainClass>
                     <layout>ZIP</layout>
                 </configuration>
                 <executions>

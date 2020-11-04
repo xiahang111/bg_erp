@@ -212,11 +212,11 @@ public class CBDOrderTools {
                     }
 
                     if (j == 4) {
-                        cell.setCellValue(laminateInfoVO.getLightPlace());
+                        cell.setCellValue(laminateInfoVO.getLightPlace() + "");
                     }
 
                     if (j == 5) {
-                        cell.setCellValue(laminateInfoVO.getLinePlace());
+                        cell.setCellValue(laminateInfoVO.getLinePlace() + "");
                     }
 
                     if (j == 6) {
@@ -609,11 +609,11 @@ public class CBDOrderTools {
                     }
 
                     if (j == 4) {
-                        cell.setCellValue(laminateInfoVO.getLightPlace());
+                        cell.setCellValue(laminateInfoVO.getLightPlace() + "");
                     }
 
                     if (j == 5) {
-                        cell.setCellValue(laminateInfoVO.getLinePlace());
+                        cell.setCellValue(laminateInfoVO.getLinePlace() + "");
                     }
 
                     if (j == 6) {
@@ -622,14 +622,15 @@ public class CBDOrderTools {
 
                     if (j == 7) {
                         cell.setCellValue(LightColor.getNameByCode(laminateInfoVO.getLightColor()));
+
                     }
 
                     if (j == 8) {
-                        cell.setCellValue(laminateInfoVO.getPipeType());
+                        cell.setCellValue(laminateInfoVO.getPipeType() + "");
                     }
 
                     if (j == 9) {
-                        cell.setCellValue(laminateInfoVO.getRemark());
+                        cell.setCellValue(laminateInfoVO.getRemark() + "");
                     }
 
                     /*if (j == 9) {
@@ -662,22 +663,22 @@ public class CBDOrderTools {
 
                 HSSFCell cell = row.getCell(e);
                 if (e == 1) {
-                    cell.setCellValue(infoVO.getIronwareName());
+                    cell.setCellValue(infoVO.getIronwareName() + "");
                 }
                 if (e == 3) {
-                    cell.setCellValue(infoVO.getIronwareNum());
+                    cell.setCellValue(infoVO.getIronwareNum() + "");
                 }
                 if (e == 4) {
-                    cell.setCellValue(infoVO.getUnit());
+                    cell.setCellValue(infoVO.getUnit() + "");
                 }
                 if (e == 5) {
                     cell.setCellValue(IronwareColorEnums.getEnumByCode(infoVO.getIronwareColor()));
                 }
                 if (e == 6) {
-                    cell.setCellValue(infoVO.getSpecification());
+                    cell.setCellValue(infoVO.getSpecification() + "");
                 }
                 if (e == 7) {
-                    cell.setCellValue(infoVO.getRemark());
+                    cell.setCellValue(infoVO.getRemark() + "");
                 }
 
             }
@@ -761,7 +762,7 @@ public class CBDOrderTools {
             laminateInfoVO.setGlassWidth(vo.getGlassHeight());
             laminateInfoVO.setGlassDepth(vo.getGlassWidth());
 
-            BigDecimal minxPeri = new BigDecimal("1.5");
+            BigDecimal minxPeri = new BigDecimal("1.5").multiply(new BigDecimal(laminateInfoVO.getLaminateNum()));
 
             BigDecimal perimeter = laminateInfoVO.getDepth().add(laminateInfoVO.getWidth()).
                     multiply(new BigDecimal(2)).

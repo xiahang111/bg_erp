@@ -36,9 +36,9 @@ public class LaminateInfoVO {
 
     private String linePlace;
 
-    private Integer lightColor;
+    private int lightColor = 0;
 
-    private Integer lineColor;
+    private int lineColor = 0;
 
     private BigDecimal price;
 

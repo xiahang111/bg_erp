@@ -56,7 +56,7 @@ public class RedisDataTask {
         log.info("更新权限信息到redis开始");
         List<Role> roles = roleService.list();
 
-        redisUtil.setEx(RedisConf.ALL_ROLE_LIST, JsonUtils.objectToJson(roles), 10l, TimeUnit.MINUTES);
+        redisUtil.setEx(RedisConf.ALL_ROLE_LIST, JsonUtils.objectToJson(roles), 2l, TimeUnit.HOURS);
         log.info("更新权限信息到redis结束");
 
     }
@@ -77,7 +77,7 @@ public class RedisDataTask {
 
     }
 
-    @Scheduled(cron = " 20 0/1 * * * ?")
+    @Scheduled(cron = " 30 30 0/1 * * ?")
     public void saveAdminInfo() {
 
         log.info("更新用户所有信息开始");
@@ -100,7 +100,7 @@ public class RedisDataTask {
 
         }
 
-        redisUtil.setEx(RedisConf.USER_ADMIN_INFO_KEY, JsonUtils.objectToJson(adminMapList), 2l, TimeUnit.MINUTES);
+        redisUtil.setEx(RedisConf.USER_ADMIN_INFO_KEY, JsonUtils.objectToJson(adminMapList), 2l, TimeUnit.HOURS);
 
         log.info("更新用户所有信息结束");
 

@@ -91,8 +91,8 @@ mybatis-plus:
   type-enums-package: com.bingo.erp.base.enums
 
 ribbon:
-  ReadTimeout: 5000   #负载均衡超时时间，默认值5000
-  ConnectTimeout: 3000 #ribbon请求连接的超时时间，默认值2000
+  ReadTimeout: 50000   #负载均衡超时时间，默认值5000
+  ConnectTimeout: 30000 #ribbon请求连接的超时时间，默认值2000
   MaxAutoRetries: 0     #对当前实例的重试次数，默认0
   MaxAutoRetriesNextServer: 1 #
 

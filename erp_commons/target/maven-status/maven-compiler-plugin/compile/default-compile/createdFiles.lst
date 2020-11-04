@@ -5,6 +5,7 @@ com\bingo\erp\commons\entity\StoreOriginalRecordInfo.class
 com\bingo\erp\commons\entity\MaterialInfo.class
 com\bingo\erp\commons\entity\ProductCalculate.class
 com\bingo\erp\commons\entity\Role.class
+com\bingo\erp\commons\entity\OrderGlassDetail.class
 com\bingo\erp\commons\entity\StoreSummaryInfo.class
 com\bingo\erp\commons\entity\IronwareInfo.class
 com\bingo\erp\commons\entity\ProductCalculateRecord.class
@@ -18,3 +19,4 @@ com\bingo\erp\commons\entity\StoreOriginalInfo.class
 com\bingo\erp\commons\entity\vo\GlassInfoVO.class
 com\bingo\erp\commons\entity\DataGather.class
 com\bingo\erp\commons\entity\ProductOrderInfo.class
+com\bingo\erp\commons\entity\OrderFileRecord.class

@@ -25,7 +25,7 @@ public enum LineColor implements IEnum {
 
         }
 
-        return null;
+        return "/";
     }
 
     public static LineColor getByCode(int code) {

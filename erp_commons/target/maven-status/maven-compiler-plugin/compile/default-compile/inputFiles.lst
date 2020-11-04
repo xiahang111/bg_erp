@@ -6,6 +6,7 @@ D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\Order
 D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\ProductCalculateRecord.java
 D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\StoreOriginalOutInfo.java
 D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\Admin.java
+D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\OrderFileRecord.java
 D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\StoreSummaryInfo.java
 D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\TransomInfo.java
 D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\Role.java
@@ -13,6 +14,7 @@ D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\Produ
 D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\feign\PersonFeignClient.java
 D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\DataGather.java
 D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\MaterialInfo.java
+D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\OrderGlassDetail.java
 D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\MaterialCalculateRecord.java
 D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\vo\StoreRecordInfo.java
 D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\IronwareInfo.java
