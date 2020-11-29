@@ -19,9 +19,18 @@ public class CustomerInfo extends SuperEntity<CustomerInfo> {
 
     private String customerName;
 
+    //客户收货人关联 格式:客户+ - + 收货人
+    private String nameMapper;
+
     private String customerAddr;
 
     private String customerPhone;
+
+    //收货人信息
+    private String customerNick;
+
+    //物流信息
+    private String express;
 
 
 }

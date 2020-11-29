@@ -1,7 +1,5 @@
 package com.bingo.erp.base.global;
 
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
-
 public class BaseRedisConf {
 
     /**
@@ -40,9 +38,5 @@ public class BaseRedisConf {
     public final static String ALL_ADMIN_ADMINUID = "ALL_ADMIN_ADMINUID";
 
     public final static String USER_ADMIN_INFO_KEY = "USER_ADMIN_INFO_KEY";
-
-
-
-
 
 }

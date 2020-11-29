@@ -9,7 +9,6 @@ import com.bingo.erp.base.global.BaseRedisConf;
 import com.bingo.erp.base.global.BaseSysConf;
 import com.bingo.erp.base.serviceImpl.SuperServiceImpl;
 import com.bingo.erp.base.vo.CustomerVO;
-import com.bingo.erp.commons.entity.OrderInfo;
 import com.bingo.erp.utils.JsonUtils;
 import com.bingo.erp.utils.RedisUtil;
 import com.bingo.erp.utils.StringUtils;
@@ -20,7 +19,7 @@ import com.bingo.erp.xo.person.vo.CustomerPageVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,7 +88,9 @@ public class CustomerInfoServiceImpl extends SuperServiceImpl<CustomerInfoMapper
 
         QueryWrapper<CustomerInfo> queryWrapper = new QueryWrapper<>();
 
-        queryWrapper.eq("customer_name", customerVO.getCunstomerName());
+        //保证没有重复的客户和收货人名称
+        queryWrapper.eq("customer_nick", customerVO.getCustomerNick());
+        queryWrapper.eq("customer_name", customerVO.getCustomerName());
         queryWrapper.eq("salesman", customerVO.getSalesman());
 
         CustomerInfo exist = customerInfoService.getOne(queryWrapper);
@@ -97,15 +98,66 @@ public class CustomerInfoServiceImpl extends SuperServiceImpl<CustomerInfoMapper
 
         if (null == exist) {
             CustomerInfo customerInfo = new CustomerInfo();
-            customerInfo.setAdminUid(adminUid);
-            customerInfo.setAdminUid(customerVO.getAdminUid());
+            if (StringUtils.isNotBlank(adminUid)){
+                customerInfo.setAdminUid(adminUid);
+            }
+            if (StringUtils.isNotBlank(customerVO.getAdminUid())){
+                customerInfo.setAdminUid(customerVO.getAdminUid());
+            }
             customerInfo.setCustomerResource(CustomerResourceEnums.getByCode(customerVO.getCustomerResource()));
-            customerInfo.setCustomerName(customerVO.getCunstomerName());
+            customerInfo.setCustomerName(customerVO.getCustomerName());
             customerInfo.setCustomerAddr(customerVO.getCustomerAddr());
             customerInfo.setCustomerPhone(customerVO.getCutomerPhone());
             customerInfo.setSalesman(customerVO.getSalesman());
+            customerInfo.setCustomerNick(customerVO.getCustomerNick());
+            customerInfo.setExpress(customerVO.getExpress());
+            if(StringUtils.isBlank(customerVO.getNameMapper())){
+                customerVO.setNameMapper(customerVO.getCustomerNick()+"-"+customerVO.getCustomerName());
+            }
+            customerInfo.setNameMapper(customerVO.getNameMapper());
 
-            customerInfoService.save(customerInfo);
+            try {
+                customerInfoService.save(customerInfo);
+            }catch (Exception e){
+                log.error("保存客户信息失败,原因:"+e.getMessage());
+            }
+
+
+        }else {
+
+            exist.setCustomerResource(CustomerResourceEnums.getByCode(customerVO.getCustomerResource()));
+            exist.setCustomerAddr(customerVO.getCustomerAddr());
+            exist.setCustomerPhone(customerVO.getCutomerPhone());
+            exist.setExpress(customerVO.getExpress());
+            exist.setNameMapper(customerVO.getNameMapper());
+            try {
+                customerInfoService.updateById(exist);
+            }catch (Exception e){
+                log.error("更新客户信息失败,原因:"+e.getMessage());
+            }
+
         }
+    }
+
+    /**
+     * 获取当前登录用户下的所有客户
+     * @param uid
+     * @param key
+     * @return
+     */
+    @Override
+    public List<CustomerInfo> searchCustomer(String uid, String key) {
+
+        QueryWrapper<CustomerInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("admin_uid",uid);
+        //queryWrapper.like("customer_name",key);
+
+        List<CustomerInfo> customerInfos = customerInfoService.list(queryWrapper);
+
+        if(null == customerInfos || customerInfos.size() <= 0){
+            log.warn("获取客户信息为空!uid:"+uid+",key:"+key+"");
+            return Collections.EMPTY_LIST;
+        }
+        return customerInfos;
     }
 }

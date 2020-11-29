@@ -13,13 +13,13 @@ public class IronwareInfoVO {
 
     public int ironwareColor;
 
-    public String specification;
+    public String specification = "";
 
     public int ironwareNum;
 
     public BigDecimal price = new BigDecimal("0");
 
-    private String remark;
+    private String remark = "";
 
     protected BigDecimal totalPrice = new BigDecimal("0");
 

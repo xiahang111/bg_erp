@@ -9,6 +9,7 @@ public enum MaterialTypeEnums implements IEnum {
     LD1H(1001, "联动1号"),
     LD2H(1002, "联动2号"),
     LD3H(1003, "联动3号"),
+    LD5H(1005,"联动5号"),
     SP2H(2001, "上品2号"),
     XB50(3001, "50斜边"),
     SP1H(4001, "上品1号"),

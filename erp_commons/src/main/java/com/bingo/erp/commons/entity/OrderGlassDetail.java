@@ -43,4 +43,7 @@ public class OrderGlassDetail extends SuperEntity<OrderFileRecord> {
     private BigDecimal glassWidth;
 
     private Integer materialNum;
+
+    private String customerName;
+
 }

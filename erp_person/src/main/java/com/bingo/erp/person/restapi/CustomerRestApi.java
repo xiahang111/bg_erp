@@ -1,6 +1,5 @@
 package com.bingo.erp.person.restapi;
 
-import com.bingo.erp.base.global.BaseSysConf;
 import com.bingo.erp.base.vo.CustomerVO;
 import com.bingo.erp.person.global.SysConf;
 import com.bingo.erp.utils.ResultUtil;
@@ -45,7 +44,7 @@ public class CustomerRestApi {
 
         String adminUid = (String) request.getAttribute(SysConf.ADMIN_UID);
 
-        if (null == adminUid) {
+        if (null == adminUid && null == customerVO.getAdminUid()) {
             return ResultUtil.result(SysConf.Fail, "token过期！");
         }
 
@@ -55,5 +54,16 @@ public class CustomerRestApi {
 
     }
 
+    @GetMapping("/searchCustomer")
+    public String searchCustomer(HttpServletRequest request,@RequestParam(required = false,defaultValue = "") String key){
 
+        String adminUid = (String) request.getAttribute(SysConf.ADMIN_UID);
+
+        if (null == adminUid) {
+            return ResultUtil.result(SysConf.Fail, "token过期！");
+        }
+
+        return ResultUtil.result(SysConf.SUCCESS, customerInfoService.searchCustomer(adminUid,key));
+
+    }
 }

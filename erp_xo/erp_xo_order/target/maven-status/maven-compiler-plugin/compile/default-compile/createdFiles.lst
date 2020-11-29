@@ -63,6 +63,7 @@ com\bingo\erp\xo\order\service\impl\StoreRecordInfoServiceImpl.class
 com\bingo\erp\xo\order\service\feign\StoreDataService.class
 com\bingo\erp\xo\order\global\SysConf.class
 com\bingo\erp\xo\order\vo\StoreSummaryPageVO.class
+com\bingo\erp\xo\order\factory\LD5HCalculateFactory.class
 com\bingo\erp\xo\order\service\impl\feign\OrderDataServiceImpl.class
 com\bingo\erp\xo\order\global\RedisConf.class
 com\bingo\erp\xo\order\service\SaleService.class

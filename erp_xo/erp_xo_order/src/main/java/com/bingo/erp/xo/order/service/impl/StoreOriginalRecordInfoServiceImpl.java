@@ -34,7 +34,7 @@ public class StoreOriginalRecordInfoServiceImpl
 
 
     @Override
-    public void callbackStoreRecord(String storeRecordUid) throws Exception {
+    public synchronized void callbackStoreRecord(String storeRecordUid) throws Exception {
 
         StoreOriginalRecordInfo storeOriginalRecordInfo = storeOriginalRecordInfoMapper.selectById(storeRecordUid);
 
@@ -45,6 +45,7 @@ public class StoreOriginalRecordInfoServiceImpl
         QueryWrapper<StoreOriginalInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("material_name", storeOriginalRecordInfo.getMaterialName());
         queryWrapper.eq("specification", storeOriginalRecordInfo.getSpecification());
+        queryWrapper.eq("status", SysConf.NORMAL_STATUS);
 
         StoreOriginalInfo storeOriginalInfo = storeOriginalInfoService.getOne(queryWrapper);
 

@@ -8,7 +8,7 @@ import java.io.Serializable;
 public enum TransomTypeEnums implements IEnum {
 
     TDHL_47(1, "47天地横梁"),
-    TDHL_55(1, "55天地横梁");
+    TDHL_55(2, "55天地横梁");
     public final int code;
     public final String name;
 

@@ -49,7 +49,7 @@ public class LaminateInfoVO {
      */
     private String pipeType = "/";
 
-    private String remark;
+    private String remark = "";
 
     /**
      * 周长

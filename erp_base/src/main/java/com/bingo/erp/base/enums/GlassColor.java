@@ -15,7 +15,9 @@ public enum GlassColor implements IEnum {
     BB(6,"白玻"),
     HB(7,"黑玻"),
     CYLS(8,"超白春意阑珊"),
-    SYHB(9,"丝印黑边");
+    SYHB(9,"丝印黑边"),
+    YJ(10,"银镜"),
+    CBCH(11,"超白长虹");
 
 
     GlassColor(int code, String name) {

@@ -84,14 +84,14 @@ public class StoreRecordInfoServiceImpl
 
     @Override
     @Transactional
-    public void saveStoreRecord(StoreRecordVO storeRecordVO) throws Exception {
+    public synchronized void saveStoreRecord(StoreRecordVO storeRecordVO) throws Exception {
 
 
         QueryWrapper<StoreSummaryInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("material_name", storeRecordVO.getMaterialName());
         queryWrapper.eq("material_color", storeRecordVO.getMaterialColor());
         queryWrapper.eq("specification", storeRecordVO.getSpecification());
-        queryWrapper.eq("status","1");
+        queryWrapper.eq("status",SysConf.NORMAL_STATUS);
 
         StoreSummaryInfo storeSummaryInfo = storeSummaryInfoService.getOne(queryWrapper);
 
@@ -148,7 +148,7 @@ public class StoreRecordInfoServiceImpl
 
     @Override
     @Transactional
-    public void callbackStoreRecord(String storeRecordUid) throws Exception {
+    public synchronized void callbackStoreRecord(String storeRecordUid) throws Exception {
 
         StoreRecordInfo storeRecordInfo = storeRecordInfoMapper.selectById(storeRecordUid);
 
@@ -160,6 +160,7 @@ public class StoreRecordInfoServiceImpl
         queryWrapper.eq("material_name", storeRecordInfo.getMaterialName());
         queryWrapper.eq("material_color", storeRecordInfo.getMaterialColor());
         queryWrapper.eq("specification", storeRecordInfo.getSpecification());
+        queryWrapper.eq("status", SysConf.NORMAL_STATUS);
 
         StoreSummaryInfo storeSummaryInfo = storeSummaryInfoService.getOne(queryWrapper);
 

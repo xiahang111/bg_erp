@@ -110,13 +110,13 @@ public class StoreOriginalInfoServiceImpl
 
     @Override
     @Transactional
-    public void saveStoreOriginalRecord(StoreOriginRecordVO storeOriginRecordVO) throws Exception {
+    public synchronized void saveStoreOriginalRecord(StoreOriginRecordVO storeOriginRecordVO) throws Exception {
 
         QueryWrapper<StoreOriginalInfo> queryWrapper = new QueryWrapper<>();
 
         queryWrapper.eq("material_name", storeOriginRecordVO.getMaterialName());
         queryWrapper.eq("specification", storeOriginRecordVO.getSpecification());
-        queryWrapper.eq("status","1");
+        queryWrapper.eq("status",SysConf.NORMAL_STATUS);
         StoreOriginalInfo one = storeOriginalInfoService.getOne(queryWrapper);
 
         if (null == one) {
@@ -190,12 +190,13 @@ public class StoreOriginalInfoServiceImpl
 
 
         storeOriginalRecordInfoService.save(storeOriginalRecordInfo);
+        one.setStatus(SysConf.NORMAL_STATUS);
         storeOriginalInfoService.updateById(one);
 
     }
 
     @Override
-    public void saveStoreOrigin(StoreOriginVO storeOriginVO) throws Exception {
+    public synchronized void saveStoreOrigin(StoreOriginVO storeOriginVO) throws Exception {
 
         //校验
         if (StringUtils.isBlank(storeOriginVO.getMaterialName()) || StringUtils.isBlank(storeOriginVO.getSpecification())) {
@@ -208,7 +209,7 @@ public class StoreOriginalInfoServiceImpl
 
             queryWrapper.eq("material_name", storeOriginVO.getMaterialName());
             queryWrapper.eq("specification", storeOriginVO.getSpecification());
-            queryWrapper.eq("status","1");
+            queryWrapper.eq("status",SysConf.NORMAL_STATUS);
 
             storeOriginalInfo = storeOriginalInfoService.getOne(queryWrapper);
 

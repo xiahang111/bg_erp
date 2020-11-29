@@ -3,6 +3,7 @@ package com.bingo.erp.xo.order.vo;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -16,7 +17,7 @@ public class MaterialVO extends ProductVO{
     /**
      * 五金信息
      */
-    public List<IronwareInfoVO> ironwares;
+    public List<IronwareInfoVO> ironwares = new ArrayList<>();
 
     /**
      *

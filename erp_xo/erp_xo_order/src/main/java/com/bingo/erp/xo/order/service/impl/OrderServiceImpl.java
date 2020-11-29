@@ -124,9 +124,6 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
         String fileName = "层板订单" + suffix;
 
-        result.add(fileName);
-
-
         //确定表格结构
         if (null == laminateVO.getLaminateInfos() || laminateVO.getLaminateInfos().size() <= 0) {
             throw new MessageException("没有填写层板灯信息哦~请填写");
@@ -142,8 +139,11 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
         //半成品添加配件
         if (laminateVO.getProductType() == ProductTypeEnums.NotComplete.code){
-            for (LaminateInfoVO laminateInfo : laminateVO.getLaminateInfos())
-            laminateVO.getIronwares().addAll(tools.getCBDIronByNotComplete());
+            int totalNum = 0;
+            for (LaminateInfoVO laminateInfo : laminateVO.getLaminateInfos()){
+                totalNum += laminateInfo.getLaminateNum();
+            }
+            laminateVO.getIronwares().addAll(tools.getCBDIronByNotComplete(totalNum));
         }
 
         String orderFileName = SRC_FILE_URL + ExcelConf.CBD_ORDER_FILENAME;
@@ -280,7 +280,6 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
             throw new MessageException("要保持料型号颜色、拉手类型和玻璃颜色一致哦~");
         }*/
 
-        int ironwareNum = materialVO.getIronwares().size() - 1;
 
         int transomNum = 0;
 
@@ -288,6 +287,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
         //计算数据
 
+        tools.mountingCalculate(materialVO);
         tools.ironwareCalculate(materialVO.getIronwares());
         tools.materialCalculate(materialVO.getMaterials());
         if (materialVO.isHaveTransom && null != materialVO.getTransoms()) {
@@ -301,6 +301,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
                 materialVO.getIronwares().addAll(tools.getIronByHeight(transomVO.getHeight()));
             }
         }
+        int ironwareNum = materialVO.getIronwares().size() - 1;
 
         tools.orderCalculate(materialVO);
 
@@ -325,6 +326,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
             Map<String, List<MaterialInfoVO>> map = tools.materialsToMap(materialVO.getMaterials());
 
+            log.info("excel模板总行数:"+sheet.getLastRowNum());
             int addnum = tools.extensionExcel(sheet, map, ironwareNum, transomNum, materialVO.isHaveTransom);
 
             //填充料玻、五金数据
@@ -385,6 +387,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
                 orderInfo.setOrderStatus(OrderStatusEnums.STAY_CONFIRM);
             }
 
+
             orderInfoMapper.insert(orderInfo);
 
             List<MaterialInfoVO> insertList = new ArrayList<>();
@@ -413,10 +416,13 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
             orderFileRecordService.save(orderFileRecord);
 
-            //保存玻璃信息 不保存半成品的
-            if (orderInfo.getProductType() == ProductTypeEnums.Complete) {
-                getOrderGlassDetailByMaterial(materialInfos,orderInfo,orderGlassDetailMapper);
+            //如果账号权限不是游客 那么才会保存相关订单信息
+            if(!SysConf.VISIT_ROLE.equals(roleName)){
+                //保存玻璃信息 不保存半成品的
+                if (orderInfo.getProductType() == ProductTypeEnums.Complete) {
+                    getOrderGlassDetailByMaterial(materialInfos,orderInfo,orderGlassDetailMapper);
 
+                }
             }
             //保存客户信息
             tools.saveCustomer(adminUid, materialVO, personFeignClient);
@@ -643,6 +649,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
                 orderGlassDetail.setMaterialNum(laminateInfo.getLaminateNum());
                 orderGlassDetail.setMaterialType(laminateInfo.getMaterialType().name);
                 orderGlassDetail.setGlassDetail(glassDetail);
+                orderGlassDetail.setCustomerName(orderInfo.getCustomerName());
 
                orderGlassDetailMapper.insert(orderGlassDetail);
                try {
@@ -672,6 +679,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
             orderGlassDetail.setMaterialNum(materialInfo.getMaterialNum());
             orderGlassDetail.setMaterialType(materialInfo.getMaterialType().name);
             orderGlassDetail.setGlassDetail(glassDetail);
+            orderGlassDetail.setCustomerName(orderInfo.getCustomerName());
 
             orderGlassDetailMapper.insert(orderGlassDetail);
             try {

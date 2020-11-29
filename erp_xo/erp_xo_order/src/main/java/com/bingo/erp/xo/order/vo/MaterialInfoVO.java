@@ -53,28 +53,28 @@ public class MaterialInfoVO {
     /**
      * 拉手位置
      */
-    public String handlePlace;
+    public String handlePlace = "";
 
 
     /**
      * 合页孔位置
      */
-    public String hingeLocation;
+    public String hingeLocation = "";
 
     /**
      * 开启方向
      */
-    public String direction;
+    public String direction = "";
 
     /**
      * 角码种类
      */
-    public int cornerMaterial;
+    public int cornerMaterial = 0;
 
     /**
      * 产品下料详情
      */
-    private String materialDetail;
+    private String materialDetail = "";
 
     private int cornerNum;
 

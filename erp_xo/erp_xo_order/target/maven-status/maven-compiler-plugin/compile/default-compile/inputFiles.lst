@@ -85,6 +85,7 @@ D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\vo\
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\service\feign\OrderDataService.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\mapper\MaterialInfoMapper.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\mapper\OrderFileRecordMapper.java
+D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\factory\LD5HCalculateFactory.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\mapper\MaterialCalculateRecordMapper.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\vo\GlassCalculateRecordVO.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\mapper\OrderGlassDetailMapper.java

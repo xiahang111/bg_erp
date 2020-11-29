@@ -20,7 +20,8 @@ public enum MaterialColorEnums implements IEnum {
     HS(12, "黑色"),
     JS(13, "金色"),
     SJS(14, "深金色"),
-    GTS(15, "古铜色");
+    GTS(15, "古铜色"),
+    SXH(16,"水性灰");
 
     MaterialColorEnums(int code, String name) {
         this.code = code;

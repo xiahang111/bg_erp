@@ -13,4 +13,6 @@ public interface CustomerInfoService extends SuperService<CustomerInfo> {
     IPage<CustomerInfo> getCustomerByAdminUid(String adminUid, CustomerPageVO customerPageVO) throws Exception;
 
     void saveCustomerByOrder(String adminUid,CustomerVO customerVO);
+
+    List<CustomerInfo> searchCustomer(String uid, String key);
 }

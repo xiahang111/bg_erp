@@ -58,8 +58,6 @@ public class LD1HCalculateFactory implements MaterialCalculateFactory<MaterialIn
 
         resultVO.setCorner(CornerEnums.RightAngle);
 
-
-
         return resultVO;
     }
 }

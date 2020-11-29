@@ -4,10 +4,15 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bingo.erp.commons.entity.DataGather;
 import com.bingo.erp.commons.entity.OrderInfo;
 import com.bingo.erp.utils.DateUtils;
+import com.bingo.erp.utils.JsonUtils;
+import com.bingo.erp.utils.RedisUtil;
+import com.bingo.erp.xo.order.global.RedisConf;
 import com.bingo.erp.xo.order.global.SysConf;
+import com.bingo.erp.xo.order.mapper.AdminMapper;
 import com.bingo.erp.xo.order.mapper.DataGatherMapper;
 import com.bingo.erp.xo.order.mapper.OrderInfoMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,6 +21,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Configuration
 @EnableScheduling
@@ -29,6 +35,12 @@ public class IndexDataTask {
     @Resource
     private DataGatherMapper dataGatherMapper;
 
+    @Resource
+    private AdminMapper adminMapper;
+
+    @Autowired
+    RedisUtil redisUtil;
+
     @Scheduled(cron = "0 0/10 * * * ?")
     private void statisticIndexData() {
 
@@ -36,7 +48,26 @@ public class IndexDataTask {
 
         QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<>();
 
+        //获取游客权限的账号
+        String adminInfoJson = redisUtil.get(RedisConf.USER_ADMIN_INFO_KEY);
+        List<Map<String, String>> adminInfoMapList = (List<Map<String, String>>) JsonUtils.jsonArrayToArrayList(adminInfoJson);
+        List<String > adminList = new ArrayList<>();
+
+        try {
+            for (Map<String, String> map:adminInfoMapList) {
+                if (map.get("roleName").equals("visit")){
+                    adminList.add(map.get("uid"));
+                }
+            }
+        }catch (Exception e){
+            log.info("获取用户权限出问题,原因:"+e.getMessage());
+        }
+
         queryWrapper.eq("status",SysConf.NORMAL_STATUS);
+        if (adminList.size() > 0 ){
+            queryWrapper.in("adminUid",adminList);
+        }
+
         List<OrderInfo> orderInfos = orderInfoMapper.selectList(queryWrapper);
 
         List<OrderInfo> todays = new ArrayList<>();

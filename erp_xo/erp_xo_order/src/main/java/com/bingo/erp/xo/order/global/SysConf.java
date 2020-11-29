@@ -9,6 +9,7 @@ public class SysConf extends BaseSysConf {
      */
     public static final String ADMIN_ROLE = "admin";
     public static final String CLERK_ROLE = "clerk";
+    public static final String VISIT_ROLE = "visit";
 
     public static final Integer NORMAL_STATUS = 1;
 
