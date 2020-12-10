@@ -19,10 +19,11 @@ public class OrderInfo extends SuperEntity<OrderInfo> {
     /**
      * 是否是净尺寸
      */
-    private Boolean isClear;
+    private Boolean isClear = true;
 
     @TableField("admin_uid")
     String adminUid;
+
 
     /**
      * 产品类型（成品、半成品）
@@ -46,6 +47,7 @@ public class OrderInfo extends SuperEntity<OrderInfo> {
     private String customerAddr;
 
     private String customerPhoneNum;
+
 
     /**
      * 大包装个数

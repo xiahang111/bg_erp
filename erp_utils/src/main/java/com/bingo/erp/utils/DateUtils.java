@@ -22,6 +22,9 @@ public class DateUtils {
     public final static String DAYFORMAT_STRING = "yyyyMMdd";
     public final static String[] REPLACE_STRING = new String[]{"GMT+0800", "GMT+08:00"};
     public final static String SPLIT_STRING = "(中国标准时间)";
+    public final static String YEAR = "year";
+    public final static String MONTH = "month";
+    public final static String DAY = "day";
     public static Logger log = LoggerFactory.getLogger(DateUtils.class);
 
     private DateUtils() {
@@ -484,6 +487,25 @@ public class DateUtils {
                 .getDefault());
         return calendar.get(Calendar.MONTH) + 1;
 
+    }
+
+    public static String  getFormatByDate(Date date1,String type){
+
+        String date = DateUtils.formateDate(date1,DateUtils.DAYFORMAT_STRING);
+
+        if (type.equals(DateUtils.YEAR)){
+            return date.substring(0,4);
+        }
+
+        if (type.equals(DateUtils.MONTH)){
+            return date.substring(4,6);
+        }
+
+        if (type.equals(DateUtils.DAY)){
+            return date.substring(6,8);
+        }
+
+        return "";
     }
 
     /**

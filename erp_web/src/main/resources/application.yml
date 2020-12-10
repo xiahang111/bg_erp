@@ -61,7 +61,6 @@ eureka:
 # 或者：
 feign.hystrix.enabled: false # 索性禁用feign的hystrix支持
 
-#mybatis
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
   #实体扫描，多个package用逗号或者分号分隔

@@ -13,9 +13,11 @@ import com.bingo.erp.utils.JsonUtils;
 import com.bingo.erp.utils.RedisUtil;
 import com.bingo.erp.utils.StringUtils;
 import com.bingo.erp.xo.person.entity.CustomerInfo;
+import com.bingo.erp.xo.person.feign.DataFeignClient;
 import com.bingo.erp.xo.person.mapper.CustomerInfoMapper;
 import com.bingo.erp.xo.person.service.CustomerInfoService;
 import com.bingo.erp.xo.person.vo.CustomerPageVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,10 +27,14 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class CustomerInfoServiceImpl extends SuperServiceImpl<CustomerInfoMapper, CustomerInfo> implements CustomerInfoService {
 
     @Resource
     private CustomerInfoService customerInfoService;
+
+    @Resource
+    private DataFeignClient dataFeignClient;
 
 
     @Resource
@@ -89,6 +95,7 @@ public class CustomerInfoServiceImpl extends SuperServiceImpl<CustomerInfoMapper
         QueryWrapper<CustomerInfo> queryWrapper = new QueryWrapper<>();
 
         //保证没有重复的客户和收货人名称
+        queryWrapper.eq("admin_uid", customerVO.getAdminUid());
         queryWrapper.eq("customer_nick", customerVO.getCustomerNick());
         queryWrapper.eq("customer_name", customerVO.getCustomerName());
         queryWrapper.eq("salesman", customerVO.getSalesman());
@@ -122,9 +129,9 @@ public class CustomerInfoServiceImpl extends SuperServiceImpl<CustomerInfoMapper
                 log.error("保存客户信息失败,原因:"+e.getMessage());
             }
 
+            customerVO.setCustomerUid(customerInfo.getUid());
 
         }else {
-
             exist.setCustomerResource(CustomerResourceEnums.getByCode(customerVO.getCustomerResource()));
             exist.setCustomerAddr(customerVO.getCustomerAddr());
             exist.setCustomerPhone(customerVO.getCutomerPhone());
@@ -136,7 +143,14 @@ public class CustomerInfoServiceImpl extends SuperServiceImpl<CustomerInfoMapper
                 log.error("更新客户信息失败,原因:"+e.getMessage());
             }
 
+            customerVO.setCustomerUid(exist.getUid());
         }
+
+        //通过feign保存客户订单映射信息
+        log.info("保存客户订单映射信息开始,数据:{}",JsonUtils.objectToJson(customerVO));
+        dataFeignClient.saveCustomerOrder(customerVO);
+        log.info("保存客户订单映射信息结束");
+
     }
 
     /**
@@ -149,7 +163,7 @@ public class CustomerInfoServiceImpl extends SuperServiceImpl<CustomerInfoMapper
     public List<CustomerInfo> searchCustomer(String uid, String key) {
 
         QueryWrapper<CustomerInfo> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("admin_uid",uid);
+        //queryWrapper.eq("admin_uid",uid);
         //queryWrapper.like("customer_name",key);
 
         List<CustomerInfo> customerInfos = customerInfoService.list(queryWrapper);
@@ -160,4 +174,5 @@ public class CustomerInfoServiceImpl extends SuperServiceImpl<CustomerInfoMapper
         }
         return customerInfos;
     }
+
 }

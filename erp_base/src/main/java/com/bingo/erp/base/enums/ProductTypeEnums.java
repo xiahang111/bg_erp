@@ -7,9 +7,11 @@ import java.io.Serializable;
 
 public enum ProductTypeEnums implements IEnum {
 
-    Complete(1,"成品"),
+    Other(0, "其他"),
 
-    NotComplete(2,"半成品");
+    Complete(1, "成品"),
+
+    NotComplete(2, "半成品");
 
 
     public final int code;
@@ -20,11 +22,11 @@ public enum ProductTypeEnums implements IEnum {
         this.name = name;
     }
 
-    public static ProductTypeEnums getByCode(int code){
+    public static ProductTypeEnums getByCode(int code) {
 
-        for (ProductTypeEnums enums:ProductTypeEnums.values()) {
+        for (ProductTypeEnums enums : ProductTypeEnums.values()) {
 
-            if(enums.code == code){
+            if (enums.code == code) {
                 return enums;
             }
 

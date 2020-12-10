@@ -28,6 +28,18 @@ public enum LineColor implements IEnum {
         return "/";
     }
 
+    public static int getCodeByName(String name){
+        for (LineColor enums : LineColor.values()) {
+
+            if (enums.name == name) {
+                return enums.code;
+            }
+
+        }
+
+        return 0;
+    }
+
     public static LineColor getByCode(int code) {
         for (LineColor enums : LineColor.values()) {
 

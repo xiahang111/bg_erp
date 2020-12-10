@@ -3,4 +3,5 @@ D:\workspace\bg_erp\erp_data\src\main\java\com\bingo\erp\data\restapi\StoreDataR
 D:\workspace\bg_erp\erp_data\src\main\java\com\bingo\erp\data\DataApplication.java
 D:\workspace\bg_erp\erp_data\src\main\java\com\bingo\erp\data\security\JwtAuthenticationEntryPoint.java
 D:\workspace\bg_erp\erp_data\src\main\java\com\bingo\erp\data\security\WebSecurityConfig.java
+D:\workspace\bg_erp\erp_data\src\main\java\com\bingo\erp\data\restapi\CustomerDataRestApi.java
 D:\workspace\bg_erp\erp_data\src\main\java\com\bingo\erp\data\config\MybatisPlusConfig.java

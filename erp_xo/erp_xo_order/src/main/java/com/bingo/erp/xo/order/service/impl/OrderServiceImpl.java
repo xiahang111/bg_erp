@@ -51,6 +51,12 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
     private MaterialInfoMapper materialInfoMapper;
 
     @Resource
+    private MetalInfoMapper metalInfoMapper;
+
+    @Resource
+    private MetalInfoService metalInfoService;
+
+    @Resource
     private MaterialInfoService materialInfoService;
 
     @Resource
@@ -137,13 +143,15 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
         cbdOrderTools.laminateCalculate(laminateVO.getLaminateInfos());
         cbdOrderTools.orderCalculate(laminateVO);
 
-        //半成品添加配件
-        if (laminateVO.getProductType() == ProductTypeEnums.NotComplete.code){
+        //半成品添加配件laminateVO.getProductType() == ProductTypeEnums.NotComplete.code
+        //12月1日 半成品成品都要有
+        //12月3日 成品沒有角码
+        if (true){
             int totalNum = 0;
             for (LaminateInfoVO laminateInfo : laminateVO.getLaminateInfos()){
                 totalNum += laminateInfo.getLaminateNum();
             }
-            laminateVO.getIronwares().addAll(tools.getCBDIronByNotComplete(totalNum));
+            laminateVO.getIronwares().addAll(tools.getCBDIronByNotComplete(totalNum,laminateVO.getProductType()));
         }
 
         String orderFileName = SRC_FILE_URL + ExcelConf.CBD_ORDER_FILENAME;
@@ -246,7 +254,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
         tools.saveIronwareInfoList(ironwareInfoMapper, laminateVO.getIronwares(), orderInfo.getUid());
 
-        tools.saveCustomer(adminUid, laminateVO, personFeignClient);
+        tools.saveCustomer(adminUid, laminateVO, orderInfo);
 
         redisUtil.set(RedisConf.ORDER_UID_PRE + orderInfo.getUid(), JsonUtils.objectToJson(laminateVO));
 
@@ -295,14 +303,11 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
             tools.transomCalculate(materialVO.getTransoms());
 
             //添加螺丝配件信息
-            List<TransomVO> transomVOS = materialVO.getTransoms();
-
-            for (TransomVO transomVO : transomVOS) {
-                materialVO.getIronwares().addAll(tools.getIronByHeight(transomVO.getHeight()));
-            }
+            tools.getIronByHeight(materialVO.getTransoms());
         }
         int ironwareNum = materialVO.getIronwares().size() - 1;
 
+        //计算订单价格
         tools.orderCalculate(materialVO);
 
         try {
@@ -425,7 +430,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
                 }
             }
             //保存客户信息
-            tools.saveCustomer(adminUid, materialVO, personFeignClient);
+            tools.saveCustomer(adminUid, materialVO, orderInfo);
 
 
             //将订单信息放到redis中
@@ -582,6 +587,9 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
         List<IronwareInfo> ironwareInfos = ironwareInfoMapper.getAllByOrderUid(uid);
 
+        //将材料单内容置空
+        List<MetalInfo> metalInfos = metalInfoMapper.getAllByOrderUid(uid);
+
         //将材料信息置为删除状态
         if (CollectionUtil.isNotEmpty(materialInfos)) {
             materialInfos.stream().forEach(materialInfo -> {
@@ -601,6 +609,16 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
             ironwareInforService.updateBatchById(ironwareInfos);
         }
+
+        //将材料信息置为删除状态
+        if (CollectionUtil.isNotEmpty(metalInfos)) {
+            metalInfos.stream().forEach(metalInfo -> {
+                metalInfo.setStatus(SysConf.DELETE_STATUS);
+            });
+
+            metalInfoService.updateBatchById(metalInfos);
+        }
+
 
         QueryWrapper<LaminateInfo> laminateInfoQueryWrapper = new QueryWrapper<>();
         laminateInfoQueryWrapper.eq("order_info_uid", uid);

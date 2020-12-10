@@ -8,4 +8,5 @@ D:\workspace\bg_erp\erp_xo\erp_xo_person\src\main\java\com\bingo\erp\xo\person\v
 D:\workspace\bg_erp\erp_xo\erp_xo_person\src\main\java\com\bingo\erp\xo\person\service\impl\CompanyInfoServiceImpl.java
 D:\workspace\bg_erp\erp_xo\erp_xo_person\src\main\java\com\bingo\erp\xo\person\mapper\CompanyInfoMapper.java
 D:\workspace\bg_erp\erp_xo\erp_xo_person\src\main\java\com\bingo\erp\xo\person\service\CompanyInfoService.java
+D:\workspace\bg_erp\erp_xo\erp_xo_person\src\main\java\com\bingo\erp\xo\person\feign\DataFeignClient.java
 D:\workspace\bg_erp\erp_xo\erp_xo_person\src\main\java\com\bingo\erp\xo\person\vo\CompanyVO.java

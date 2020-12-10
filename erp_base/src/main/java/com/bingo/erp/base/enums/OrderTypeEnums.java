@@ -8,7 +8,15 @@ import java.io.Serializable;
 public enum OrderTypeEnums implements IEnum {
 
     DOORORDER(1, "门单"),
-    CBDORDER(2, "层板灯单");
+    CBDORDER(2, "层板灯单"),
+    DESK(3,"轻奢极简餐桌"),
+    SHELF(4,"博古架"),
+    CABINET(5,"玻璃柜"),
+    SPECIMEN(6,"小样品"),
+    HANGING(7,"置物架"),
+    TRANSOM(8,"天地横梁"),
+    METAL(9,"材料单");
+
     public final int code;
     public final String name;
 

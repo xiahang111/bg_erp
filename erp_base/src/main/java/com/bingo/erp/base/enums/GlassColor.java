@@ -49,6 +49,16 @@ public enum GlassColor implements IEnum {
         return null;
     }
 
+    public static int getCodeByInformation(String information){
+
+        for (GlassColor enums:GlassColor.values()) {
+            if (information.contains(enums.name+"玻璃")){
+                return enums.code;
+            }
+        }
+
+        return 0;
+    }
 
     public int code;
 

@@ -6,6 +6,7 @@ import org.codehaus.jackson.annotate.JsonValue;
 import java.io.Serializable;
 
 public enum MaterialColorEnums implements IEnum {
+    WYS(0,"无颜色"),
     HTLS(1, "黄铜拉丝"),
     TLS(2, "古铜拉丝"),
     YH(3, "哑黑"),
@@ -21,7 +22,11 @@ public enum MaterialColorEnums implements IEnum {
     JS(13, "金色"),
     SJS(14, "深金色"),
     GTS(15, "古铜色"),
-    SXH(16,"水性灰");
+    SXH(16,"水性灰"),
+    //桌子颜色
+    FTH(17,"氟碳灰"),
+    PL(18,"坯料")
+    ;
 
     MaterialColorEnums(int code, String name) {
         this.code = code;
@@ -62,6 +67,18 @@ public enum MaterialColorEnums implements IEnum {
         }
 
         return null;
+    }
+
+    public static int getCodeByInformation(String information){
+
+        for (MaterialColorEnums enums:MaterialColorEnums.values()) {
+            if (information.contains(enums.name)){
+                return enums.code;
+            }
+        }
+
+        return 0;
+
     }
 
     public int code;

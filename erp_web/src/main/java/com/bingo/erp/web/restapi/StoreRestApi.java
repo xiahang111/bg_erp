@@ -160,6 +160,23 @@ public class StoreRestApi {
         return ResultUtil.result(SysConf.SUCCESS, storeOriginalInfoService.getStoreOriginalRecord(storeRecordPageVO));
     }
 
+    /**
+     * 获取仓库库存报表
+     * @param request
+     * @param
+     * @return
+     */
+    @PostMapping("getStoreStatement")
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    public String getStoreStatement(HttpServletRequest request, @RequestBody StoreStatementVO storeStatementVO) {
+        try {
+            return ResultUtil.result(SysConf.SUCCESS, storeRecordInfoService.getStoreStatement(storeStatementVO));
+        }catch (Exception e){
+            return ResultUtil.result(SysConf.Fail, e.getMessage());
+        }
+
+    }
+
     @PostMapping("saveStoreRecord")
     @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
     public String saveStoreRecord(HttpServletRequest request, @RequestBody StoreRecordVO storeRecordPageVO) {
@@ -196,6 +213,26 @@ public class StoreRestApi {
                 storeRecordInfoService.callbackStoreRecord(recordUid);
             }
             return ResultUtil.result(SysConf.SUCCESS, "删除成功");
+        } catch (Exception e) {
+            return ResultUtil.result(SysConf.Fail, e.getMessage());
+        }
+    }
+
+    @GetMapping("getStoreNameList")
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    public String getStoreNameList(HttpServletRequest request){
+        try {
+            return ResultUtil.result(SysConf.SUCCESS, storeRecordInfoService.getStoreNameList());
+        } catch (Exception e) {
+            return ResultUtil.result(SysConf.Fail, e.getMessage());
+        }
+    }
+
+    @GetMapping("getOriginNameList")
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    public String getOriginNameList(HttpServletRequest request){
+        try {
+            return ResultUtil.result(SysConf.SUCCESS, storeOriginalInfoService.getOriginNameList());
         } catch (Exception e) {
             return ResultUtil.result(SysConf.Fail, e.getMessage());
         }

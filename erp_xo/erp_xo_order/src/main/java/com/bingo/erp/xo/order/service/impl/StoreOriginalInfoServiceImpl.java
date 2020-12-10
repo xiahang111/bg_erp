@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.*;
 
 @Service
 public class StoreOriginalInfoServiceImpl
@@ -254,5 +255,21 @@ public class StoreOriginalInfoServiceImpl
 
         storeOriginalInfoMapper.updateById(storeOriginalInfo);
 
+    }
+
+
+    @Override
+    public List<Map<String ,String >> getOriginNameList() {
+
+        List<Map<String ,String >> result = new ArrayList<>();
+
+        Set<String> nameList = storeOriginalInfoMapper.getStoreNameList();
+        for (String name:nameList) {
+            Map<String ,String > map = new HashMap<>();
+            map.put("storeName",name);
+            result.add(map);
+        }
+
+        return result;
     }
 }

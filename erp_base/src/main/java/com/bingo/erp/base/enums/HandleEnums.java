@@ -64,6 +64,17 @@ public enum HandleEnums implements IEnum {
         return null;
     }
 
+    public static int getCodeByInformation(String information){
+
+        for (HandleEnums enums:HandleEnums.values()) {
+            if (information.contains(enums.name)){
+                return enums.code;
+            }
+        }
+
+        return 0;
+    }
+
     @Override
     public Serializable getValue() {
         return this.code;

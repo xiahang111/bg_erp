@@ -43,6 +43,19 @@ public enum TransomTypeEnums implements IEnum {
         return null;
     }
 
+    public static int getCodeByInformation(String information) {
+
+        if (information.contains("47")) {
+            return TransomTypeEnums.TDHL_47.code;
+        }
+        if (information.contains("55")) {
+            return TransomTypeEnums.TDHL_55.code;
+        }
+
+
+        return 0;
+    }
+
     @Override
     public Serializable getValue() {
         return this.code;

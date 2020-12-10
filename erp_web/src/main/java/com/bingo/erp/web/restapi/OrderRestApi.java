@@ -5,10 +5,13 @@ import com.bingo.erp.commons.entity.Admin;
 import com.bingo.erp.utils.ResultUtil;
 import com.bingo.erp.web.global.SysConf;
 import com.bingo.erp.xo.order.service.AdminService;
+import com.bingo.erp.xo.order.service.FileService;
 import com.bingo.erp.xo.order.service.OrderService;
+import com.bingo.erp.xo.order.service.StatementService;
 import com.bingo.erp.xo.order.vo.LaminateVO;
 import com.bingo.erp.xo.order.vo.MaterialVO;
 import com.bingo.erp.xo.order.vo.OrderRecordPageVO;
+import com.bingo.erp.xo.order.vo.SaleStatementVO;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.ArchiveEntry;
@@ -16,6 +19,7 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
@@ -35,6 +39,12 @@ public class OrderRestApi {
 
     @Resource
     private OrderService orderService;
+
+    @Resource
+    private StatementService statementService;
+
+    @Resource
+    private FileService fileService;
 
     @Resource
     private AdminService adminService;
@@ -207,6 +217,45 @@ public class OrderRestApi {
         }
 
     }
+
+    /**
+     * 销售员订单报表
+     * @param
+     * @param
+     * @return
+     */
+    @PostMapping("SalemenStatement")
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    public String orderSaleStatement(HttpServletRequest request, @RequestBody SaleStatementVO saleStatementVO){
+
+        try {
+            if (request.getAttribute(SysConf.ADMIN_UID) == null) {
+                return ResultUtil.result(SysConf.ERROR, "token用户过期");
+            }
+            return ResultUtil.result(SysConf.SUCCESS,statementService.getSaleStatement(saleStatementVO));
+        }catch (Exception e){
+            return ResultUtil.result(SysConf.Fail, "获取销售报表失败！原因："+e.getMessage());
+        }
+
+    }
+
+    @PostMapping("upload")
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    public String uploadFile(HttpServletRequest request,@RequestParam(value = "file", required = false) MultipartFile file,  HttpServletResponse response){
+
+        try {
+            String adminUid = (String) request.getAttribute(SysConf.ADMIN_UID);
+            if (adminUid == null) {
+                return ResultUtil.result(SysConf.ERROR, "token用户过期");
+            }
+            return ResultUtil.result(SysConf.SUCCESS,fileService.fileAnalyze(adminUid,file));
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.result(SysConf.Fail,e.getMessage());
+        }
+
+    }
+
 
 
 }

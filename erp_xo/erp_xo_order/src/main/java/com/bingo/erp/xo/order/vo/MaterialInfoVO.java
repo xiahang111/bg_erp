@@ -33,6 +33,11 @@ public class MaterialInfoVO {
     public BigDecimal height;
 
     /**
+     * 是否包含静音条  0 不包含 1 包含
+     */
+    public Integer isHaveBar = 1;
+
+    /**
      * 产品宽度
      */
     public BigDecimal width;

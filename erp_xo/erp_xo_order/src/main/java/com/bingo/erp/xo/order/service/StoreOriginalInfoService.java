@@ -6,6 +6,9 @@ import com.bingo.erp.commons.entity.StoreOriginalInfo;
 import com.bingo.erp.commons.entity.StoreOriginalRecordInfo;
 import com.bingo.erp.xo.order.vo.*;
 
+import java.util.List;
+import java.util.Map;
+
 public interface StoreOriginalInfoService extends SuperService<StoreOriginalInfo> {
 
     IPage<StoreOriginalInfo> getStoreOriginal(StoreOriginalPageVO storeOriginalPageVO);
@@ -17,4 +20,6 @@ public interface StoreOriginalInfoService extends SuperService<StoreOriginalInfo
     void saveStoreOrigin(StoreOriginVO storeOriginVO) throws Exception;
 
     void deleteStoreOrigin(StoreOriginVO storeOriginVO);
+
+    List<Map<String ,String >> getOriginNameList();
 }

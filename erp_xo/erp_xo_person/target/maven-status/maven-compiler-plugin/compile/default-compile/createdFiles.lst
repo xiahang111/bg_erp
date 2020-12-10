@@ -1,3 +1,4 @@
+com\bingo\erp\xo\person\feign\DataFeignClient.class
 com\bingo\erp\xo\person\mapper\CustomerInfoMapper.class
 com\bingo\erp\xo\person\service\impl\CustomerInfoServiceImpl.class
 com\bingo\erp\xo\person\service\CompanyInfoService.class

@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-public class ProductVO {
+public class  ProductVO {
 
     /**
      * 是否是净尺寸

@@ -41,7 +41,7 @@ public class IndexDataTask {
     @Autowired
     RedisUtil redisUtil;
 
-    @Scheduled(cron = "0 0/10 * * * ?")
+    @Scheduled(cron = "0 0/2 * * * ?")
     private void statisticIndexData() {
 
         log.info("统计首页信息定时任务开始============");
@@ -49,23 +49,26 @@ public class IndexDataTask {
         QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<>();
 
         //获取游客权限的账号
-        String adminInfoJson = redisUtil.get(RedisConf.USER_ADMIN_INFO_KEY);
-        List<Map<String, String>> adminInfoMapList = (List<Map<String, String>>) JsonUtils.jsonArrayToArrayList(adminInfoJson);
-        List<String > adminList = new ArrayList<>();
-
         try {
-            for (Map<String, String> map:adminInfoMapList) {
-                if (map.get("roleName").equals("visit")){
+            String adminInfoJson = redisUtil.get(RedisConf.USER_ADMIN_INFO_KEY);
+            log.info("获取到的账户json信息:" + adminInfoJson);
+            List<Map<String, String>> adminInfoMapList = (List<Map<String, String>>) JsonUtils.jsonArrayToArrayList(adminInfoJson);
+            List<String> adminList = new ArrayList<>();
+
+
+            for (Map<String, String> map : adminInfoMapList) {
+                if (!map.get("roleName").equals("visit")) {
                     adminList.add(map.get("uid"));
                 }
             }
-        }catch (Exception e){
-            log.info("获取用户权限出问题,原因:"+e.getMessage());
-        }
 
-        queryWrapper.eq("status",SysConf.NORMAL_STATUS);
-        if (adminList.size() > 0 ){
-            queryWrapper.in("adminUid",adminList);
+
+            queryWrapper.eq("status", SysConf.NORMAL_STATUS);
+            if (adminList.size() > 0) {
+                queryWrapper.in("adminUid", adminList);
+            }
+        } catch (Exception e) {
+            log.info("获取用户权限出问题,原因:" + e.getMessage());
         }
 
         List<OrderInfo> orderInfos = orderInfoMapper.selectList(queryWrapper);

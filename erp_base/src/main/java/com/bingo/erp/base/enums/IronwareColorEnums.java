@@ -41,7 +41,7 @@ public enum  IronwareColorEnums implements IEnum {
 
         }
 
-        return null;
+        return IronwareColorEnums.NOCOLOR;
     }
 
 

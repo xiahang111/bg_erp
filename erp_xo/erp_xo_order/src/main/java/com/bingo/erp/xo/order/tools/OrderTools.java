@@ -4,7 +4,6 @@ import com.bingo.erp.base.enums.*;
 import com.bingo.erp.base.fatocry.material.MaterialCalculateFactory;
 import com.bingo.erp.base.vo.CustomerVO;
 import com.bingo.erp.commons.entity.*;
-import com.bingo.erp.commons.feign.PersonFeignClient;
 import com.bingo.erp.utils.JsonUtils;
 import com.bingo.erp.utils.RedisUtil;
 import com.bingo.erp.xo.order.enums.MaterialFactoryEnum;
@@ -78,7 +77,7 @@ public class OrderTools {
             String key = MaterialColorEnums.getEnumByCode(infoVO.getMaterialColor()) + "、" +
                     MaterialTypeEnums.getEnumByCode(infoVO.getMaterialType()) + "(" +
                     HandleEnums.getNameByCode(infoVO.getHandleType()) + ")、" +
-                    GlassColor.getNameByCode(infoVO.getGlassColor()) + "玻璃";
+                    GlassColor.getNameByCode(infoVO.getGlassColor()) + "玻璃" + (infoVO.isHaveBar==1?"":"(不含静音条)");
 
             List<MaterialInfoVO> infoVOS = map.get(key);
 
@@ -503,12 +502,24 @@ public class OrderTools {
      * 给半成品层板灯添加配件
      * @return
      */
-    public List<IronwareInfoVO> getCBDIronByNotComplete(int num) {
+    public List<IronwareInfoVO> getCBDIronByNotComplete(int num,int productType) {
+
         List<IronwareInfoVO> results = new ArrayList<>();
-        IronwareInfoVO ironwareInfoVO1 = new IronwareInfoVO();
-        ironwareInfoVO1.setIronwareNum(4 * num);
-        ironwareInfoVO1.setIronwareName("层板角码");
-        ironwareInfoVO1.setUnit("个");
+        if (productType == ProductTypeEnums.NotComplete.code){
+            IronwareInfoVO ironwareInfoVO1 = new IronwareInfoVO();
+            ironwareInfoVO1.setIronwareNum(4 * num);
+            ironwareInfoVO1.setIronwareName("层板角码");
+            ironwareInfoVO1.setUnit("个");
+
+            IronwareInfoVO ironwareInfoVO4 = new IronwareInfoVO();
+            ironwareInfoVO4.setIronwareNum(8 * num);
+            ironwareInfoVO4.setIronwareName("角码螺丝");
+            ironwareInfoVO4.setUnit("个");
+            results.add(ironwareInfoVO1);
+            results.add(ironwareInfoVO4);
+        }
+
+
 
         IronwareInfoVO ironwareInfoVO2 = new IronwareInfoVO();
         ironwareInfoVO2.setIronwareNum(4 * num);
@@ -520,7 +531,7 @@ public class OrderTools {
         ironwareInfoVO3.setIronwareName("层板托螺丝");
         ironwareInfoVO3.setUnit("个");
 
-        results.add(ironwareInfoVO1);
+
         results.add(ironwareInfoVO2);
         results.add(ironwareInfoVO3);
 
@@ -528,33 +539,38 @@ public class OrderTools {
 
     }
 
-    public List<IronwareInfoVO> getIronByHeight(BigDecimal height) {
+    public List<IronwareInfoVO> getIronByHeight(List<TransomVO> transomVOS) {
 
         List<IronwareInfoVO> results = new ArrayList<>();
 
-        if (height.compareTo(new BigDecimal("500")) < 0) {
+
+        int ls60 = 0;
+        int ls30 = 0;
+
+        for (TransomVO transomVO:transomVOS) {
+            if (transomVO.getHeight().compareTo(new BigDecimal("500")) < 0) {
+                ls60 += 1;
+                ls30 += 3;
+            } else {
+                ls30 += 6;
+
+            }
+        }
+
+        if (ls60 > 0){
             IronwareInfoVO ironwareInfoVO1 = new IronwareInfoVO();
-            ironwareInfoVO1.setIronwareNum(1);
+            ironwareInfoVO1.setIronwareNum(ls60);
             ironwareInfoVO1.setIronwareName("60螺丝");
-            ironwareInfoVO1.setUnit("个");
-
-            IronwareInfoVO ironwareInfoVO2 = new IronwareInfoVO();
-            ironwareInfoVO2.setIronwareNum(3);
-            ironwareInfoVO2.setIronwareName("30螺丝");
-            ironwareInfoVO2.setUnit("个");
-
-            results.add(ironwareInfoVO1);
-            results.add(ironwareInfoVO2);
-
-        } else {
-
-            IronwareInfoVO ironwareInfoVO1 = new IronwareInfoVO();
-            ironwareInfoVO1.setIronwareNum(6);
-            ironwareInfoVO1.setIronwareName("30螺丝");
             ironwareInfoVO1.setUnit("个");
             results.add(ironwareInfoVO1);
         }
-
+        if (ls30 > 0){
+            IronwareInfoVO ironwareInfoVO2 = new IronwareInfoVO();
+            ironwareInfoVO2.setIronwareNum(ls30);
+            ironwareInfoVO2.setIronwareName("30螺丝");
+            ironwareInfoVO2.setUnit("个");
+            results.add(ironwareInfoVO2);
+        }
         return results;
 
     }
@@ -612,7 +628,7 @@ public class OrderTools {
         }
         //50斜边计算规则
         Map<Integer ,Integer> xb50Map = new HashMap<>();
-        if(null != materialInfoVOS && materialInfoVOS.size() > 0 ){
+        if(materialVO.getProductType() == ProductTypeEnums.NotComplete.code && null != materialInfoVOS && materialInfoVOS.size() > 0 ){
 
             for (MaterialInfoVO materialInfoVO:materialInfoVOS) {
 
@@ -1380,7 +1396,7 @@ public class OrderTools {
 
     }
 
-    public void saveCustomer(String adminUid, ProductVO productVO, PersonFeignClient personFeignClient) {
+    public void saveCustomer(String adminUid, ProductVO productVO, OrderInfo orderInfo) {
         //保存客户信息
         CustomerVO customerVO = new CustomerVO();
         customerVO.setAdminUid(adminUid);
@@ -1392,6 +1408,10 @@ public class OrderTools {
         customerVO.setCustomerNick(productVO.getCustomerNick());
         customerVO.setExpress(productVO.getExpress());
         customerVO.setNameMapper(productVO.getCustomerNick() + "-"+productVO.getCustomerName());
+
+        customerVO.setOrderUid(orderInfo.getUid());
+        customerVO.setOrderId(orderInfo.getOrderId());
+        customerVO.setTotalPrice(orderInfo.getTotalPrice());
         //改成发送消息
         rabbitTemplate.convertAndSend(SysConf.EXCHANGE_DIRECT, SysConf.BINGO_WEB, JsonUtils.objectToJson(customerVO));
         //personFeignClient.saveCustomerByOrder(customerVO);
