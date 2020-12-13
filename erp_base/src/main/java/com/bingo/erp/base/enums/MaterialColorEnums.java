@@ -25,7 +25,8 @@ public enum MaterialColorEnums implements IEnum {
     SXH(16,"水性灰"),
     //桌子颜色
     FTH(17,"氟碳灰"),
-    PL(18,"坯料")
+    PL(18,"坯料"),
+    GRAY(19,"灰色")
     ;
 
     MaterialColorEnums(int code, String name) {

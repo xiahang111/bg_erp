@@ -549,10 +549,10 @@ public class OrderTools {
 
         for (TransomVO transomVO:transomVOS) {
             if (transomVO.getHeight().compareTo(new BigDecimal("500")) < 0) {
-                ls60 += 1;
-                ls30 += 3;
+                ls60 += 1 * transomVO.getTransomNum();
+                ls30 += 3 * transomVO.getTransomNum();
             } else {
-                ls30 += 6;
+                ls30 += 6 * transomVO.getTransomNum();
 
             }
         }

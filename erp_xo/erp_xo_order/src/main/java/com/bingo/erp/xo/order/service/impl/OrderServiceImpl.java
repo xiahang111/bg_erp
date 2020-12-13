@@ -54,7 +54,13 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
     private MetalInfoMapper metalInfoMapper;
 
     @Resource
+    private DeskInfoMapper deskInfoMapper;
+
+    @Resource
     private MetalInfoService metalInfoService;
+
+    @Resource
+    private DeskInfoService deskInfoService;
 
     @Resource
     private MaterialInfoService materialInfoService;
@@ -303,7 +309,10 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
             tools.transomCalculate(materialVO.getTransoms());
 
             //添加螺丝配件信息
-            tools.getIronByHeight(materialVO.getTransoms());
+            List<IronwareInfoVO> transomIrons = tools.getIronByHeight(materialVO.getTransoms());
+            if(transomIrons.size() > 0){
+                materialVO.getIronwares().addAll(transomIrons);
+            }
         }
         int ironwareNum = materialVO.getIronwares().size() - 1;
 
@@ -590,6 +599,8 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
         //将材料单内容置空
         List<MetalInfo> metalInfos = metalInfoMapper.getAllByOrderUid(uid);
 
+        List<DeskInfo> deskInfos = deskInfoMapper.getAllByOrderUid(uid);
+
         //将材料信息置为删除状态
         if (CollectionUtil.isNotEmpty(materialInfos)) {
             materialInfos.stream().forEach(materialInfo -> {
@@ -619,6 +630,13 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
             metalInfoService.updateBatchById(metalInfos);
         }
 
+        if(CollectionUtil.isNotEmpty(deskInfos)){
+            deskInfos.stream().forEach(deskInfo -> {
+                deskInfo.setStatus(SysConf.DELETE_STATUS);
+            });
+
+            deskInfoService.updateBatchById(deskInfos);
+        }
 
         QueryWrapper<LaminateInfo> laminateInfoQueryWrapper = new QueryWrapper<>();
         laminateInfoQueryWrapper.eq("order_info_uid", uid);

@@ -6,10 +6,8 @@ import com.bingo.erp.base.enums.MaterialEnums;
 import com.bingo.erp.base.enums.ProductCalculateEnums;
 import com.bingo.erp.base.exception.MessageException;
 import com.bingo.erp.base.fatocry.material.MaterialCalculateFactory;
-import com.bingo.erp.utils.StringUtils;
 import com.bingo.erp.xo.order.vo.MaterialCalculateResultVO;
 import com.bingo.erp.xo.order.vo.MaterialInfoVO;
-
 
 import java.math.BigDecimal;
 
@@ -40,10 +38,6 @@ public class LD3HCalculateFactory implements MaterialCalculateFactory<MaterialIn
         resultVO.setGlassWidth(vo.getWidth().subtract(productCalculateEnums.getWidth()));
 
         //计算料的长度
-
-        if (vo.getHandleType() != 0) {
-            throw new MessageException("联动3号没有带拉手的产品哦~");
-        }
 
         vo.setHandlePlace("通体拉手");
 

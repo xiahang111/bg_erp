@@ -4,16 +4,14 @@ import cn.hutool.core.util.RandomUtil;
 import com.bingo.erp.base.enums.OrderTypeEnums;
 import com.bingo.erp.base.enums.ProductTypeEnums;
 import com.bingo.erp.base.exception.MessageException;
+import com.bingo.erp.commons.entity.DeskInfo;
 import com.bingo.erp.commons.entity.IronwareInfo;
 import com.bingo.erp.commons.entity.MetalInfo;
 import com.bingo.erp.commons.entity.OrderInfo;
 import com.bingo.erp.utils.DateUtils;
 import com.bingo.erp.xo.order.global.ExcelConf;
 import com.bingo.erp.xo.order.mapper.OrderInfoMapper;
-import com.bingo.erp.xo.order.service.FileService;
-import com.bingo.erp.xo.order.service.IronwareInforService;
-import com.bingo.erp.xo.order.service.MetalInfoService;
-import com.bingo.erp.xo.order.service.OrderService;
+import com.bingo.erp.xo.order.service.*;
 import com.bingo.erp.xo.order.tools.AnalyzeTools;
 import com.bingo.erp.xo.order.tools.OrderTools;
 import com.bingo.erp.xo.order.vo.*;
@@ -49,6 +47,9 @@ public class FileServiceImpl implements FileService {
     private IronwareInforService ironwareInforService;
 
     @Resource
+    private DeskInfoService deskInfoService;
+
+    @Resource
     private MetalInfoService metalInfoService;
 
     @Resource
@@ -76,12 +77,39 @@ public class FileServiceImpl implements FileService {
 
         if(null != orderType && orderType == OrderTypeEnums.METAL.code){
             saveMetalOrder(adminUid,dataMap);
-        }else {
+        }if(null != orderType && orderType == OrderTypeEnums.DESK.code){
+            saveDeskOrder(adminUid,dataMap);
+        }
+        else {
             return getDoorLaminate(adminUid,dataMap);
         }
 
         return result;
 
+    }
+
+
+    public void saveDeskOrder(String adminUid,Map<Integer, Map<Integer, String>> dataMap)throws Exception{
+        ProductVO productVO = analyzeTools.analyzeOrderInfo(dataMap,OrderTypeEnums.DESK.code);
+
+        OrderInfo orderInfo = analyzeTools.castOrderInfo(productVO,adminUid);
+        orderInfo.setOrderType(OrderTypeEnums.DESK);
+        orderInfo.setProductType(ProductTypeEnums.Other);
+
+
+        orderInfoMapper.insert(orderInfo);
+        Map<String ,Object> map = analyzeTools.analyzeDesk(dataMap,orderInfo.getUid());
+        List<IronwareInfo> ironwareInfos = (List<IronwareInfo>) map.get("irons");
+        List<DeskInfo> deskInfos = (List<DeskInfo>) map.get("desks");
+
+        if(deskInfos.size() > 0 ){
+            deskInfoService.saveBatch(deskInfos);
+        }
+        if (ironwareInfos.size() > 0){
+            ironwareInforService.saveBatch(ironwareInfos);
+        }
+        //保存客户信息并且保存订单客户关系
+        orderTools.saveCustomer(adminUid,productVO,orderInfo);
     }
 
     /**
@@ -91,7 +119,7 @@ public class FileServiceImpl implements FileService {
      */
     public void saveMetalOrder(String adminUid,Map<Integer, Map<Integer, String>> dataMap) throws Exception{
 
-        ProductVO productVO = analyzeTools.analyzeOrderInfo(dataMap);
+        ProductVO productVO = analyzeTools.analyzeOrderInfo(dataMap,OrderTypeEnums.METAL.code);
 
         OrderInfo orderInfo = analyzeTools.castOrderInfo(productVO,adminUid);
         orderInfo.setOrderType(OrderTypeEnums.METAL);
@@ -138,7 +166,7 @@ public class FileServiceImpl implements FileService {
         //解析天地横梁信息
         List<TransomVO> transomVOS = analyzeTools.analyzeTransomVO(dataMap);
 
-        ProductVO productVO = analyzeTools.analyzeOrderInfo(dataMap);
+        ProductVO productVO = analyzeTools.analyzeOrderInfo(dataMap,OrderTypeEnums.DOORORDER.code);
 
         if (laminateInfoVOS.size() > 0 && materialInfoVOS.size() > 0) {
 
