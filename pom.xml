@@ -17,6 +17,7 @@
         <module>config_center</module>
         <module>erp_manufacture</module>
       <module>erp_data</module>
+        <module>erp_resource</module>
     </modules>
     <parent>
     <groupId>org.springframework.boot</groupId>

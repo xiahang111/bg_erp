@@ -1,0 +1,103 @@
+server:
+  port: 8505
+
+spring:
+  application:
+    name: erp-resource
+
+    # DATABASE CONFIG
+  datasource:
+    username: root
+    #password: Cjcslhp178
+    password: Cjcslhp178
+    #url: jdbc:mysql://178.236.44.94:3306/bg_person?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://178.236.44.89:3306/bg_resource?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+
+    # 初始化大小，最小，最大
+    initialSize: 5
+    minIdle: 5
+    maxActive: 50
+
+    #连接等待超时时间
+    maxWait: 60000
+
+    #配置隔多久进行一次检测(检测可以关闭的空闲连接)
+    timeBetweenEvictionRunsMillis: 60000
+
+    #配置连接在池中的最小生存时间
+    minEvictableIdleTimeMillis: 300000
+
+
+  #redis
+  redis:
+    host: 127.0.0.1 #redis的主机ip
+    port: 6379
+  #RabbitMq
+  rabbitmq:
+    host: 127.0.0.1 #rabbitmq的主机ip
+    port: 5672
+    username: bingo
+    password: bingo
+  security:
+    user:
+      name: bingo
+      password: password123
+
+#eureka相关配置
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@127.0.0.1:8561/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${spring.application.instance_id:${server.port}}
+    lease-renewal-interval-in-seconds: 5
+
+# 或者：
+feign.hystrix.enabled: false # 索性禁用feign的hystrix支持
+
+#mybatis
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.bingo.erp.commons.entity
+  global-config:
+    # 数据库相关配置
+    db-config:
+      #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+      id-type: ID_WORKER_STR
+      #字段策略 IGNORED:"忽略判断",NOT_NULL:"非 NULL 判断"),NOT_EMPTY:"非空判断"
+      field-strategy: NOT_EMPTY
+      #驼峰下划线转换
+      column-underline: true
+      #数据库大写下划线转换
+      #capital-mode: true
+      #逻辑删除配置
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+      db-type: mysql
+    #刷新mapper 调试神器
+    refresh: true
+  # 原生配置
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  type-enums-package: com.bingo.erp.base.enums
+
+##jwt配置
+tokenHead: bearer;
+tokenHeader: Authorization
+isRememberMeExpiresSecond: 259200 #记住账号为3天有效
+audience:
+  clientId: 098f6bcd4621d373cade4e832627b4f6
+  base64Secret: MDk4ZjZiY2Q0NjIxZDM3M2NhZGU0ZTgzMjYyN2I0ZjY=
+  name: mogublog
+  expiresSecond: 28800  #8个小时 3600
+

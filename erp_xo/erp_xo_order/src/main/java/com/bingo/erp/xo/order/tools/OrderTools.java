@@ -6,6 +6,7 @@ import com.bingo.erp.base.vo.CustomerVO;
 import com.bingo.erp.commons.entity.*;
 import com.bingo.erp.utils.JsonUtils;
 import com.bingo.erp.utils.RedisUtil;
+import com.bingo.erp.xo.order.enums.MaterialCornerEnum;
 import com.bingo.erp.xo.order.enums.MaterialFactoryEnum;
 import com.bingo.erp.xo.order.global.ExcelConf;
 import com.bingo.erp.xo.order.global.NormalConf;
@@ -77,7 +78,7 @@ public class OrderTools {
             String key = MaterialColorEnums.getEnumByCode(infoVO.getMaterialColor()) + "、" +
                     MaterialTypeEnums.getEnumByCode(infoVO.getMaterialType()) + "(" +
                     HandleEnums.getNameByCode(infoVO.getHandleType()) + ")、" +
-                    GlassColor.getNameByCode(infoVO.getGlassColor()) + "玻璃" + (infoVO.isHaveBar==1?"":"(不含静音条)");
+                    GlassColor.getNameByCode(infoVO.getGlassColor()) + "玻璃" + (infoVO.isHaveBar == 1 ? "" : "(不含静音条)");
 
             List<MaterialInfoVO> infoVOS = map.get(key);
 
@@ -121,7 +122,7 @@ public class OrderTools {
                 int add = map.get(key).size() - 1;
 
                 for (Integer j = 0; j < add; j++) {
-                    j = addIfNull(sheet,rowNum,j);
+                    j = addIfNull(sheet, rowNum, j);
                     Util.copyRow(sheet, sheet.getRow(9), sheet.getRow(rowNum + j));
                 }
 
@@ -145,7 +146,7 @@ public class OrderTools {
                     }
 
                     if (i > 1) {
-                        i = addIfNull(sheet,point,i);
+                        i = addIfNull(sheet, point, i);
                         Util.copyRow(sheet, sheet.getRow(9), sheet.getRow(point + i));
 
                     }
@@ -189,10 +190,10 @@ public class OrderTools {
 
     }
 
-    private Integer addIfNull(HSSFSheet sheet,Integer point,Integer i){
-        if(null == sheet.getRow(point + i)){
+    private Integer addIfNull(HSSFSheet sheet, Integer point, Integer i) {
+        if (null == sheet.getRow(point + i)) {
             i++;
-            i = addIfNull(sheet,point,i);
+            i = addIfNull(sheet, point, i);
         }
 
         return i;
@@ -203,6 +204,10 @@ public class OrderTools {
 
         List<IronwareInfoVO> ironwareInfoVOS = materialVO.getIronwares();
         //计算角码和螺丝
+
+        if(materialVO.getProductType() == ProductTypeEnums.Complete.code){
+            return ironwareInfoVOS.size() - 1;
+        }
 
         Map<String, Integer> cornerMap = new HashMap<>();
         for (MaterialInfoVO materialInfoVO : materialVO.getMaterials()) {
@@ -244,7 +249,6 @@ public class OrderTools {
             ironwareInfoVO.setIronwareColor(0);
             ironwareInfoVO.setSpecification("");
             ironwareInfoVO.setRemark("");
-
             ironwareInfoVOS.add(ironwareInfoVO);
         }
 
@@ -419,6 +423,8 @@ public class OrderTools {
 
         for (MaterialInfoVO materialInfoVO : materialInfoVOS) {
 
+            //计算角码数量和螺丝数量
+            calculateCornerType(materialInfoVO);
             //获取产品ID
             int materialType = materialInfoVO.getMaterialType();
 
@@ -432,11 +438,6 @@ public class OrderTools {
             materialInfoVO.setGlassWidth(vo.getGlassWidth());
 
             materialInfoVO.setMaterialDetail(vo.getMaterialDetail());
-
-            //计算角码数量和螺丝数量
-
-            materialInfoVO.setCornerNum(CornerMaterialEnums.getByCode(materialInfoVO.getCornerMaterial()).cornerNum * materialInfoVO.getMaterialNum());
-            materialInfoVO.setScrewNum(CornerMaterialEnums.getByCode(materialInfoVO.getCornerMaterial()).screwNum * materialInfoVO.getCornerNum());
 
             BigDecimal singleArea = materialInfoVO.getHeight().
                     multiply(materialInfoVO.getWidth()).divide(NormalConf.divideNum).setScale(5, BigDecimal.ROUND_HALF_UP);
@@ -498,14 +499,27 @@ public class OrderTools {
 
     }
 
+    public void calculateCornerType(MaterialInfoVO vo) {
+
+        Integer materialType = vo.getMaterialType();
+        CornerMaterialEnums cornerMaterialEnums = MaterialCornerEnum.getCornerByMaterialType(materialType);
+        vo.setCornerMaterial(cornerMaterialEnums.code);
+
+        vo.setCornerNum(cornerMaterialEnums.cornerNum * vo.getMaterialNum());
+        vo.setScrewNum(cornerMaterialEnums.screwNum * vo.getCornerNum());
+
+
+    }
+
     /**
      * 给半成品层板灯添加配件
+     *
      * @return
      */
-    public List<IronwareInfoVO> getCBDIronByNotComplete(int num,int productType) {
+    public List<IronwareInfoVO> getCBDIronByNotComplete(int num, int productType) {
 
         List<IronwareInfoVO> results = new ArrayList<>();
-        if (productType == ProductTypeEnums.NotComplete.code){
+        if (productType == ProductTypeEnums.NotComplete.code) {
             IronwareInfoVO ironwareInfoVO1 = new IronwareInfoVO();
             ironwareInfoVO1.setIronwareNum(4 * num);
             ironwareInfoVO1.setIronwareName("层板角码");
@@ -518,7 +532,6 @@ public class OrderTools {
             results.add(ironwareInfoVO1);
             results.add(ironwareInfoVO4);
         }
-
 
 
         IronwareInfoVO ironwareInfoVO2 = new IronwareInfoVO();
@@ -547,7 +560,7 @@ public class OrderTools {
         int ls60 = 0;
         int ls30 = 0;
 
-        for (TransomVO transomVO:transomVOS) {
+        for (TransomVO transomVO : transomVOS) {
             if (transomVO.getHeight().compareTo(new BigDecimal("500")) < 0) {
                 ls60 += 1 * transomVO.getTransomNum();
                 ls30 += 3 * transomVO.getTransomNum();
@@ -557,14 +570,14 @@ public class OrderTools {
             }
         }
 
-        if (ls60 > 0){
+        if (ls60 > 0) {
             IronwareInfoVO ironwareInfoVO1 = new IronwareInfoVO();
             ironwareInfoVO1.setIronwareNum(ls60);
             ironwareInfoVO1.setIronwareName("60螺丝");
             ironwareInfoVO1.setUnit("个");
             results.add(ironwareInfoVO1);
         }
-        if (ls30 > 0){
+        if (ls30 > 0) {
             IronwareInfoVO ironwareInfoVO2 = new IronwareInfoVO();
             ironwareInfoVO2.setIronwareNum(ls30);
             ironwareInfoVO2.setIronwareName("30螺丝");
@@ -616,39 +629,39 @@ public class OrderTools {
     /**
      * 配件填充计算
      */
-    public void mountingCalculate(MaterialVO materialVO){
+    public void mountingCalculate(MaterialVO materialVO) {
 
         List<MaterialInfoVO> materialInfoVOS = materialVO.getMaterials();
 
         //如果是半成品则玻璃颜色都改为无
-        if(materialVO.getProductType() == ProductTypeEnums.NotComplete.code){
-            for (MaterialInfoVO materialInfoVO:materialInfoVOS) {
+        if (materialVO.getProductType() == ProductTypeEnums.NotComplete.code) {
+            for (MaterialInfoVO materialInfoVO : materialInfoVOS) {
                 materialInfoVO.setGlassColor(GlassColor.NOGLASS.code);
             }
         }
         //50斜边计算规则
-        Map<Integer ,Integer> xb50Map = new HashMap<>();
-        if(materialVO.getProductType() == ProductTypeEnums.NotComplete.code && null != materialInfoVOS && materialInfoVOS.size() > 0 ){
+        Map<Integer, Integer> xb50Map = new HashMap<>();
+        if (materialVO.getProductType() == ProductTypeEnums.NotComplete.code && null != materialInfoVOS && materialInfoVOS.size() > 0) {
 
-            for (MaterialInfoVO materialInfoVO:materialInfoVOS) {
+            for (MaterialInfoVO materialInfoVO : materialInfoVOS) {
 
                 //根据颜色来set值
-                if (materialInfoVO.materialType == MaterialTypeEnums.XB50.code){
+                if (materialInfoVO.materialType == MaterialTypeEnums.XB50.code) {
                     int materialColor = materialInfoVO.getMaterialColor();
-                    if(null == xb50Map.get(materialColor) || xb50Map.get(materialColor) <= 0 ){
-                        xb50Map.put(materialColor,materialInfoVO.getMaterialNum());
-                    }else {
-                        xb50Map.put(materialColor,xb50Map.get(materialColor) + materialInfoVO.getMaterialNum());
+                    if (null == xb50Map.get(materialColor) || xb50Map.get(materialColor) <= 0) {
+                        xb50Map.put(materialColor, materialInfoVO.getMaterialNum());
+                    } else {
+                        xb50Map.put(materialColor, xb50Map.get(materialColor) + materialInfoVO.getMaterialNum());
                     }
                 }
             }
 
-            int black = xb50Map.getOrDefault(MaterialColorEnums.LSH.code,0);
-            int gray = xb50Map.getOrDefault(MaterialColorEnums.SSH.code,0) +
-                    xb50Map.getOrDefault(MaterialColorEnums.LSHUI.code,0) +
-                    xb50Map.getOrDefault(MaterialColorEnums.LMH.code,0) ;
+            int black = xb50Map.getOrDefault(MaterialColorEnums.LSH.code, 0);
+            int gray = xb50Map.getOrDefault(MaterialColorEnums.SSH.code, 0) +
+                    xb50Map.getOrDefault(MaterialColorEnums.LSHUI.code, 0) +
+                    xb50Map.getOrDefault(MaterialColorEnums.LMH.code, 0);
 
-            if(black > 0 ){
+            if (black > 0) {
                 IronwareInfoVO ironwareInfoVO = new IronwareInfoVO();
                 ironwareInfoVO.setSpecification("4 x 20");
                 ironwareInfoVO.setIronwareColor(IronwareColorEnums.BLACK.code);
@@ -656,7 +669,7 @@ public class OrderTools {
                 ironwareInfoVO.setIronwareName("50斜边专用螺丝");
                 materialVO.getIronwares().add(ironwareInfoVO);
             }
-            if(gray > 0 ){
+            if (gray > 0) {
                 IronwareInfoVO ironwareInfoVO = new IronwareInfoVO();
                 ironwareInfoVO.setSpecification("4 x 20");
                 ironwareInfoVO.setIronwareColor(IronwareColorEnums.GRAY.code);
@@ -759,10 +772,10 @@ public class OrderTools {
         return dataMap;
     }
 
-    private Integer getRowIfNull(HSSFSheet sheet,Integer point){
-        if(null == sheet.getRow(point - 1)){
-            point ++;
-            point = getRowIfNull(sheet,point);
+    private Integer getRowIfNull(HSSFSheet sheet, Integer point) {
+        if (null == sheet.getRow(point - 1)) {
+            point++;
+            point = getRowIfNull(sheet, point);
         }
         return point;
     }
@@ -799,7 +812,7 @@ public class OrderTools {
 
                 MaterialInfoVO materialInfoVO0 = infoVOS.get(i);
 
-                point1 = getRowIfNull(sheet,point1);
+                point1 = getRowIfNull(sheet, point1);
                 HSSFRow row = sheet.getRow(point1 - 1);
 
                 for (int j = 0; j < row.getLastCellNum(); j++) {
@@ -1407,7 +1420,7 @@ public class OrderTools {
         customerVO.setSalesman(productVO.getSalesman());
         customerVO.setCustomerNick(productVO.getCustomerNick());
         customerVO.setExpress(productVO.getExpress());
-        customerVO.setNameMapper(productVO.getCustomerNick() + "-"+productVO.getCustomerName());
+        customerVO.setNameMapper(productVO.getCustomerNick() + "-" + productVO.getCustomerName());
 
         customerVO.setOrderUid(orderInfo.getUid());
         customerVO.setOrderId(orderInfo.getOrderId());

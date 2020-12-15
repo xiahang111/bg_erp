@@ -17,6 +17,7 @@ com\bingo\erp\xo\order\service\LaminateInfoService.class
 com\bingo\erp\xo\order\service\StoreOriginalInfoService.class
 com\bingo\erp\xo\order\factory\CBDCalculateFactory.class
 com\bingo\erp\xo\order\service\impl\StoreSummaryInfoServiceImpl.class
+com\bingo\erp\xo\order\enums\MaterialCornerEnum.class
 com\bingo\erp\xo\order\mapper\OrderInfoMapper.class
 com\bingo\erp\xo\order\global\MessageConf.class
 com\bingo\erp\xo\order\service\impl\IronwareInfoServiceImpl.class

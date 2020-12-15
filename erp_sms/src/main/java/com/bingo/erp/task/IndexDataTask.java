@@ -55,17 +55,14 @@ public class IndexDataTask {
             List<Map<String, String>> adminInfoMapList = (List<Map<String, String>>) JsonUtils.jsonArrayToArrayList(adminInfoJson);
             List<String> adminList = new ArrayList<>();
 
-
             for (Map<String, String> map : adminInfoMapList) {
                 if (!map.get("roleName").equals("visit")) {
                     adminList.add(map.get("uid"));
                 }
             }
-
-
             queryWrapper.eq("status", SysConf.NORMAL_STATUS);
             if (adminList.size() > 0) {
-                queryWrapper.in("adminUid", adminList);
+                queryWrapper.in("admin_uid", adminList);
             }
         } catch (Exception e) {
             log.info("获取用户权限出问题,原因:" + e.getMessage());

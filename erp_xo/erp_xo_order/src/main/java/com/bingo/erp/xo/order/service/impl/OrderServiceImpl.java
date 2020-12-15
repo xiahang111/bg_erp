@@ -369,7 +369,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
             HSSFSheet productSheet = productWb.getSheetAt(0);
 
-            int addnum1 = tools.productExtensionExcel(productSheet, map, materialVO);
+            int addnum1 = tools. productExtensionExcel(productSheet, map, materialVO);
 
             tools.productFillData(productSheet, addnum1, map, materialVO, materialVO.getIronwares());
 
@@ -513,9 +513,10 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
         List<MaterialInfo> materialInfos = materialInfoMapper.getAllByOrderUid(uid);
 
         List<IronwareInfo> ironwareInfos = ironwareInfoMapper.getAllByOrderUid(uid);
-
-        MaterialVO materialVO = tools.revertToMaterialVO(orderInfo, materialInfos, ironwareInfos);
-
+        MaterialVO materialVO = new MaterialVO();
+        if (null != orderInfo){
+            materialVO = tools.revertToMaterialVO(orderInfo, materialInfos, ironwareInfos);
+        }
 
         return materialVO;
     }

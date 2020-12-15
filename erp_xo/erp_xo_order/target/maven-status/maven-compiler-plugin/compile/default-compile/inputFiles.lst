@@ -47,6 +47,7 @@ D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\ser
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\service\StoreRecordInfoService.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\tools\OrderTools.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\vo\MaterialInfoVO.java
+D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\enums\MaterialCornerEnum.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\mapper\ProductCalculateMapper.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\service\impl\StoreRecordInfoServiceImpl.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\service\IronwareInforService.java
