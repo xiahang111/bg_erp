@@ -57,6 +57,12 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
     private DeskInfoMapper deskInfoMapper;
 
     @Resource
+    private HangingInfoMapper hangingInfoMapper;
+
+    @Resource
+    private HangingInfoService hangingInfoService;
+
+    @Resource
     private MetalInfoService metalInfoService;
 
     @Resource
@@ -152,12 +158,12 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
         //半成品添加配件laminateVO.getProductType() == ProductTypeEnums.NotComplete.code
         //12月1日 半成品成品都要有
         //12月3日 成品沒有角码
-        if (true){
+        if (true) {
             int totalNum = 0;
-            for (LaminateInfoVO laminateInfo : laminateVO.getLaminateInfos()){
+            for (LaminateInfoVO laminateInfo : laminateVO.getLaminateInfos()) {
                 totalNum += laminateInfo.getLaminateNum();
             }
-            laminateVO.getIronwares().addAll(tools.getCBDIronByNotComplete(totalNum,laminateVO.getProductType()));
+            laminateVO.getIronwares().addAll(tools.getCBDIronByNotComplete(totalNum, laminateVO.getProductType()));
         }
 
         String orderFileName = SRC_FILE_URL + ExcelConf.CBD_ORDER_FILENAME;
@@ -255,7 +261,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
         List<LaminateInfo> laminateInfos = cbdOrderTools.saveLaminateInfoList(laminaterInfoMapper, orderInfo.getUid(), insertList);
         //保存玻璃信息 不保存半成品的
         if (orderInfo.getProductType() == ProductTypeEnums.Complete) {
-            getOrderGlassDetail(laminateInfos,orderInfo,orderGlassDetailMapper);
+            getOrderGlassDetail(laminateInfos, orderInfo, orderGlassDetailMapper);
         }
 
         tools.saveIronwareInfoList(ironwareInfoMapper, laminateVO.getIronwares(), orderInfo.getUid());
@@ -310,7 +316,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
             //添加螺丝配件信息
             List<IronwareInfoVO> transomIrons = tools.getIronByHeight(materialVO.getTransoms());
-            if(transomIrons.size() > 0){
+            if (transomIrons.size() > 0) {
                 materialVO.getIronwares().addAll(transomIrons);
             }
         }
@@ -340,7 +346,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
             Map<String, List<MaterialInfoVO>> map = tools.materialsToMap(materialVO.getMaterials());
 
-            log.info("excel模板总行数:"+sheet.getLastRowNum());
+            log.info("excel模板总行数:" + sheet.getLastRowNum());
             int addnum = tools.extensionExcel(sheet, map, ironwareNum, transomNum, materialVO.isHaveTransom);
 
             //填充料玻、五金数据
@@ -369,7 +375,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
             HSSFSheet productSheet = productWb.getSheetAt(0);
 
-            int addnum1 = tools. productExtensionExcel(productSheet, map, materialVO);
+            int addnum1 = tools.productExtensionExcel(productSheet, map, materialVO);
 
             tools.productFillData(productSheet, addnum1, map, materialVO, materialVO.getIronwares());
 
@@ -431,10 +437,10 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
             orderFileRecordService.save(orderFileRecord);
 
             //如果账号权限不是游客 那么才会保存相关订单信息
-            if(!SysConf.VISIT_ROLE.equals(roleName)){
+            if (!SysConf.VISIT_ROLE.equals(roleName)) {
                 //保存玻璃信息 不保存半成品的
                 if (orderInfo.getProductType() == ProductTypeEnums.Complete) {
-                    getOrderGlassDetailByMaterial(materialInfos,orderInfo,orderGlassDetailMapper);
+                    getOrderGlassDetailByMaterial(materialInfos, orderInfo, orderGlassDetailMapper);
 
                 }
             }
@@ -514,7 +520,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
         List<IronwareInfo> ironwareInfos = ironwareInfoMapper.getAllByOrderUid(uid);
         MaterialVO materialVO = new MaterialVO();
-        if (null != orderInfo){
+        if (null != orderInfo) {
             materialVO = tools.revertToMaterialVO(orderInfo, materialInfos, ironwareInfos);
         }
 
@@ -602,6 +608,17 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
         List<DeskInfo> deskInfos = deskInfoMapper.getAllByOrderUid(uid);
 
+        List<HangingInfo> hangingInfos = hangingInfoMapper.getAllByOrderUid(uid);
+
+        if (CollectionUtil.isNotEmpty(hangingInfos)) {
+
+            hangingInfos.stream().forEach(hangingInfo -> {
+                hangingInfo.setStatus(SysConf.DELETE_STATUS);
+            });
+
+            hangingInfoService.updateBatchById(hangingInfos);
+        }
+
         //将材料信息置为删除状态
         if (CollectionUtil.isNotEmpty(materialInfos)) {
             materialInfos.stream().forEach(materialInfo -> {
@@ -631,7 +648,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
             metalInfoService.updateBatchById(metalInfos);
         }
 
-        if(CollectionUtil.isNotEmpty(deskInfos)){
+        if (CollectionUtil.isNotEmpty(deskInfos)) {
             deskInfos.stream().forEach(deskInfo -> {
                 deskInfo.setStatus(SysConf.DELETE_STATUS);
             });
@@ -654,7 +671,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
         //将玻璃置为删除状态
         QueryWrapper<OrderGlassDetail> detailQueryWrapper = new QueryWrapper<>();
-        detailQueryWrapper.eq("order_uid",uid);
+        detailQueryWrapper.eq("order_uid", uid);
         List<OrderGlassDetail> orderGlassDetails = orderGlassDetailService.list(detailQueryWrapper);
 
         if (CollectionUtil.isNotEmpty(orderGlassDetails)) {
@@ -667,14 +684,14 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
     }
 
-    private void getOrderGlassDetail(List<LaminateInfo> laminateInfos, OrderInfo orderInfo, OrderGlassDetailMapper orderGlassDetailMapper) throws Exception{
+    private void getOrderGlassDetail(List<LaminateInfo> laminateInfos, OrderInfo orderInfo, OrderGlassDetailMapper orderGlassDetailMapper) throws Exception {
 
 
         for (LaminateInfo laminateInfo : laminateInfos) {
             if (laminateInfo.getMaterialType().code != MaterialTypeEnums.CBDJJ.code) {
 
                 ProductCalculateEnums enums = ProductCalculateEnums.getByCode(laminateInfo.getMaterialType().code);
-                String glassDetail = enums.getGlassType() + laminateInfo.getGlassColor().name ;
+                String glassDetail = enums.getGlassType() + laminateInfo.getGlassColor().name;
 
                 OrderGlassDetail orderGlassDetail = new OrderGlassDetail();
                 orderGlassDetail.setOrderId(orderInfo.getOrderId());
@@ -688,18 +705,18 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
                 orderGlassDetail.setGlassDetail(glassDetail);
                 orderGlassDetail.setCustomerName(orderInfo.getCustomerName());
 
-               orderGlassDetailMapper.insert(orderGlassDetail);
-               try {
-                   Thread.sleep(1000);
-               }catch (Exception e){
-                   throw new MessageException("线程错误");
-               }
+                orderGlassDetailMapper.insert(orderGlassDetail);
+                try {
+                    Thread.sleep(1000);
+                } catch (Exception e) {
+                    throw new MessageException("线程错误");
+                }
             }
         }
 
     }
 
-    private void getOrderGlassDetailByMaterial(List<MaterialInfo> materialInfos, OrderInfo orderInfo,OrderGlassDetailMapper orderGlassDetailMapper) throws Exception{
+    private void getOrderGlassDetailByMaterial(List<MaterialInfo> materialInfos, OrderInfo orderInfo, OrderGlassDetailMapper orderGlassDetailMapper) throws Exception {
 
         for (MaterialInfo materialInfo : materialInfos) {
 
@@ -721,7 +738,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
             orderGlassDetailMapper.insert(orderGlassDetail);
             try {
                 Thread.sleep(1000);
-            }catch (Exception e){
+            } catch (Exception e) {
                 throw new MessageException("线程错误！");
             }
 

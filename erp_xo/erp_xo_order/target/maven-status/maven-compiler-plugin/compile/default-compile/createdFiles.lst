@@ -1,5 +1,6 @@
 com\bingo\erp\xo\order\factory\LD2HCalculateFactory.class
 com\bingo\erp\xo\order\service\CabinatInfoService.class
+com\bingo\erp\xo\order\service\HangingInfoService.class
 com\bingo\erp\xo\order\service\StoreOriginalRecordInfoService.class
 com\bingo\erp\xo\order\vo\UserPageVO.class
 com\bingo\erp\xo\order\service\MetalInfoService.class
@@ -71,6 +72,7 @@ com\bingo\erp\xo\order\tools\OrderTools.class
 com\bingo\erp\xo\order\vo\GlassCalculateResultVO.class
 com\bingo\erp\xo\order\vo\MaterialInfoVO.class
 com\bingo\erp\xo\order\mapper\ProductCalculateMapper.class
+com\bingo\erp\xo\order\service\impl\HangingInfoServiceImpl.class
 com\bingo\erp\xo\order\vo\LaminateVO.class
 com\bingo\erp\xo\order\service\OrderFileRecordService.class
 com\bingo\erp\xo\order\vo\MaterialCalculateResultVO.class
@@ -85,6 +87,7 @@ com\bingo\erp\xo\order\vo\InfoVO.class
 com\bingo\erp\xo\order\global\RedisConf.class
 com\bingo\erp\xo\order\service\SaleService.class
 com\bingo\erp\xo\order\service\StatementService.class
+com\bingo\erp\xo\order\mapper\HangingInfoMapper.class
 com\bingo\erp\xo\order\dto\StoreDataDTO.class
 com\bingo\erp\xo\order\vo\MaterialCalculateVO.class
 com\bingo\erp\xo\order\mapper\DataGatherMapper.class

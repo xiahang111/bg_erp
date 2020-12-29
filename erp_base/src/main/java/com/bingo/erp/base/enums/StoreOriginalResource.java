@@ -15,7 +15,10 @@ public enum  StoreOriginalResource implements IEnum {
     STORE_OUT_DM(6,"出东美氧化"),
     STORE_OUT_FH(7,"出风和氧化"),
     STORE_OUT_XX(8,"出铣型厂"),
-    STORE_OUT_WX(9,"外销发货");
+    STORE_OUT_WX(9,"外销发货"),
+    STORE_OUT_SL(10,"出三联喷涂厂"),
+    STORE_OUT_YM(11,"出原美喷涂厂"),
+    STORE_OUT_YH(12,"出亿和氧化厂");
 
 
     StoreOriginalResource(int code, String name) {

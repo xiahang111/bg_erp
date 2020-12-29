@@ -4,10 +4,7 @@ import cn.hutool.core.util.RandomUtil;
 import com.bingo.erp.base.enums.OrderTypeEnums;
 import com.bingo.erp.base.enums.ProductTypeEnums;
 import com.bingo.erp.base.exception.MessageException;
-import com.bingo.erp.commons.entity.DeskInfo;
-import com.bingo.erp.commons.entity.IronwareInfo;
-import com.bingo.erp.commons.entity.MetalInfo;
-import com.bingo.erp.commons.entity.OrderInfo;
+import com.bingo.erp.commons.entity.*;
 import com.bingo.erp.utils.DateUtils;
 import com.bingo.erp.xo.order.global.ExcelConf;
 import com.bingo.erp.xo.order.mapper.OrderInfoMapper;
@@ -53,6 +50,12 @@ public class FileServiceImpl implements FileService {
     private MetalInfoService metalInfoService;
 
     @Resource
+    private SpecimenInfoService specimenInfoService;
+
+    @Resource
+    private HangingInfoService hangingInfoService;
+
+    @Resource
     private OrderTools orderTools;
 
     @Override
@@ -69,88 +72,155 @@ public class FileServiceImpl implements FileService {
 
         Map<Integer, Map<Integer, String>> dataMap = analyzeTools.getDataMap(SRC_FILE_URL, fileName);
 
-        if(null == dataMap){
+        if (null == dataMap) {
             throw new MessageException("解析报价单失败");
         }
 
         Integer orderType = analyzeTools.analyzeOrderType(dataMap);
 
-        if(null != orderType && orderType == OrderTypeEnums.METAL.code){
-            saveMetalOrder(adminUid,dataMap);
-        }if(null != orderType && orderType == OrderTypeEnums.DESK.code){
-            saveDeskOrder(adminUid,dataMap);
+        //保存材料单
+        if (null != orderType && orderType == OrderTypeEnums.METAL.code) {
+            saveMetalOrder(adminUid, dataMap);
         }
+        //保存桌子订单
+        if (null != orderType && orderType == OrderTypeEnums.DESK.code) {
+            saveDeskOrder(adminUid, dataMap);
+        }
+        //保存小样品订单
+        if (null != orderType && orderType == OrderTypeEnums.SPECIMEN.code) {
+            saveSpecimen(adminUid, dataMap);
+        }
+        //保存置物架订单
+        if (null != orderType && orderType == OrderTypeEnums.HANGING.code) {
+            saveHanging(adminUid, dataMap);
+        }
+        //保存门和层板灯订单
         else {
-            return getDoorLaminate(adminUid,dataMap);
+            return getDoorLaminate(adminUid, dataMap);
         }
 
         return result;
 
     }
 
+    public void saveHanging(String adminUid, Map<Integer, Map<Integer, String>> dataMap) throws Exception {
 
-    public void saveDeskOrder(String adminUid,Map<Integer, Map<Integer, String>> dataMap)throws Exception{
-        ProductVO productVO = analyzeTools.analyzeOrderInfo(dataMap,OrderTypeEnums.DESK.code);
+        ProductVO productVO = analyzeTools.analyzeOrderInfo(dataMap, OrderTypeEnums.HANGING.code);
 
-        OrderInfo orderInfo = analyzeTools.castOrderInfo(productVO,adminUid);
+        OrderInfo orderInfo = analyzeTools.castOrderInfo(productVO, adminUid);
+        orderInfo.setOrderType(OrderTypeEnums.HANGING);
+        orderInfo.setProductType(ProductTypeEnums.Other);
+
+        orderInfoMapper.insert(orderInfo);
+
+        List<HangingInfo> hangingInfos = analyzeTools.analyzeHanging(dataMap, orderInfo.getUid());
+        if (hangingInfos.size() > 0) {
+
+            hangingInfoService.saveBatch(hangingInfos);
+        }
+
+        //保存客户信息并且保存订单客户关系
+        orderTools.saveCustomer(adminUid, productVO, orderInfo);
+    }
+
+    /**
+     * 保存小样品订单数据
+     *
+     * @param adminUid
+     * @param dataMap
+     */
+    public void saveSpecimen(String adminUid, Map<Integer, Map<Integer, String>> dataMap) throws Exception {
+
+        ProductVO productVO = analyzeTools.analyzeOrderInfo(dataMap, OrderTypeEnums.SPECIMEN.code);
+
+        OrderInfo orderInfo = analyzeTools.castOrderInfo(productVO, adminUid);
+        orderInfo.setOrderType(OrderTypeEnums.SPECIMEN);
+        orderInfo.setProductType(ProductTypeEnums.Other);
+
+        orderInfoMapper.insert(orderInfo);
+
+        List<SpecimenInfo> specimenInfos = analyzeTools.analyzeSpecimen(dataMap, orderInfo.getUid());
+
+        if (specimenInfos.size() > 0) {
+            specimenInfoService.saveBatch(specimenInfos);
+        }
+
+        //保存客户信息并且保存订单客户关系
+        orderTools.saveCustomer(adminUid, productVO, orderInfo);
+    }
+
+
+    /**
+     * 保存桌子订单数据
+     *
+     * @param adminUid
+     * @param dataMap
+     * @throws Exception
+     */
+    public void saveDeskOrder(String adminUid, Map<Integer, Map<Integer, String>> dataMap) throws Exception {
+        ProductVO productVO = analyzeTools.analyzeOrderInfo(dataMap, OrderTypeEnums.DESK.code);
+
+        OrderInfo orderInfo = analyzeTools.castOrderInfo(productVO, adminUid);
         orderInfo.setOrderType(OrderTypeEnums.DESK);
         orderInfo.setProductType(ProductTypeEnums.Other);
 
 
         orderInfoMapper.insert(orderInfo);
-        Map<String ,Object> map = analyzeTools.analyzeDesk(dataMap,orderInfo.getUid());
+        Map<String, Object> map = analyzeTools.analyzeDesk(dataMap, orderInfo.getUid());
         List<IronwareInfo> ironwareInfos = (List<IronwareInfo>) map.get("irons");
         List<DeskInfo> deskInfos = (List<DeskInfo>) map.get("desks");
 
-        if(deskInfos.size() > 0 ){
+        if (deskInfos.size() > 0) {
             deskInfoService.saveBatch(deskInfos);
         }
-        if (ironwareInfos.size() > 0){
+        if (ironwareInfos.size() > 0) {
             ironwareInforService.saveBatch(ironwareInfos);
         }
         //保存客户信息并且保存订单客户关系
-        orderTools.saveCustomer(adminUid,productVO,orderInfo);
+        orderTools.saveCustomer(adminUid, productVO, orderInfo);
     }
 
     /**
      * 保存料单
+     *
      * @param adminUid
      * @param dataMap
      */
-    public void saveMetalOrder(String adminUid,Map<Integer, Map<Integer, String>> dataMap) throws Exception{
+    public void saveMetalOrder(String adminUid, Map<Integer, Map<Integer, String>> dataMap) throws Exception {
 
-        ProductVO productVO = analyzeTools.analyzeOrderInfo(dataMap,OrderTypeEnums.METAL.code);
+        ProductVO productVO = analyzeTools.analyzeOrderInfo(dataMap, OrderTypeEnums.METAL.code);
 
-        OrderInfo orderInfo = analyzeTools.castOrderInfo(productVO,adminUid);
+        OrderInfo orderInfo = analyzeTools.castOrderInfo(productVO, adminUid);
         orderInfo.setOrderType(OrderTypeEnums.METAL);
         orderInfo.setProductType(ProductTypeEnums.Other);
 
 
         orderInfoMapper.insert(orderInfo);
 
-        Map<String ,Object> map = analyzeTools.analyzeMetal(dataMap,orderInfo.getUid());
+        Map<String, Object> map = analyzeTools.analyzeMetal(dataMap, orderInfo.getUid());
         List<MetalInfo> metalInfos = (List<MetalInfo>) map.get("metals");
         List<IronwareInfo> ironwareInfos = (List<IronwareInfo>) map.get("irons");
 
-        if (metalInfos.size() > 0){
+        if (metalInfos.size() > 0) {
             metalInfoService.saveBatch(metalInfos);
         }
 
-        if (ironwareInfos.size() > 0){
+        if (ironwareInfos.size() > 0) {
             ironwareInforService.saveBatch(ironwareInfos);
         }
         //保存客户信息并且保存订单客户关系
-        orderTools.saveCustomer(adminUid,productVO,orderInfo);
+        orderTools.saveCustomer(adminUid, productVO, orderInfo);
     }
 
     /**
      * 计算门单\层板灯单
+     *
      * @param adminUid
      * @param dataMap
      * @return
      * @throws Exception
      */
-    private List<String> getDoorLaminate(String adminUid,Map<Integer, Map<Integer, String>> dataMap) throws Exception{
+    private List<String> getDoorLaminate(String adminUid, Map<Integer, Map<Integer, String>> dataMap) throws Exception {
 
         List<String> result = new ArrayList<>();
 
@@ -166,7 +236,7 @@ public class FileServiceImpl implements FileService {
         //解析天地横梁信息
         List<TransomVO> transomVOS = analyzeTools.analyzeTransomVO(dataMap);
 
-        ProductVO productVO = analyzeTools.analyzeOrderInfo(dataMap,OrderTypeEnums.DOORORDER.code);
+        ProductVO productVO = analyzeTools.analyzeOrderInfo(dataMap, OrderTypeEnums.DOORORDER.code);
 
         if (laminateInfoVOS.size() > 0 && materialInfoVOS.size() > 0) {
 
@@ -175,7 +245,7 @@ public class FileServiceImpl implements FileService {
         }
 
         if (laminateInfoVOS.size() > 0) {
-            LaminateVO laminateVO = (LaminateVO) analyzeTools.castProduct(productVO,2);
+            LaminateVO laminateVO = (LaminateVO) analyzeTools.castProduct(productVO, 2);
             laminateVO.setOrderType(OrderTypeEnums.CBDORDER.code);
             laminateVO.setIronwares(ironwareInfoVOS);
             laminateVO.setLaminateInfos(laminateInfoVOS);
@@ -183,11 +253,11 @@ public class FileServiceImpl implements FileService {
         }
 
         if (materialInfoVOS.size() > 0) {
-            MaterialVO materialVO = (MaterialVO) analyzeTools.castProduct(productVO,1);
+            MaterialVO materialVO = (MaterialVO) analyzeTools.castProduct(productVO, 1);
             materialVO.setOrderType(OrderTypeEnums.DOORORDER.code);
             materialVO.setIronwares(ironwareInfoVOS);
             materialVO.setMaterials(materialInfoVOS);
-            if (transomVOS.size()>0){
+            if (transomVOS.size() > 0) {
                 materialVO.setIsHaveTransom(true);
                 materialVO.setTransoms(transomVOS);
             }

@@ -22,11 +22,13 @@ public enum MaterialColorEnums implements IEnum {
     JS(13, "金色"),
     SJS(14, "深金色"),
     GTS(15, "古铜色"),
-    SXH(16,"水性灰"),
+    TKH(16,"太空灰"),
     //桌子颜色
     FTH(17,"氟碳灰"),
     PL(18,"坯料"),
-    GRAY(19,"灰色")
+    GRAY(19,"灰色"),
+    XBS(20,"香槟色"),
+    RED(21,"红色")
     ;
 
     MaterialColorEnums(int code, String name) {
@@ -79,6 +81,18 @@ public enum MaterialColorEnums implements IEnum {
         }
 
         return 0;
+
+    }
+
+    public static MaterialColorEnums getEnumByInformation(String information){
+
+        for (MaterialColorEnums enums:MaterialColorEnums.values()) {
+            if (information.contains(enums.name)){
+                return enums;
+            }
+        }
+
+        return MaterialColorEnums.WYS;
 
     }
 

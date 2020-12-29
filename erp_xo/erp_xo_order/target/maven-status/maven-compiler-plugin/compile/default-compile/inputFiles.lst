@@ -1,4 +1,5 @@
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\factory\NotCalculateFactory.java
+D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\mapper\HangingInfoMapper.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\vo\LaminateInfoVO.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\service\AdminService.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\service\impl\MetalInfoServiceImpl.java
@@ -63,6 +64,7 @@ D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\vo\
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\factory\SP2HCalculateFactory.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\tools\CBDOrderTools.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\vo\VisitVO.java
+D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\service\HangingInfoService.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\mapper\StoreRecordInfoMapper.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\vo\IndexOrderVO.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\service\impl\LaminateInfoServiceImpl.java
@@ -81,6 +83,7 @@ D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\ser
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\vo\AdminVO.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\service\ProductService.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\mapper\ProductCalculateRecordMapper.java
+D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\service\impl\HangingInfoServiceImpl.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\mapper\StoreOriginalInfoMapper.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\service\SpecimenInfoService.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\mapper\StoreOriginalRecordInfoMapper.java

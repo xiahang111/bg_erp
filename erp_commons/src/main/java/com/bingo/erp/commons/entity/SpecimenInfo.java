@@ -32,7 +32,7 @@ public class SpecimenInfo extends SuperEntity<SpecimenInfo> {
     /**
      * 小样品数量
      */
-    private BigDecimal specimenNum;
+    private Integer specimenNum;
 
     /**
      * 总价

@@ -1,10 +1,7 @@
 package com.bingo.erp.xo.order.tools;
 
 import com.bingo.erp.base.enums.*;
-import com.bingo.erp.commons.entity.DeskInfo;
-import com.bingo.erp.commons.entity.IronwareInfo;
-import com.bingo.erp.commons.entity.MetalInfo;
-import com.bingo.erp.commons.entity.OrderInfo;
+import com.bingo.erp.commons.entity.*;
 import com.bingo.erp.utils.StringUtils;
 import com.bingo.erp.xo.order.vo.*;
 import lombok.extern.slf4j.Slf4j;
@@ -215,10 +212,9 @@ public class AnalyzeTools {
                 if (data.contains("制单人")) {
                     if (orderType == OrderTypeEnums.DOORORDER.code) {
                         productVO.setOrderMaker(null == rowMap.get(cellNum + 2) ? "" : rowMap.get(cellNum + 2));
-                    } else if (orderType == OrderTypeEnums.DESK.code){
-                        productVO.setOrderMaker(null == rowMap.get(cellNum) ? "" : replaceSome(rowMap.get(cellNum),"制单人",":", "：", " "));
-                    }
-                    else {
+                    } else if (orderType == OrderTypeEnums.DESK.code || orderType == OrderTypeEnums.HANGING.code || orderType == OrderTypeEnums.SPECIMEN.code) {
+                        productVO.setOrderMaker(null == rowMap.get(cellNum) ? "" : replaceSome(rowMap.get(cellNum), "制单人", ":", "：", " "));
+                    } else {
                         productVO.setOrderMaker(null == rowMap.get(cellNum + 1) ? "" : rowMap.get(cellNum + 1));
                     }
                 }
@@ -234,10 +230,13 @@ public class AnalyzeTools {
                 if (data.contains("备注") && data.length() > 2) {
                     productVO.setRemark(replaceSome(data, "备注", ":", "：", " "));
                 }
-                if (orderType != OrderTypeEnums.DESK.code && (data.contains("总计") || data.contains("实收合计"))) {
+                if (orderType != OrderTypeEnums.DESK.code && (data.contains("总计") || data.contains("实收合计") )) {
                     productVO.setOrderTotalPrice(null == rowMap.get(cellNum + 6) ? new BigDecimal("0") : new BigDecimal(rowMap.get(cellNum + 6)));
                 }
-                if(orderType == OrderTypeEnums.DESK.code && data.contains("货款总合计")){
+                if(orderType == OrderTypeEnums.HANGING.code && data.contains("货款合计")){
+                    productVO.setOrderTotalPrice(null == rowMap.get(cellNum + 8) ? new BigDecimal("0") : new BigDecimal(rowMap.get(cellNum + 8)));
+                }
+                if (orderType == OrderTypeEnums.DESK.code && data.contains("货款总合计")) {
                     productVO.setOrderTotalPrice(null == rowMap.get(cellNum + 10) ? new BigDecimal("0") : new BigDecimal(rowMap.get(cellNum + 10)));
                 }
                 if (data.contains("收货人")) {
@@ -245,7 +244,6 @@ public class AnalyzeTools {
                     String phoneNum = checkCellphone(a);
                     productVO.setCustomerPhoneNum(phoneNum);
                     productVO.setCustomerName(a.replace(phoneNum, ""));
-
                 }
             }
         }
@@ -296,6 +294,14 @@ public class AnalyzeTools {
 
                 if (data.contains("桌子")) {
                     return OrderTypeEnums.DESK.code;
+                }
+
+                if (data.contains("小样品")) {
+                    return OrderTypeEnums.SPECIMEN.code;
+                }
+
+                if (data.contains("置物架")) {
+                    return OrderTypeEnums.HANGING.code;
                 }
             }
         }
@@ -537,6 +543,84 @@ public class AnalyzeTools {
 
     }
 
+
+    public List<HangingInfo> analyzeHanging(Map<Integer, Map<Integer, String>> dataMap, String orderUid) {
+
+        List<HangingInfo> hangingInfos = new ArrayList<>();
+
+        for (Integer rowNum : dataMap.keySet()) {
+            if (null != dataMap.get(rowNum).get(2) && dataMap.get(rowNum).get(2).replaceAll("\r|\n", "").contains("名称")) {
+
+
+                //置物架
+                loop:
+                for (int i = rowNum + 1; i < dataMap.size(); i++) {
+
+                    if (dataMap.get(i).size() < 3) {
+                        break loop;
+                    } else {
+
+                        HangingInfo hangingInfo = new HangingInfo();
+                        hangingInfo.setOrderInfouid(orderUid);
+                        hangingInfo.setHangingName(null == dataMap.get(i).get(2) ? "" : dataMap.get(i).get(2));
+                        hangingInfo.setSpecification(null == dataMap.get(i).get(4) ? "" : dataMap.get(i).get(4));
+                        String color = null == dataMap.get(i).get(6) ? "" : dataMap.get(i).get(6).replace(" ","");
+                        hangingInfo.setMaterialColor(MaterialColorEnums.getByName(color));
+                        hangingInfo.setHangingNum(null == dataMap.get(i).get(7) ? 0 : Integer.valueOf(dataMap.get(i).get(7).replace(".0", "")));
+                        hangingInfo.setPrice(null == dataMap.get(i).get(8) ? new BigDecimal("0") : new BigDecimal(dataMap.get(i).get(8)).setScale(0, BigDecimal.ROUND_HALF_DOWN));
+                        hangingInfo.setTotalPrice(null == dataMap.get(i).get(9) ? new BigDecimal("0") : new BigDecimal(dataMap.get(i).get(9)).setScale(0, BigDecimal.ROUND_HALF_DOWN));
+                        hangingInfo.setRemark(null == dataMap.get(i).get(10) ? "" : dataMap.get(i).get(10));
+
+                        hangingInfos.add(hangingInfo);
+                    }
+                }
+            }
+        }
+
+        return hangingInfos;
+    }
+
+    /**
+     * 解析小样品
+     *
+     * @param dataMap
+     * @param orderUid
+     * @return
+     */
+    public List<SpecimenInfo> analyzeSpecimen(Map<Integer, Map<Integer, String>> dataMap, String orderUid) {
+
+        List<SpecimenInfo> specimenInfos = new ArrayList<>();
+
+        for (Integer rowNum : dataMap.keySet()) {
+            if (null != dataMap.get(rowNum).get(1) && dataMap.get(rowNum).get(1).replaceAll("\r|\n", "").contains("名称")) {
+
+                //小样品
+                loop:
+                for (int i = rowNum + 1; i < dataMap.size(); i++) {
+
+                    if (dataMap.get(i).size() < 3) {
+                        break loop;
+                    } else {
+                        SpecimenInfo specimenInfo = new SpecimenInfo();
+                        specimenInfo.setOrderInfouid(orderUid);
+                        specimenInfo.setSpecimenName((null == dataMap.get(i).get(1) ? "" : dataMap.get(i).get(1)));
+                        specimenInfo.setSpecification(null == dataMap.get(i).get(3) ? "" : dataMap.get(i).get(3));
+                        specimenInfo.setSpecimenNum(null == dataMap.get(i).get(5) ? 0 : Integer.valueOf(dataMap.get(i).get(5).replace(".0", "")));
+                        specimenInfo.setPrice(null == dataMap.get(i).get(6) ? new BigDecimal("0") : new BigDecimal(dataMap.get(i).get(6)).setScale(0, BigDecimal.ROUND_HALF_DOWN));
+                        specimenInfo.setTotalPrice(null == dataMap.get(i).get(7) ? new BigDecimal("0") : new BigDecimal(dataMap.get(i).get(7)).setScale(0, BigDecimal.ROUND_HALF_DOWN));
+                        specimenInfo.setRemark(null == dataMap.get(i).get(8) ? "" : dataMap.get(i).get(8));
+
+                        specimenInfos.add(specimenInfo);
+
+                    }
+                }
+
+            }
+        }
+
+        return specimenInfos;
+    }
+
     /**
      * 处理桌子单
      *
@@ -563,8 +647,8 @@ public class AnalyzeTools {
                         DeskInfo deskInfo = new DeskInfo();
                         deskInfo.setOrderInfouid(orderUid);
                         deskInfo.setLength(null == dataMap.get(i).get(2) ? new BigDecimal("0") : new BigDecimal(dataMap.get(i).get(2)));
-                        deskInfo.setWidth(null == dataMap.get(i).get(4) ? new BigDecimal("0") : new BigDecimal(dataMap.get(i).get(6)));
-                        deskInfo.setHeight(null == dataMap.get(i).get(6) ? new BigDecimal("0") : new BigDecimal(dataMap.get(i).get(4)));
+                        deskInfo.setWidth(null == dataMap.get(i).get(4) ? new BigDecimal("0") : new BigDecimal(dataMap.get(i).get(4)));
+                        deskInfo.setHeight(null == dataMap.get(i).get(6) ? new BigDecimal("0") : new BigDecimal(dataMap.get(i).get(6)));
                         String materialColor = null == dataMap.get(i).get(7) ? "无颜色" : dataMap.get(i).get(7);
                         deskInfo.setMaterialColor(MaterialColorEnums.getByName(materialColor));
                         deskInfo.setDeskNum(Integer.valueOf(null == dataMap.get(i).get(8) ? "0" : dataMap.get(i).get(8).replace(".0", "")));
@@ -589,9 +673,9 @@ public class AnalyzeTools {
                         ironwareInfo.setIronwareName(null == dataMap.get(i).get(2) ? "" : dataMap.get(i).get(2));
                         ironwareInfo.setIronwareColor(null == dataMap.get(i).get(6) ? "" : dataMap.get(i).get(6));
                         ironwareInfo.setSpecification(null == dataMap.get(i).get(6) ? "" : dataMap.get(i).get(6));
-                        ironwareInfo.setIronwareNum(Integer.valueOf(null == dataMap.get(i).get(8) ? "0" : dataMap.get(i).get(8).replace(".0","")));
-                        ironwareInfo.setPrice(null == dataMap.get(i).get(10)?new BigDecimal("0"):new BigDecimal(dataMap.get(i).get(10)).setScale(0,BigDecimal.ROUND_HALF_DOWN));
-                        ironwareInfo.setTotalPrice(null == dataMap.get(i).get(11)?new BigDecimal("0"):new BigDecimal(dataMap.get(i).get(11)).setScale(0,BigDecimal.ROUND_HALF_DOWN));
+                        ironwareInfo.setIronwareNum(Integer.valueOf(null == dataMap.get(i).get(8) ? "0" : dataMap.get(i).get(8).replace(".0", "")));
+                        ironwareInfo.setPrice(null == dataMap.get(i).get(10) ? new BigDecimal("0") : new BigDecimal(dataMap.get(i).get(10)).setScale(0, BigDecimal.ROUND_HALF_DOWN));
+                        ironwareInfo.setTotalPrice(null == dataMap.get(i).get(11) ? new BigDecimal("0") : new BigDecimal(dataMap.get(i).get(11)).setScale(0, BigDecimal.ROUND_HALF_DOWN));
                         ironwareInfo.setRemark(null == dataMap.get(i).get(12) ? "" : dataMap.get(i).get(12));
                         ironwareInfos.add(ironwareInfo);
                     }
@@ -659,7 +743,6 @@ public class AnalyzeTools {
                         ironwareInfo.setRemark(null == dataMap.get(i).get(8) ? "" : dataMap.get(i).get(8));
                         ironwareInfos.add(ironwareInfo);
                     }
-
                 }
             }
         }
