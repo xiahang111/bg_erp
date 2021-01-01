@@ -18,10 +18,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class CBDOrderTools {
@@ -54,7 +51,7 @@ public class CBDOrderTools {
 
     public Map<String, List<LaminateInfoVO>> laminateToMap(List<LaminateInfoVO> laminateInfoVOS) {
 
-        Map<String, List<LaminateInfoVO>> map = new HashMap<>();
+        Map<String, List<LaminateInfoVO>> map = new LinkedHashMap<>();
 
         for (LaminateInfoVO infoVO : laminateInfoVOS) {
 

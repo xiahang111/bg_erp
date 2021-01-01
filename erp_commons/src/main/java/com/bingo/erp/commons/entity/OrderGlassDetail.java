@@ -46,4 +46,6 @@ public class OrderGlassDetail extends SuperEntity<OrderFileRecord> {
 
     private String customerName;
 
+    private Integer sequence;
+
 }

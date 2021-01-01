@@ -26,3 +26,4 @@ com\bingo\erp\commons\entity\StoreOriginalInfo.class
 com\bingo\erp\commons\entity\MetalInfo.class
 com\bingo\erp\commons\entity\DataGather.class
 com\bingo\erp\commons\entity\ProductOrderInfo.class
+com\bingo\erp\commons\entity\StoreOutsideInfo.class

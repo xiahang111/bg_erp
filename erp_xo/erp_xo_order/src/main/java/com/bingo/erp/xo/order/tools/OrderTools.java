@@ -71,7 +71,7 @@ public class OrderTools {
 
     public Map<String, List<MaterialInfoVO>> materialsToMap(List<MaterialInfoVO> materialInfoVOS) {
 
-        Map<String, List<MaterialInfoVO>> map = new HashMap<>();
+        Map<String, List<MaterialInfoVO>> map = new LinkedHashMap<>();
 
         for (MaterialInfoVO infoVO : materialInfoVOS) {
 

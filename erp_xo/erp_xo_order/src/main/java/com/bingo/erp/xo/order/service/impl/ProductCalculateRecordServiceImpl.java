@@ -12,6 +12,7 @@ import com.bingo.erp.utils.StringUtils;
 import com.bingo.erp.xo.order.global.RedisConf;
 import com.bingo.erp.xo.order.global.SQLConf;
 import com.bingo.erp.xo.order.global.SysConf;
+import com.bingo.erp.xo.order.mapper.OrderGlassDetailMapper;
 import com.bingo.erp.xo.order.mapper.OrderInfoMapper;
 import com.bingo.erp.xo.order.mapper.ProductCalculateRecordMapper;
 import com.bingo.erp.xo.order.mapper.ProductMapper;
@@ -51,6 +52,9 @@ public class ProductCalculateRecordServiceImpl extends
 
     @Resource
     private OrderGlassDetailService orderGlassDetailService;
+
+    @Resource
+    private OrderGlassDetailMapper orderGlassDetailMapper;
 
     @Resource
     private MaterialInfoService materialInfoService;
@@ -130,24 +134,11 @@ public class ProductCalculateRecordServiceImpl extends
     @Override
     public IPage<OrderGlassDetail> getGlassInfo(GlassInfoPageVO glassInfoPageVO) {
 
-
-        QueryWrapper<OrderGlassDetail> queryWrapper = new QueryWrapper<>();
-
-
-        if (null != glassInfoPageVO.getBeginTime() && null != glassInfoPageVO.getEndTime()) {
-            queryWrapper.ge("create_time", glassInfoPageVO.getBeginTime());
-            queryWrapper.le("create_time", glassInfoPageVO.getEndTime());
-        }
-
-        queryWrapper.orderByAsc("create_time");
-
-        queryWrapper.eq("status",SysConf.NORMAL_STATUS);
-
         //分页查询
         Page<OrderGlassDetail> page = new Page<>();
         page.setCurrent(glassInfoPageVO.getCurrentPage());
         page.setSize(glassInfoPageVO.getPageSize());
-        IPage<OrderGlassDetail> glassDetailIPage = orderGlassDetailService.page(page, queryWrapper);
+        IPage<OrderGlassDetail> glassDetailIPage = orderGlassDetailMapper.getGlassDetailPage(page,glassInfoPageVO);
 
         return glassDetailIPage;
     }

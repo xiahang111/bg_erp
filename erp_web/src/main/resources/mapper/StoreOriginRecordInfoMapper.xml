@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bingo.erp.xo.order.mapper.StoreOriginalRecordInfoMapper">
 
-    <select id="queryStoreOriginalRecordStatement" parameterType="com.bingo.erp.xo.order.vo.StatementQueryVO" resultType="com.bingo.erp.xo.order.vo.StatementResultVO">
+    <select id="queryStoreOriginalRecordStatement"  resultType="com.bingo.erp.xo.order.vo.StatementResultVO">
         SELECT
         <choose>
             <when test="dateType != null and dateType == '1'.toString()">

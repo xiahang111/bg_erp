@@ -138,6 +138,7 @@ com\bingo\erp\xo\order\mapper\MetalInfoMapper.class
 com\bingo\erp\xo\order\tools\ExcelTools$XSSFDateUtil.class
 com\bingo\erp\xo\order\service\IronwareInforService.class
 com\bingo\erp\xo\order\vo\UserVO.class
+com\bingo\erp\xo\order\factory\LD4HCalculateFactory.class
 com\bingo\erp\xo\order\service\FileService.class
 com\bingo\erp\xo\order\vo\MaterialVO.class
 com\bingo\erp\xo\order\global\NormalConf.class

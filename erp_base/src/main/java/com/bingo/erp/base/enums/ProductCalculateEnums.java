@@ -20,7 +20,8 @@ public enum ProductCalculateEnums {
     H15(8001,new BigDecimal(8),new BigDecimal(8),"5mm钢化"),
     H16(8002,new BigDecimal(22),new BigDecimal(22),"5mm钢化"),
     H17(8003,new BigDecimal(8),new BigDecimal(8),"无玻璃"),
-    H18(1005,new BigDecimal(4),new BigDecimal(20),"无玻璃");
+    H18(1005,new BigDecimal(4),new BigDecimal(20),"5mm钢化"),
+    H19(1004,new BigDecimal(0),new BigDecimal(25),"5mm精磨边");
 
     private final int code;
     private final BigDecimal higth;

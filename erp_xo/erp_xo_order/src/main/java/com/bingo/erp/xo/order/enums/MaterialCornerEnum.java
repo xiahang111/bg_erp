@@ -7,6 +7,7 @@ public enum  MaterialCornerEnum {
     LD1H(1001, CornerMaterialEnums.LD1HXHJM),
     LD2H(1002, CornerMaterialEnums.LD2HTPJM),
     LD3H(1003, CornerMaterialEnums.LD3HTPJM),
+    LD4H(1004, CornerMaterialEnums.None),
     LD5H(1005, CornerMaterialEnums.LD1HXHJM),
     XB50(3001, CornerMaterialEnums.None),
     ZB20(5001, CornerMaterialEnums.XHJ20),

@@ -57,6 +57,7 @@ D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\vo\
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\service\StoreSummaryInfoService.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\mapper\OrderInfoMapper.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\mapper\DataGatherMapper.java
+D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\factory\LD4HCalculateFactory.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\factory\ZB20CalculateFactory.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\service\ProductCalculateRecordService.java
 D:\workspace\bg_erp\erp_xo\erp_xo_order\src\main\java\com\bingo\erp\xo\order\factory\CBDCalculateFactory.java

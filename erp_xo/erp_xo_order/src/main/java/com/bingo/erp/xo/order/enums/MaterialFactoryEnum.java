@@ -8,6 +8,7 @@ public enum MaterialFactoryEnum {
     LD1H(1001, LD1HCalculateFactory.class),
     LD2H(1002, LD2HCalculateFactory.class),
     LD3H(1003, LD3HCalculateFactory.class),
+    LD4H(1004, LD4HCalculateFactory.class),
     LD5H(1005, LD5HCalculateFactory.class),
     XB50(3001, XB50CalculateFactory.class),
     ZB20(5001, ZB20CalculateFactory.class),

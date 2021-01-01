@@ -261,7 +261,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
         List<LaminateInfo> laminateInfos = cbdOrderTools.saveLaminateInfoList(laminaterInfoMapper, orderInfo.getUid(), insertList);
         //保存玻璃信息 不保存半成品的
         if (orderInfo.getProductType() == ProductTypeEnums.Complete) {
-            getOrderGlassDetail(laminateInfos, orderInfo, orderGlassDetailMapper);
+            getOrderGlassDetail(laminateInfos, orderInfo);
         }
 
         tools.saveIronwareInfoList(ironwareInfoMapper, laminateVO.getIronwares(), orderInfo.getUid());
@@ -440,7 +440,7 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
             if (!SysConf.VISIT_ROLE.equals(roleName)) {
                 //保存玻璃信息 不保存半成品的
                 if (orderInfo.getProductType() == ProductTypeEnums.Complete) {
-                    getOrderGlassDetailByMaterial(materialInfos, orderInfo, orderGlassDetailMapper);
+                    getOrderGlassDetailByMaterial(materialInfos, orderInfo);
 
                 }
             }
@@ -684,9 +684,11 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
     }
 
-    private void getOrderGlassDetail(List<LaminateInfo> laminateInfos, OrderInfo orderInfo, OrderGlassDetailMapper orderGlassDetailMapper) throws Exception {
+    private void getOrderGlassDetail(List<LaminateInfo> laminateInfos, OrderInfo orderInfo) throws Exception {
 
+        List<OrderGlassDetail> inserts = new ArrayList<>();
 
+        int i = 1;
         for (LaminateInfo laminateInfo : laminateInfos) {
             if (laminateInfo.getMaterialType().code != MaterialTypeEnums.CBDJJ.code) {
 
@@ -704,19 +706,21 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
                 orderGlassDetail.setMaterialType(laminateInfo.getMaterialType().name);
                 orderGlassDetail.setGlassDetail(glassDetail);
                 orderGlassDetail.setCustomerName(orderInfo.getCustomerName());
-
+                orderGlassDetail.setSequence(i++);
+                inserts.add(orderGlassDetail);
                 orderGlassDetailMapper.insert(orderGlassDetail);
-                try {
-                    Thread.sleep(1000);
-                } catch (Exception e) {
-                    throw new MessageException("线程错误");
-                }
             }
+
+            //orderGlassDetailService.saveBatch(inserts);
         }
 
     }
 
-    private void getOrderGlassDetailByMaterial(List<MaterialInfo> materialInfos, OrderInfo orderInfo, OrderGlassDetailMapper orderGlassDetailMapper) throws Exception {
+    private void getOrderGlassDetailByMaterial(List<MaterialInfo> materialInfos, OrderInfo orderInfo) throws Exception {
+
+        int i = 1;
+
+        List<OrderGlassDetail> inserts = new ArrayList<>();
 
         for (MaterialInfo materialInfo : materialInfos) {
 
@@ -734,16 +738,14 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
             orderGlassDetail.setMaterialType(materialInfo.getMaterialType().name);
             orderGlassDetail.setGlassDetail(glassDetail);
             orderGlassDetail.setCustomerName(orderInfo.getCustomerName());
+            orderGlassDetail.setSequence(i++);
 
-            orderGlassDetailMapper.insert(orderGlassDetail);
-            try {
-                Thread.sleep(1000);
-            } catch (Exception e) {
-                throw new MessageException("线程错误！");
-            }
-
+            inserts.add(orderGlassDetail);
 
         }
+
+        orderGlassDetailService.saveBatch(inserts);
+
     }
 }
 
