@@ -1,6 +1,7 @@
 server:
   port: 8501
 
+
 spring:
   application:
     name: erp-web
@@ -122,3 +123,10 @@ audience:
 #/home/data/template/   /Users/drew/IdeaProject/bg-erp/excel/
 srcFileUrl: D:\workspace\bg_erp\excel\
 newFileDict: D:\workspace\bg_erp\excel\
+aj:
+  captcha:
+    jigsaw: classpath:images/jigsaw
+    type: default
+    slip-offset: 5
+    pic-click: classpath:images/pic-click
+    water-mark: 兵歌铝业

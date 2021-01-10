@@ -9,6 +9,7 @@ com\bingo\erp\commons\entity\CabinatInfo.class
 com\bingo\erp\commons\entity\OrderFileRecord.class
 com\bingo\erp\commons\entity\HangingInfo.class
 com\bingo\erp\commons\feign\PersonFeignClient.class
+com\bingo\erp\commons\entity\MaterialRemindConfig.class
 com\bingo\erp\commons\entity\MaterialInfo.class
 com\bingo\erp\commons\entity\Role.class
 com\bingo\erp\commons\entity\DeskInfo.class
@@ -27,3 +28,4 @@ com\bingo\erp\commons\entity\MetalInfo.class
 com\bingo\erp\commons\entity\DataGather.class
 com\bingo\erp\commons\entity\ProductOrderInfo.class
 com\bingo\erp\commons\entity\StoreOutsideInfo.class
+com\bingo\erp\commons\entity\MessageRemindInfo.class

@@ -21,6 +21,7 @@ com\bingo\erp\base\fatocry\CalculateFactory.class
 com\bingo\erp\base\mapper\SuperMapper.class
 com\bingo\erp\base\enums\OrderStatusEnums.class
 com\bingo\erp\base\validator\group\Delete.class
+com\bingo\erp\base\enums\StoreInOutMapperEnums.class
 com\bingo\erp\base\service\SuperService.class
 com\bingo\erp\base\global\BaseRedisConf.class
 com\bingo\erp\base\holder\SpringContextHolder.class

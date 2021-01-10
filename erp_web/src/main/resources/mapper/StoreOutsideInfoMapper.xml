@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bingo.erp.xo.order.mapper.StoreOutsideInfoMapper">
+
+    <select id="queryStoreOutside" parameterType="com.bingo.erp.xo.order.vo.StoreOutsidePageVO" resultType="com.bingo.erp.commons.entity.StoreOutsideInfo">
+
+        SELECT * from s_store_outside_info
+
+        WHERE 1 = 1 and status = 1
+
+        <if test="pageVO.materialName != null and pageVO.materialName != ''">
+            and material_name = #{pageVO.materialName}
+        </if>
+
+        <if test="pageVO.location != null and pageVO.location != ''">
+            and location like CONCAT(CONCAT('%',#{pageVO.location}),'%')
+        </if>
+        <if test="pageVO.materialStatus != null and pageVO.materialStatus != ''">
+            and material_status = #{pageVO.materialStatus}
+        </if>
+        <if test="pageVO.beginTime != null">
+            and out_time &gt;= #{pageVO.beginTime}
+        </if>
+        <if test="pageVO.endTime != null">
+            and out_time &lt;= #{pageVO.endTime}
+        </if>
+        <if test="pageVO.orderBy != null and pageVO.orderBy != ''">
+            and material_name = #{pageVO.orderBy}
+        </if>
+        <if test="pageVO.desc">
+            desc
+        </if>
+
+
+
+
+
+    </select>
+
+</mapper>

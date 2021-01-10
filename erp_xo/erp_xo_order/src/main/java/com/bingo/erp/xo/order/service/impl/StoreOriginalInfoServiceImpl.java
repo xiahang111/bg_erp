@@ -15,6 +15,7 @@ import com.bingo.erp.xo.order.global.SysConf;
 import com.bingo.erp.xo.order.mapper.StoreOriginalInfoMapper;
 import com.bingo.erp.xo.order.service.StoreOriginalInfoService;
 import com.bingo.erp.xo.order.service.StoreOriginalRecordInfoService;
+import com.bingo.erp.xo.order.service.StoreOutsideService;
 import com.bingo.erp.xo.order.vo.StoreOriginRecordVO;
 import com.bingo.erp.xo.order.vo.StoreOriginVO;
 import com.bingo.erp.xo.order.vo.StoreOriginalPageVO;
@@ -32,6 +33,9 @@ public class StoreOriginalInfoServiceImpl
 
     @Resource
     private StoreOriginalInfoService storeOriginalInfoService;
+
+    @Resource
+    private StoreOutsideService storeOutsideService;
 
     @Resource
     private StoreOriginalRecordInfoService storeOriginalRecordInfoService;
@@ -187,12 +191,22 @@ public class StoreOriginalInfoServiceImpl
             if (one.getMaterialNum().compareTo(new BigDecimal(0)) < 0) {
                 throw new MessageException("库存不足！不得出库！");
             }
+
+            //保存材料在外状态数据
+
+            if (null == storeOriginRecordVO.getMaterialColor()){storeOriginRecordVO.setMaterialColor(0);}
+            //如果是发车间或者发货就不添加中间状态
+            if(storeOriginRecordVO.getOriginalResource()!=4 && storeOriginRecordVO.getOriginalResource()!=9){
+                storeOutsideService.saveByOriginalRecord(storeOriginalRecordInfo,storeOriginRecordVO.getMaterialColor());
+            }
         }
 
-
+        //保存出库信息
         storeOriginalRecordInfoService.save(storeOriginalRecordInfo);
         one.setStatus(SysConf.NORMAL_STATUS);
+        //更新坯料数据
         storeOriginalInfoService.updateById(one);
+
 
     }
 

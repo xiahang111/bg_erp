@@ -11,7 +11,11 @@ public enum  MaterialStatusEnums implements IEnum {
     LASI(2,"拉丝"),
     XIXING(3,"铣型"),
     YANGHUA(4,"氧化"),
-    FINISHED(5,"已完成");
+    FINISHED(5,"已完成"),
+    PENTU(6,"喷涂"),
+    PAOGUANG(7,"抛光"),
+    BAOFEI(8,"报废"),
+    WAIXIAO(9,"外销或发车间");
 
 
 
@@ -39,6 +43,17 @@ public enum  MaterialStatusEnums implements IEnum {
                 return enums;
             }
 
+        }
+
+        return null;
+    }
+
+    public static MaterialStatusEnums getByName(String  name) {
+        for (MaterialStatusEnums enums : MaterialStatusEnums.values()) {
+
+            if (enums.name.equals(name)) {
+                return enums;
+            }
         }
 
         return null;

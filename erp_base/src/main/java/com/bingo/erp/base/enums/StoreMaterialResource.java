@@ -34,6 +34,17 @@ public enum StoreMaterialResource implements IEnum {
         return null;
     }
 
+    public static Integer getCodeByName(String name) {
+        for (StoreMaterialResource enums : StoreMaterialResource.values()) {
+
+            if (enums.name.equals(name)) {
+                return enums.code;
+            }
+
+        }
+        return null;
+    }
+
     public static StoreMaterialResource getByCode(int code) {
         for (StoreMaterialResource enums : StoreMaterialResource.values()) {
 

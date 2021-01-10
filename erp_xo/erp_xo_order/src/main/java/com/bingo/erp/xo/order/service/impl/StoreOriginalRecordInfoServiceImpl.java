@@ -6,11 +6,14 @@ import com.bingo.erp.base.exception.MessageException;
 import com.bingo.erp.base.serviceImpl.SuperServiceImpl;
 import com.bingo.erp.commons.entity.StoreOriginalInfo;
 import com.bingo.erp.commons.entity.StoreOriginalRecordInfo;
+import com.bingo.erp.commons.entity.StoreOutsideInfo;
 import com.bingo.erp.xo.order.global.SysConf;
 import com.bingo.erp.xo.order.mapper.StoreOriginalInfoMapper;
 import com.bingo.erp.xo.order.mapper.StoreOriginalRecordInfoMapper;
+import com.bingo.erp.xo.order.mapper.StoreOutsideInfoMapper;
 import com.bingo.erp.xo.order.service.StoreOriginalInfoService;
 import com.bingo.erp.xo.order.service.StoreOriginalRecordInfoService;
+import com.bingo.erp.xo.order.service.StoreOutsideInfoService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,6 +34,12 @@ public class StoreOriginalRecordInfoServiceImpl
 
     @Resource
     private StoreOriginalRecordInfoService storeOriginalRecordInfoService;
+
+    @Resource
+    private StoreOutsideInfoService storeOutsideInfoService;
+
+    @Resource
+    private StoreOutsideInfoMapper storeOutsideInfoMapper;
 
 
     @Override
@@ -83,5 +92,14 @@ public class StoreOriginalRecordInfoServiceImpl
         storeOriginalRecordInfo.setStatus(SysConf.DELETE_STATUS);
 
         storeOriginalRecordInfoMapper.updateById(storeOriginalRecordInfo);
+
+        //回滚在外材料库
+        StoreOutsideInfo storeOutsideInfo = storeOutsideInfoMapper.getByOriginUid(storeRecordUid);
+        if (null != storeOriginalInfo){
+            storeOutsideInfo.setStatus(SysConf.DELETE_STATUS);
+
+            storeOutsideInfoMapper.updateById(storeOutsideInfo);
+        }
+
     }
 }

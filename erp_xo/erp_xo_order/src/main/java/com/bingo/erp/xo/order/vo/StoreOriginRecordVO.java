@@ -63,5 +63,7 @@ public class StoreOriginRecordVO {
 
     private Integer storeMaterialStatus;
 
+    private Integer materialColor;
+
 
 }

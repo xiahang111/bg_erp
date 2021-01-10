@@ -234,7 +234,7 @@ public class AnalyzeTools {
                     productVO.setOrderTotalPrice(null == rowMap.get(cellNum + 6) ? new BigDecimal("0") : new BigDecimal(rowMap.get(cellNum + 6)));
                 }
                 if(orderType == OrderTypeEnums.HANGING.code && data.contains("货款合计")){
-                    productVO.setOrderTotalPrice(null == rowMap.get(cellNum + 8) ? new BigDecimal("0") : new BigDecimal(rowMap.get(cellNum + 8)));
+                    productVO.setOrderTotalPrice(null == rowMap.get(cellNum + 9) ? new BigDecimal("0") : new BigDecimal(rowMap.get(cellNum + 9)));
                 }
                 if (orderType == OrderTypeEnums.DESK.code && data.contains("货款总合计")) {
                     productVO.setOrderTotalPrice(null == rowMap.get(cellNum + 10) ? new BigDecimal("0") : new BigDecimal(rowMap.get(cellNum + 10)));
@@ -300,7 +300,7 @@ public class AnalyzeTools {
                     return OrderTypeEnums.SPECIMEN.code;
                 }
 
-                if (data.contains("置物架")) {
+                if (data.contains("置物架")||data.contains("壁挂")) {
                     return OrderTypeEnums.HANGING.code;
                 }
             }

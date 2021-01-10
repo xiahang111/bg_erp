@@ -1,12 +1,14 @@
 D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\ProductCalculate.java
 D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\ShelfInfo.java
 D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\StoreOriginalRecordInfo.java
+D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\MessageRemindInfo.java
 D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\StoreOriginalInfo.java
 D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\vo\GlassInfoVO.java
 D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\OrderInfo.java
 D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\ProductCalculateRecord.java
 D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\StoreOriginalOutInfo.java
 D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\Admin.java
+D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\MaterialRemindConfig.java
 D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\StoreSummaryInfo.java
 D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\TransomInfo.java
 D:\workspace\bg_erp\erp_commons\src\main\java\com\bingo\erp\commons\entity\SpecimenInfo.java

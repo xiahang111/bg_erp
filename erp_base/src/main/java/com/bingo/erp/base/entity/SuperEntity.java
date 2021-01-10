@@ -31,7 +31,7 @@ public class SuperEntity<T extends Model> extends Model{
     private String uid;
 
     /**
-     * 状态 0：失效  1：生效
+     * 状态 2：失效  1：生效
      */
     private int status;
 
