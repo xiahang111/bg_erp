@@ -1,0 +1,4 @@
+com\bingo\erp\xo\wx\feign\OrderFeignClient.class
+com\bingo\erp\xo\wx\service\impl\OrderServiceImpl.class
+com\bingo\erp\xo\wx\service\OrderService.class
+com\bingo\erp\xo\wx\dto\OrderDTO.class

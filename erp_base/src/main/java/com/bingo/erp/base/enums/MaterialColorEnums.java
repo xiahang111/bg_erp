@@ -28,7 +28,8 @@ public enum MaterialColorEnums implements IEnum {
     PL(18,"坯料"),
     GRAY(19,"灰色"),
     XBS(20,"香槟色"),
-    RED(21,"红色")
+    RED(21,"红色"),
+    XYB(22,"象牙白")
     ;
 
     MaterialColorEnums(int code, String name) {

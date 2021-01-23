@@ -56,6 +56,7 @@ public class StatementServiceImpl implements StatementService {
             SaleStatementDTO saleStatementDTO = analyzeOrderInfosToResult(orderInfos);
             return saleStatementDTO;
         }catch (Exception e){
+            e.printStackTrace();
             throw new MessageException(e.getMessage());
         }
 

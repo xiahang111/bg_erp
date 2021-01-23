@@ -164,5 +164,6 @@ com\bingo\erp\xo\order\service\impl\ProductCalculateRecordServiceImpl.class
 com\bingo\erp\xo\order\service\impl\ProductServiceImpl$2.class
 com\bingo\erp\xo\order\service\StoreSummaryInfoService.class
 com\bingo\erp\xo\order\service\ProductCalculateRecordService.class
+com\bingo\erp\xo\order\dto\OrderDTO.class
 com\bingo\erp\xo\order\dto\SaleStatementDTO.class
 com\bingo\erp\xo\order\vo\StoreOriginRecordVO.class

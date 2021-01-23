@@ -1,33 +1,33 @@
 server:
-  port: 8501
-
+  port: 8506
 
 spring:
   application:
-    name: erp-web
+    name: erp-wx
 
     # DATABASE CONFIG
   datasource:
-    dynamic:
-      primary: master
-      datasource:
-        master:
-          username: root
-          #password: Cjcslhp178
-          password: Cjcslhp178
-          url: jdbc:mysql://178.236.44.94:3306/bg_erp?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
-          #url: jdbc:mysql://localhost:3306/bg_erp?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
-          driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    #password: Cjcslhp178
+    password: Cjcslhp178
+    #url: jdbc:mysql://178.236.44.94:3306/bg_person?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://178.236.44.89:3306/bg_data?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
 
+    # 初始化大小，最小，最大
+    initialSize: 5
+    minIdle: 5
+    maxActive: 50
 
-        slave:
-          username: root
-          #password: Cjcslhp178
-          password: Cjcslhp178
-          url: jdbc:mysql://178.236.44.94:3306/bg_erp?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
-          #url: jdbc:mysql://localhost:3306/bg_erp?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false&serverTimezone=Asia/Shanghai
-          driver-class-name: com.mysql.cj.jdbc.Driver
+    #连接等待超时时间
+    maxWait: 60000
 
+    #配置隔多久进行一次检测(检测可以关闭的空闲连接)
+    timeBetweenEvictionRunsMillis: 60000
+
+    #配置连接在池中的最小生存时间
+    minEvictableIdleTimeMillis: 300000
 
 
   #redis
@@ -61,7 +61,7 @@ eureka:
 
 # 或者：
 feign.hystrix.enabled: false # 索性禁用feign的hystrix支持
-
+#mybatis
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
   #实体扫描，多个package用逗号或者分号分隔
@@ -86,29 +86,16 @@ mybatis-plus:
   # 原生配置
   configuration:
     map-underscore-to-camel-case: true
-    cache-enabled: true
-    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  打印sql日志 经过测试会影响性能
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   type-enums-package: com.bingo.erp.base.enums
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-
-hystrix:
-  command:
-    default:
-      execution:
-        timeout:
-          enabled: true
-        isolation:
-          thread:
-            timeoutInMilliseconds: 30000
-
 ribbon:
-  ReadTimeout: 30000
-  ConnectTimeout: 30000
+  ReadTimeout: 50000   #负载均衡超时时间，默认值5000
+  ConnectTimeout: 30000 #ribbon请求连接的超时时间，默认值2000
+  MaxAutoRetries: 0     #对当前实例的重试次数，默认0
+  MaxAutoRetriesNextServer: 1 #
+
 
 ##jwt配置
 tokenHead: bearer;
@@ -120,13 +107,3 @@ audience:
   name: mogublog
   expiresSecond: 28800  #8个小时 3600
 
-#/home/data/template/   /Users/drew/IdeaProject/bg-erp/excel/
-srcFileUrl: D:\workspace\bg_erp\excel\
-newFileDict: D:\workspace\bg_erp\excel\
-aj:
-  captcha:
-    jigsaw: classpath:images/jigsaw
-    type: default
-    slip-offset: 5
-    pic-click: classpath:images/pic-click
-    water-mark: 兵歌铝业

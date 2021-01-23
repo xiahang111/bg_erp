@@ -21,6 +21,7 @@
         <module>erp_xo_manufacture</module>
         <module>erp_xo_data</module>
         <module>erp_xo_resource</module>
+        <module>erp_xo_wx</module>
     </modules>
 
     <properties>
