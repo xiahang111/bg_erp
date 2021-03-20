@@ -113,7 +113,10 @@ public class IndexDataTask {
         BigDecimal totalPirce = new BigDecimal("0");
 
         for (OrderInfo orderInfo : orderInfos) {
-            totalPirce = totalPirce.add(orderInfo.getTotalPrice()).setScale(0, BigDecimal.ROUND_HALF_UP);
+
+            if (null != orderInfo.getTotalPrice()){
+                totalPirce = totalPirce.add(orderInfo.getTotalPrice()).setScale(0, BigDecimal.ROUND_HALF_UP);
+            }
         }
 
         return totalPirce;
