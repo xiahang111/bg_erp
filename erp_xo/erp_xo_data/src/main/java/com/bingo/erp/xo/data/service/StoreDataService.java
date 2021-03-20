@@ -2,6 +2,7 @@ package com.bingo.erp.xo.data.service;
 
 import com.bingo.erp.base.service.SuperService;
 import com.bingo.erp.xo.data.entity.StoreData;
+import com.bingo.erp.xo.data.vo.BarReportResultVO;
 
 import java.util.List;
 
@@ -12,5 +13,11 @@ public interface StoreDataService extends SuperService<StoreData> {
      * @return
      */
     List<StoreData> getLastStoreDatas();
+
+    /**
+     * 获取
+     * @return
+     */
+    List<BarReportResultVO> getStoreNumReport();
 
 }

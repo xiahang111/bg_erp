@@ -19,6 +19,7 @@ public class DateUtils {
     public static final String STARTTIME = " 00:00:00";
     public static final String ENDTIME = " 23:59:59";
     public final static String FORMAT_STRING = "yyyy-MM-dd HH:mm:ss";
+    public final static String FORMAT_STRING_DAY = "yyyy-MM-dd";
     public final static String DAYFORMAT_STRING = "yyyyMMdd";
     public final static String[] REPLACE_STRING = new String[]{"GMT+0800", "GMT+08:00"};
     public final static String SPLIT_STRING = "(中国标准时间)";
@@ -220,6 +221,18 @@ public class DateUtils {
         Date date = null;
         try {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            date = format.parse(dateTime);
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    public static Date strToDateTime(String dateTime,String formatString) {
+        Date date = null;
+        try {
+            SimpleDateFormat format = new SimpleDateFormat(formatString);
             date = format.parse(dateTime);
         } catch (ParseException e) {
             // TODO Auto-generated catch block
@@ -449,7 +462,7 @@ public class DateUtils {
     /**
      * 根据年 月 获取对应的月份 天数
      */
-    public static int getDaysByYearMonth(int year, int month) {
+    public static int getByYearMonth(int year, int month) {
 
         Calendar a = Calendar.getInstance();
         a.set(Calendar.YEAR, year);
@@ -458,6 +471,15 @@ public class DateUtils {
         a.roll(Calendar.DATE, -1);
         int maxDate = a.get(Calendar.DATE);
         return maxDate;
+    }
+
+    public static Date getByMonthDay(int month, int day) {
+
+        Calendar a = Calendar.getInstance();
+        a.set(Calendar.MONTH, month - 1);
+        a.set(Calendar.DATE, day + 1);
+        a.roll(Calendar.DATE, -1);
+        return a.getTime();
     }
 
 
@@ -489,20 +511,20 @@ public class DateUtils {
 
     }
 
-    public static String  getFormatByDate(Date date1,String type){
+    public static String getFormatByDate(Date date1, String type) {
 
-        String date = DateUtils.formateDate(date1,DateUtils.DAYFORMAT_STRING);
+        String date = DateUtils.formateDate(date1, DateUtils.DAYFORMAT_STRING);
 
-        if (type.equals(DateUtils.YEAR)){
-            return date.substring(0,4);
+        if (type.equals(DateUtils.YEAR)) {
+            return date.substring(0, 4);
         }
 
-        if (type.equals(DateUtils.MONTH)){
-            return date.substring(4,6);
+        if (type.equals(DateUtils.MONTH)) {
+            return date.substring(4, 6);
         }
 
-        if (type.equals(DateUtils.DAY)){
-            return date.substring(6,8);
+        if (type.equals(DateUtils.DAY)) {
+            return date.substring(6, 8);
         }
 
         return "";
@@ -685,5 +707,49 @@ public class DateUtils {
             return day2 - day1;
         }
     }
+
+
+    /**
+     * 获取一段时间的列表
+     */
+
+    public static List<String> getPeroidTime(int length) {
+
+        List<String> time = new ArrayList<>(); // 返回的集合
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
+        Calendar c = Calendar.getInstance(); // 当时的日期和时间
+
+
+        // 获取20的范围 要判断今天和当月最大天数
+
+        for (int i = length; i > 0; i--) {
+
+            Date today = new Date();
+            String endDate = df.format(today); //当前日期
+            //获取三十天前日期
+            Calendar theCa = Calendar.getInstance();
+            theCa.setTime(today);
+            theCa.add(theCa.DATE, -i); //最后一个数字30可改，30天的意思
+            Date start = theCa.getTime();
+
+            time.add(df.format(start));
+
+        }
+
+        return time;
+
+    }
+
+    public static void main(String[] args) {
+       /* List<String> strings = DateUtils.getPeroidTime(20);
+        System.out.println(strings.toString());*/
+
+
+       Date da = DateUtils.getByMonthDay(3,10);
+        System.out.println(da);
+    }
+
 
 }

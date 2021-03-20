@@ -11,8 +11,13 @@ public class SysConf extends BaseSysConf {
     public static final String CLERK_ROLE = "clerk";
     public static final String VISIT_ROLE = "visit";
     public static final String NO_COLOR = "无颜色";
+    public static final String NO_RESTPRICE = "无";
 
     public static final Integer NORMAL_STATUS = 1;
 
     public static final Integer DELETE_STATUS = 2;
+
+    public static final Integer ANALIZE_STATUS = 3;
+
+
 }

@@ -172,6 +172,9 @@ public class StoreOriginalInfoServiceImpl
                 one.setPrice(newPrice);
             }
 
+            //保存出库信息
+            storeOriginalRecordInfoService.save(storeOriginalRecordInfo);
+
         } else {
 
             //出库
@@ -195,14 +198,16 @@ public class StoreOriginalInfoServiceImpl
             //保存材料在外状态数据
 
             if (null == storeOriginRecordVO.getMaterialColor()){storeOriginRecordVO.setMaterialColor(0);}
+            //保存出库信息
+            storeOriginalRecordInfoService.save(storeOriginalRecordInfo);
             //如果是发车间或者发货就不添加中间状态
             if(storeOriginRecordVO.getOriginalResource()!=4 && storeOriginRecordVO.getOriginalResource()!=9){
                 storeOutsideService.saveByOriginalRecord(storeOriginalRecordInfo,storeOriginRecordVO.getMaterialColor());
             }
         }
 
-        //保存出库信息
-        storeOriginalRecordInfoService.save(storeOriginalRecordInfo);
+
+
         one.setStatus(SysConf.NORMAL_STATUS);
         //更新坯料数据
         storeOriginalInfoService.updateById(one);
@@ -243,6 +248,14 @@ public class StoreOriginalInfoServiceImpl
 
         storeOriginalInfo.setMaterialName(storeOriginVO.getMaterialName());
 
+        BigDecimal materialNum;
+
+        if (null == storeOriginVO.getMaterialNum()){
+            materialNum = storeOriginalInfo.getMaterialNum();
+        }else {
+            materialNum = storeOriginVO.getMaterialNum();
+        }
+
         if (null != storeOriginVO.getMaterialNum()) {
             storeOriginalInfo.setMaterialNum(storeOriginVO.getMaterialNum());
         }
@@ -251,8 +264,9 @@ public class StoreOriginalInfoServiceImpl
         storeOriginalInfo.setPrice(storeOriginVO.getPrice());
         storeOriginalInfo.setWeight(storeOriginVO.getWeight());
 
-        storeOriginalInfo.setTotalWeight(storeOriginalInfo.getWeight().multiply(storeOriginalInfo.getMaterialNum()).setScale(2, BigDecimal.ROUND_HALF_UP));
-        storeOriginalInfo.setTotalPrice(storeOriginalInfo.getPrice().multiply(storeOriginalInfo.getMaterialNum()).setScale(2, BigDecimal.ROUND_HALF_UP));
+        storeOriginalInfo.setMaterialNum(materialNum);
+        storeOriginalInfo.setTotalWeight(storeOriginalInfo.getWeight().multiply(materialNum).setScale(2, BigDecimal.ROUND_HALF_UP));
+        storeOriginalInfo.setTotalPrice(storeOriginalInfo.getPrice().multiply(materialNum).setScale(2, BigDecimal.ROUND_HALF_UP));
 
         storeOriginalInfoService.saveOrUpdate(storeOriginalInfo);
 

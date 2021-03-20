@@ -66,4 +66,13 @@ public class CustomerRestApi {
         return ResultUtil.result(SysConf.SUCCESS, customerInfoService.searchCustomer(adminUid,key));
 
     }
+
+    @GetMapping("/getCustomerNickByUid")
+    public String getCustomerNickByUid(HttpServletRequest request,@RequestParam(required = false,defaultValue = "") String customerUid){
+
+        return ResultUtil.result(SysConf.SUCCESS, customerInfoService.getCustomerNickByUid(customerUid));
+
+    }
+
+
 }

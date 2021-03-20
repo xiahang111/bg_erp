@@ -58,6 +58,9 @@ public class FileServiceImpl implements FileService {
     @Resource
     private OrderTools orderTools;
 
+    @Resource
+    private OrderProcessService orderProcessService;
+
     @Override
     public List<String> fileAnalyze(String adminUid, MultipartFile file) throws Exception {
 
@@ -121,6 +124,8 @@ public class FileServiceImpl implements FileService {
 
         //保存客户信息并且保存订单客户关系
         orderTools.saveCustomer(adminUid, productVO, orderInfo);
+        orderProcessService.saveOrderProcessByOrderInfo(orderInfo);
+
     }
 
     /**
@@ -147,6 +152,8 @@ public class FileServiceImpl implements FileService {
 
         //保存客户信息并且保存订单客户关系
         orderTools.saveCustomer(adminUid, productVO, orderInfo);
+        orderProcessService.saveOrderProcessByOrderInfo(orderInfo);
+
     }
 
 
@@ -178,6 +185,8 @@ public class FileServiceImpl implements FileService {
         }
         //保存客户信息并且保存订单客户关系
         orderTools.saveCustomer(adminUid, productVO, orderInfo);
+        orderProcessService.saveOrderProcessByOrderInfo(orderInfo);
+
     }
 
     /**
@@ -210,6 +219,7 @@ public class FileServiceImpl implements FileService {
         }
         //保存客户信息并且保存订单客户关系
         orderTools.saveCustomer(adminUid, productVO, orderInfo);
+        orderProcessService.saveOrderProcessByOrderInfo(orderInfo);
     }
 
     /**

@@ -87,6 +87,9 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
     private OrderService orderService;
 
     @Resource
+    private OrderProcessService orderProcessService;
+
+    @Resource
     OrderTools tools;
 
     @Resource
@@ -239,6 +242,9 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
         }
 
         orderInfoMapper.insert(orderInfo);
+
+        //生产流程表
+        orderProcessService.saveOrderProcessByOrderInfo(orderInfo);
 
         //保存文件信息
         OrderFileRecord orderFileRecord = new OrderFileRecord();
@@ -409,6 +415,8 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
 
 
             orderInfoMapper.insert(orderInfo);
+
+            orderProcessService.saveOrderProcessByOrderInfo(orderInfo);
 
             List<MaterialInfoVO> insertList = new ArrayList<>();
 
@@ -680,6 +688,9 @@ public class OrderServiceImpl extends SuperServiceImpl<OrderInfoMapper, OrderInf
             });
             orderGlassDetailService.updateBatchById(orderGlassDetails);
         }
+
+        //删除订单流程表中的相关订单数据
+        orderProcessService.deleteByOrderUid(uid);
 
 
     }

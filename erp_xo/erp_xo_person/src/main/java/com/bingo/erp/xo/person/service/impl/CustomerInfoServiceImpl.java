@@ -175,4 +175,18 @@ public class CustomerInfoServiceImpl extends SuperServiceImpl<CustomerInfoMapper
         return customerInfos;
     }
 
+    @Override
+    public String getCustomerNickByUid(String uid) {
+
+        QueryWrapper<CustomerInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("uid",uid);
+
+        CustomerInfo customerInfo = customerInfoService.getOne(queryWrapper);
+
+        if (null == customerInfo){
+            return "未知";
+        }
+
+        return customerInfo.getCustomerNick();
+    }
 }

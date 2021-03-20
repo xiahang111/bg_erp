@@ -15,6 +15,7 @@ import com.bingo.erp.xo.order.service.StoreOriginalInfoService;
 import com.bingo.erp.xo.order.service.StoreOriginalRecordInfoService;
 import com.bingo.erp.xo.order.service.StoreOutsideInfoService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -43,6 +44,7 @@ public class StoreOriginalRecordInfoServiceImpl
 
 
     @Override
+    @Transactional
     public synchronized void callbackStoreRecord(String storeRecordUid) throws Exception {
 
         StoreOriginalRecordInfo storeOriginalRecordInfo = storeOriginalRecordInfoMapper.selectById(storeRecordUid);
@@ -95,7 +97,7 @@ public class StoreOriginalRecordInfoServiceImpl
 
         //回滚在外材料库
         StoreOutsideInfo storeOutsideInfo = storeOutsideInfoMapper.getByOriginUid(storeRecordUid);
-        if (null != storeOriginalInfo){
+        if (null != storeOutsideInfo){
             storeOutsideInfo.setStatus(SysConf.DELETE_STATUS);
 
             storeOutsideInfoMapper.updateById(storeOutsideInfo);

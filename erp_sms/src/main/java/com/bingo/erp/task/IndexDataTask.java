@@ -41,7 +41,7 @@ public class IndexDataTask {
     @Autowired
     RedisUtil redisUtil;
 
-    @Scheduled(cron = "0 0/2 * * * ?")
+    @Scheduled(cron = "5 0/2 * * * ?")
     private void statisticIndexData() {
 
         log.info("统计首页信息定时任务开始============");

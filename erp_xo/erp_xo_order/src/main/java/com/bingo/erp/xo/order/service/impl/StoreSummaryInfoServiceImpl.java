@@ -111,8 +111,17 @@ public class StoreSummaryInfoServiceImpl extends SuperServiceImpl<StoreSummaryIn
         storeSummaryInfo.setPrice(storeSummaryVO.getPrice());
         storeSummaryInfo.setWeight(storeSummaryVO.getWeight());
 
-        storeSummaryInfo.setTotalWeight(storeSummaryInfo.getWeight().multiply(storeSummaryInfo.getMaterialNum()).setScale(2, BigDecimal.ROUND_HALF_UP));
-        storeSummaryInfo.setTotalPrice(storeSummaryInfo.getPrice().multiply(storeSummaryInfo.getMaterialNum()).setScale(2,BigDecimal.ROUND_HALF_UP));
+        BigDecimal materialNum;
+
+        if (null == storeSummaryVO.getMaterialNum()){
+            materialNum = storeSummaryInfo.getMaterialNum();
+        }else {
+            materialNum = storeSummaryVO.getMaterialNum();
+        }
+
+        storeSummaryInfo.setMaterialNum(materialNum);
+        storeSummaryInfo.setTotalWeight(storeSummaryInfo.getWeight().multiply(materialNum).setScale(2, BigDecimal.ROUND_HALF_UP));
+        storeSummaryInfo.setTotalPrice(storeSummaryInfo.getPrice().multiply(materialNum).setScale(2,BigDecimal.ROUND_HALF_UP));
 
         storeSummaryInfoService.saveOrUpdate(storeSummaryInfo);
 

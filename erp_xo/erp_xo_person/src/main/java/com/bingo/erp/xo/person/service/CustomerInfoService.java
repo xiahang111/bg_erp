@@ -15,4 +15,6 @@ public interface CustomerInfoService extends SuperService<CustomerInfo> {
     void saveCustomerByOrder(String adminUid,CustomerVO customerVO);
 
     List<CustomerInfo> searchCustomer(String uid, String key);
+
+    String getCustomerNickByUid(String uid);
 }

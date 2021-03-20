@@ -31,7 +31,7 @@ public enum LineColor implements IEnum {
     public static int getCodeByName(String name){
         for (LineColor enums : LineColor.values()) {
 
-            if (enums.name == name) {
+            if (enums.name.equals(name)) {
                 return enums.code;
             }
 

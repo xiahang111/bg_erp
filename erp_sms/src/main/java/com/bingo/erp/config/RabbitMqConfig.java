@@ -14,11 +14,13 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMqConfig {
 
     public static final String BINHO_WEB = "bingo.web";
+    public final static String BINGO_WEB_PROCESS_ANALYZE = "bingo.web.process.analyze";
     public static final String BINHO_PERSON = "bingo.person";
     public static final String BINHO_SMS = "bingo.sms";
     public static final String EXCHANGE_DIRECT = "exchange.direct";
 
     public static final String ROUTING_KEY_WEB = "bingo.web";
+    public final static String ROUTING_KEY_WEB_WEB_PROCESS_ANALYZE = "bingo.web.process.analyze";
     public static final String ROUTING_KEY_PERSON = "bingo.person";
     public static final String ROUTING_KEY_SMS = "bingo.sms";
 
@@ -40,6 +42,16 @@ public class RabbitMqConfig {
     @Bean(BINHO_WEB)
     public Queue BINHO_WEB() {
         return new Queue(BINHO_WEB);
+    }
+
+
+    /**
+     * 申明Web队列
+     * @return
+     */
+    @Bean(BINGO_WEB_PROCESS_ANALYZE)
+    public Queue BINGO_WEB_PROCESS_ANALYZE() {
+        return new Queue(BINGO_WEB_PROCESS_ANALYZE);
     }
 
     /**
@@ -69,6 +81,17 @@ public class RabbitMqConfig {
     @Bean
     public Binding BINDING_QUEUE_INFORM_WEB(@Qualifier(BINHO_WEB) Queue queue, @Qualifier(EXCHANGE_DIRECT) Exchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY_WEB).noargs();
+    }
+
+    /**
+     * mogu.web 队列绑定交换机，指定routingKey
+     * @param queue
+     * @param exchange
+     * @return
+     */
+    @Bean
+    public Binding BINDING_QUEUE_INFORM_PROCESS_ANALYZE(@Qualifier(BINGO_WEB_PROCESS_ANALYZE) Queue queue, @Qualifier(EXCHANGE_DIRECT) Exchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY_WEB_WEB_PROCESS_ANALYZE).noargs();
     }
 
     /**

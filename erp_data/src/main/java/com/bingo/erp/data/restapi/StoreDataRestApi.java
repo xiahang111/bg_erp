@@ -25,4 +25,14 @@ public class StoreDataRestApi {
         return ResultUtil.result(BaseSysConf.SUCCESS,storeDataService.getLastStoreDatas());
 
     }
+
+    @PostMapping("/getStoreNumReport")
+    @ApiOperation(value = "获取主页今日数据")
+    @CrossOrigin(allowCredentials="true",allowedHeaders="*")
+    public String getStoreNumReport(HttpServletRequest request){
+
+        return ResultUtil.result(BaseSysConf.SUCCESS,storeDataService.getStoreNumReport());
+
+    }
+
 }

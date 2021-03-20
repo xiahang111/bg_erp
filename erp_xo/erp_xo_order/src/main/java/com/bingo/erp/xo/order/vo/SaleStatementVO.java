@@ -10,6 +10,8 @@ public class SaleStatementVO {
 
     private String salemen;
 
+    private String ordermaker;
+
     private String productType;
 
     private String orderType;

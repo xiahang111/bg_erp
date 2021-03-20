@@ -17,6 +17,7 @@ public enum  StoreOriginalResource implements IEnum {
     STORE_OUT_XX(8,"出铣型厂"),
     STORE_OUT_WX(9,"外销发货"),
     STORE_OUT_SL(10,"出三联喷涂厂"),
+    STORE_OUT_JS(14,"出金色恒辉喷涂厂"),
     STORE_OUT_YM(11,"出原美喷涂厂"),
     STORE_OUT_YH(12,"出亿和氧化厂"),
     STORE_OUT_CY(13,"出长远拉丝厂");

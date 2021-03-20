@@ -179,10 +179,10 @@ public class AppTest
                     productVO.setProductType(ProductTypeEnums.Complete.code);
                 }
                 if (data.contains("小包装")) {
-                    productVO.setSimplePackageNum(Integer.valueOf(null == rowMap.get(cellNum + 1) ? "0" : rowMap.get(cellNum + 1).replace(".0", "")));
+                    productVO.setSimplePackageNum(Integer.valueOf(null == rowMap.get(cellNum + 1) ? "0" : rowMap.get(cellNum + 1).split("\\.")[0]));
                 }
                 if (data.contains("大包装")) {
-                    productVO.setBigPackageNum(Integer.valueOf(null == rowMap.get(cellNum + 1) ? "0" : rowMap.get(cellNum + 1).replace(".0", "")));
+                    productVO.setBigPackageNum(Integer.valueOf(null == rowMap.get(cellNum + 1) ? "0" : rowMap.get(cellNum + 1).split("\\.")[0]));
                 }
                 if (data.contains("制单人")) {
                     productVO.setOrderMaker(null == rowMap.get(cellNum + 2) ? "" : rowMap.get(cellNum + 2));

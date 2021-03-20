@@ -20,13 +20,26 @@ public class CustomerDataRestApi {
 
     @PostMapping("/saveCustomerOrder")
     @ApiOperation(value = "保存用户订单数据")
-    @CrossOrigin(allowCredentials="true",allowedHeaders="*")
-    public String saveCustomerOrder(HttpServletRequest request, @RequestBody CustomerVO customerVO){
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    public String saveCustomerOrder(HttpServletRequest request, @RequestBody CustomerVO customerVO) {
         try {
             customerOrderService.saveCustomerOrder(customerVO);
-            return ResultUtil.result(BaseSysConf.SUCCESS,"");
-        }catch (Exception e){
-            return ResultUtil.result(BaseSysConf.Fail,e.getMessage());
+            return ResultUtil.result(BaseSysConf.SUCCESS, "");
+        } catch (Exception e) {
+            return ResultUtil.result(BaseSysConf.Fail, e.getMessage());
+        }
+
+    }
+
+    @PostMapping("/getCustomerTop")
+    @ApiOperation(value = "保存用户订单数据")
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    public String getCustomerTop(HttpServletRequest request) {
+        try {
+
+            return ResultUtil.result(BaseSysConf.SUCCESS, customerOrderService.getCustomerTop());
+        } catch (Exception e) {
+            return ResultUtil.result(BaseSysConf.Fail, e.getMessage());
         }
 
     }

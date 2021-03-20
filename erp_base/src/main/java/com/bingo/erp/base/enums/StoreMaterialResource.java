@@ -15,6 +15,7 @@ public enum StoreMaterialResource implements IEnum {
     STORE_OUT_WX(6, "外销发货"),
     STORE_IN_SL(7,"三联喷涂厂入库"),
     STORE_IN_YM(8,"原美喷涂厂入库"),
+    STORE_IN_JS(10,"金色恒辉喷涂厂入库"),
     STORE_IN_YH(9,"亿和氧化厂入库");
 
     StoreMaterialResource(int code, String name) {

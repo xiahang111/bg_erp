@@ -7,7 +7,7 @@ import com.bingo.erp.utils.DateUtils;
 import com.bingo.erp.xo.data.entity.StoreData;
 import com.bingo.erp.xo.data.mapper.StoreDataMapper;
 import com.bingo.erp.xo.data.service.StoreDataService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.bingo.erp.xo.data.vo.BarReportResultVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -35,5 +35,10 @@ public class StoreDataServiceImpl extends SuperServiceImpl<StoreDataMapper,Store
         }
 
         return storeDatas;
+    }
+
+    @Override
+    public List<BarReportResultVO> getStoreNumReport() {
+        return storeDataMapper.getStoreNumReport();
     }
 }

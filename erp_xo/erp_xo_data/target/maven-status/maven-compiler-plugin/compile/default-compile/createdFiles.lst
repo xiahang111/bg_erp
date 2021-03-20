@@ -1,11 +1,13 @@
+com\bingo\erp\xo\data\vo\BarReportResultVO.class
 com\bingo\erp\xo\data\entity\CustomerOrder.class
 com\bingo\erp\xo\data\entity\StoreData.class
 com\bingo\erp\xo\data\service\impl\CustomerOrderServiceImpl.class
+com\bingo\erp\xo\data\task\StoreDataCalculateTask.class
+com\bingo\erp\xo\data\dto\StoreDataDTO.class
+com\bingo\erp\xo\data\feign\OrderFeignClient.class
 com\bingo\erp\xo\data\service\StoreDataService.class
 com\bingo\erp\xo\data\mapper\CustomerOrderMapper.class
 com\bingo\erp\xo\data\service\impl\StoreDataServiceImpl.class
 com\bingo\erp\xo\data\mapper\StoreDataMapper.class
-com\bingo\erp\xo\data\task\StoreDataCalculateTask.class
-com\bingo\erp\xo\data\dto\StoreDataDTO.class
-com\bingo\erp\xo\data\feign\OrderFeignClient.class
+com\bingo\erp\xo\data\dto\CustomerTopDTO.class
 com\bingo\erp\xo\data\service\CustomerOrderService.class

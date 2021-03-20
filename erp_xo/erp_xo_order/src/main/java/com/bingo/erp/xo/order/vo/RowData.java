@@ -2,12 +2,12 @@ package com.bingo.erp.xo.order.vo;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
-public class InfoVO {
+public class RowData {
 
     private int row;
 
-    private int cell;
-
-    private String data;
+    List<CellData> cellDatas;
 }

@@ -50,6 +50,10 @@ public class StatementServiceImpl implements StatementService {
             queryWrapper.between("create_time",dateList.get(0),dateList.get(1));
         }
 
+        if(StringUtils.isNotBlank(saleStatementVO.getOrdermaker())){
+            queryWrapper.like("order_maker",saleStatementVO.getOrdermaker());
+        }
+
         List<OrderInfo> orderInfos = orderService.list(queryWrapper);
 
         try {

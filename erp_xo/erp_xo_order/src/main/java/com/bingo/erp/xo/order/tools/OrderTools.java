@@ -16,6 +16,7 @@ import com.bingo.erp.xo.order.mapper.IronwareInfoMapper;
 import com.bingo.erp.xo.order.mapper.MaterialInfoMapper;
 import com.bingo.erp.xo.order.mapper.TransomMapper;
 import com.bingo.erp.xo.order.service.AdminService;
+import com.bingo.erp.xo.order.service.CustomerInfoService;
 import com.bingo.erp.xo.order.service.RoleService;
 import com.bingo.erp.xo.order.vo.*;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +53,9 @@ public class OrderTools {
 
     @Resource
     private AdminService adminService;
+
+    @Resource
+    private CustomerInfoService customerInfoService;
 
     public boolean materialValidate(List<MaterialInfoVO> materialInfoVOS) {
 
@@ -1427,7 +1431,16 @@ public class OrderTools {
         customerVO.setTotalPrice(orderInfo.getTotalPrice());
         //改成发送消息
         rabbitTemplate.convertAndSend(SysConf.EXCHANGE_DIRECT, SysConf.BINGO_WEB, JsonUtils.objectToJson(customerVO));
+        customerInfoService.saveCustomerByOrder(adminUid,customerVO);
+
+
         //personFeignClient.saveCustomerByOrder(customerVO);
+    }
+
+    public void processAnalyze(OrderProcessAnalyze processAnalyze){
+
+        rabbitTemplate.convertAndSend(SysConf.EXCHANGE_DIRECT,SysConf.BINGO_WEB_PROCESS_ANALYZE, JsonUtils.objectToJson(processAnalyze));
+
     }
 
 

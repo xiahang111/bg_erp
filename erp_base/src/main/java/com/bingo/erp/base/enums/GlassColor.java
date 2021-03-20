@@ -51,8 +51,12 @@ public enum GlassColor implements IEnum {
 
     public static int getCodeByInformation(String information){
 
+        if (information.contains("银镜")){
+            return GlassColor.YJ.code;
+        }
+
         for (GlassColor enums:GlassColor.values()) {
-            if (information.contains(enums.name+"玻璃")){
+            if (information.contains(enums.name+"玻璃") ){
                 return enums.code;
             }
         }
