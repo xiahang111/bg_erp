@@ -29,7 +29,7 @@ public class OrderGlassDetail extends SuperEntity<OrderFileRecord> {
     /**
      * 原订单类型
      */
-    private String  materialType;
+    private String materialType;
 
     private String glassColor;
 

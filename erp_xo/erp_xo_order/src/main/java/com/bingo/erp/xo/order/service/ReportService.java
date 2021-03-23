@@ -3,6 +3,7 @@ package com.bingo.erp.xo.order.service;
 import com.bingo.erp.xo.order.dto.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ReportService {
 
@@ -31,6 +32,14 @@ public interface ReportService {
     DvOrderCenterDTO getDvOrderCenter() throws Exception;
 
     List<ReportPieDTO> getCustomerList() throws Exception;
+
+    List<DvSalesmanDTO>  getSalesmanByGroup() throws Exception;
+
+    DvSalesmanDTO getSalesmanData() throws Exception;
+
+    DvSalesmanDTO getGroupSalesmanData() throws Exception;
+
+    Map<String ,List<SaleTopDTO>> getSalesTopData() throws Exception;
 
 
 }

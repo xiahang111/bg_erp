@@ -283,4 +283,52 @@ public class ReportRestApi {
             return ResultUtil.result(SysConf.Fail, "获取失败!原因:" + e.getMessage());
         }
     }
+
+    @PostMapping("getDvSalesmanByGroup")
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    public String getSalesmanByGroup(HttpServletRequest request) {
+
+
+        try {
+            return ResultUtil.result(SysConf.SUCCESS, reportService.getSalesmanByGroup());
+        } catch (Exception e) {
+            return ResultUtil.result(SysConf.Fail, "获取失败!原因:" + e.getMessage());
+        }
+    }
+
+    @PostMapping("getSalesmanData")
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    public String getSalesmanData(HttpServletRequest request) {
+
+
+        try {
+            return ResultUtil.result(SysConf.SUCCESS, reportService.getSalesmanData());
+        } catch (Exception e) {
+            return ResultUtil.result(SysConf.Fail, "获取失败!原因:" + e.getMessage());
+        }
+    }
+
+    @PostMapping("getGroupSalesmanData")
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    public String getGroupSalesmanData(HttpServletRequest request) {
+
+
+        try {
+            return ResultUtil.result(SysConf.SUCCESS, reportService.getGroupSalesmanData());
+        } catch (Exception e) {
+            return ResultUtil.result(SysConf.Fail, "获取失败!原因:" + e.getMessage());
+        }
+    }
+
+    @PostMapping("getSalesTopData")
+    @CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
+    public String getSalesTopData(HttpServletRequest request) {
+
+
+        try {
+            return ResultUtil.result(SysConf.SUCCESS, reportService.getSalesTopData());
+        } catch (Exception e) {
+            return ResultUtil.result(SysConf.Fail, "获取失败!原因:" + e.getMessage());
+        }
+    }
 }

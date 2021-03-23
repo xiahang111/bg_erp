@@ -1,2 +1,2 @@
-com\bingo\erp\eureka\config\WebSecurityConfig.class
-com\bingo\erp\eureka\EurekaApplication.class
+com/bingo/erp/eureka/EurekaApplication.class
+com/bingo/erp/eureka/config/WebSecurityConfig.class
